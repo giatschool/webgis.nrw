@@ -5,4 +5,6 @@
 
 # Run Dev
 - `yarn run dev`
-- `yarn start`
+- `sudo yarn start`
+
+The application is now running at [localhost](localhost)

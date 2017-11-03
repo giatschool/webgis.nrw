@@ -2,14 +2,18 @@
 <html>
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>webgis.nrw</title>
 
   <!-- CSS includes -->
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Nunito:400,700" type="text/css">
   <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.41.0/mapbox-gl.css' rel='stylesheet' />
-  <link href='assets/css/style.css' rel='stylesheet' />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+  <link href='assets/css/main.min.css' rel='stylesheet' />
+  <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-compare/v0.1.0/mapbox-gl-compare.css' type='text/css' />
+
 
 
 
@@ -19,8 +23,18 @@
 
 <body>
   <div id='map' class='map'></div>
+  <div class='map-overlay' id='functions'>
+    <h1 class="hero-webgisnrw">webgis.<span class="n">n</span><span class="r">r</span><span class="w">w</span></h1>
+    <button id='themeToggle' type="button" class="btn btn-dark">Dark Mode</button>
+  </div>
+  <div class='map-overlay' id='features'>
+    <div id='pd'>
+      <p>Hover over a state!</p>
+    </div>
+  </div>
+  <div class='map-overlay' id='legend'></div>
 
-  <script src="assets/js/client.min.js"></script>
+  <script src="assets/js/main.min.js"></script>
 
 </body>
 
