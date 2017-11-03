@@ -89,3 +89,12 @@ p {
   height: 10px;
   margin-right: 5px;
 }
+
+.map-overlay input {
+    background-color: transparent;
+    display: inline-block;
+    width: 100%;
+    position: relative;
+    margin: 0;
+    cursor: ew-resize;
+}
