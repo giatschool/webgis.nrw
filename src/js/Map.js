@@ -1,6 +1,4 @@
-// import mongoose from 'mongoose';
 import mapboxgl from 'mapbox-gl';
-import MapboxCompare from 'mapbox-gl-compare';
 const KreiseNRW = require('./../data/landkreise_simplify0.json');
 const population = require('./../data/population_data.json');
 const config = require('./../config.js');
