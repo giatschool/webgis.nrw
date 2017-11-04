@@ -2,11 +2,13 @@ import mapboxgl from 'mapbox-gl';
 // const KreiseNRW_source = require('./../data/landkreise_simplify0.json');
 const config = require('./../config.js');
 import 'whatwg-fetch'
+import csv from 'csvtojson';
 
 var KreiseNRW
 
 var feature_dataset
 var current_feature = ''
+
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiZmVsaXhhZXRlbSIsImEiOiJjajNicW1lM2QwMDR3MzNwOWdyaXAzN282In0.Pci5KvNNLCjjxy9b4p0n7g';
 var map = new mapboxgl.Map({
@@ -16,32 +18,34 @@ var map = new mapboxgl.Map({
   ],
   zoom: 6,
   style: (
-    config.theme == 'light'
-    ? 'mapbox://styles/mapbox/light-v9'
-    : 'mapbox://styles/mapbox/dark-v9')
+    config.theme == 'light' ?
+    'mapbox://styles/mapbox/light-v9' :
+    'mapbox://styles/mapbox/dark-v9')
 })
 
 map.on('load', () => {
   // When a click event occurs on a feature in the places layer, open a popup at the
   // location of the feature, with description HTML from its properties.
-  map.on('click', 'kreisgrenzen', function(e) {
+  map.on('click', 'kreisgrenzen', function (e) {
     if (e.features.length > 0) {
       new mapboxgl.Popup().setLngLat(e.lngLat).setHTML(e.features[0].properties.Gemeindename).addTo(map);
     }
   });
 
   // Change the cursor to a pointer when the mouse is over the places layer.
-  map.on('mouseenter', function() {
+  map.on('mouseenter', function () {
     map.getCanvas().style.cursor = 'pointer';
   });
 
   // Change it back to a pointer when it leaves.
-  map.on('mouseleave', function() {
+  map.on('mouseleave', function () {
     map.getCanvas().style.cursor = '';
   });
 
-  map.on('mousemove', function(e) {
-    var states = map.queryRenderedFeatures(e.point, {layers: ['kreisgrenzen']});
+  map.on('mousemove', function (e) {
+    var states = map.queryRenderedFeatures(e.point, {
+      layers: ['kreisgrenzen']
+    });
     if (states.length > 0) {
       document.getElementById('pd').innerHTML = '<h3><strong>' + states[0].properties.Gemeindename + '</strong></h3><p><strong><em>' + states[0].properties.population + '</strong> Einwohner</em></p>';
       // document.getElementById('pd').innerHTML = '<h3><strong>' + states[0].properties.GEN + '</strong></h3>';
@@ -167,6 +171,77 @@ export function changeStyle(style) {
   // console.log("changing style")
   map.setStyle('mapbox://styles/mapbox/' + style + '-v9');
 
+}
+
+export function importCSV() {
+  const file = document.getElementById('custom_csv_input').files[0];
+  if (file.type == "text/csv") {
+
+    let ownData = getAsText(file);
+  } else {
+    $('#csv_info').text('Die gewählte Datei ist keine .csv Datei!');
+  }
+}
+
+// CSV handler functions
+
+function getAsText(fileToRead) {
+  var reader = new FileReader();
+  // Read file into memory as UTF-8      
+  reader.readAsText(fileToRead);
+  // Handle errors load
+  reader.onload = loadHandler;
+  reader.onerror = errorHandler;
+}
+
+function loadHandler(event) {
+  var csvString = event.target.result;
+  processData(csvString);
+}
+
+function processData(csvString) {
+  let header;
+  let customDataset = [];
+
+  csv({
+    delimiter: ';'
+  })
+  .fromString(csvString, {
+    encoding: 'utf8'
+  })
+  .on('header', (parsedHeader) => {
+    console.log(parsedHeader);
+    header = parsedHeader;
+  })
+  .on('csv', (csvRow) => {
+    // Wenn die Row mit einer Zahl beginnt..
+    if(!isNaN(Number(csvRow[0]))){
+
+      var cityObject = {
+        RS: csvRow[0],
+        AGS: csvRow[0],
+        GEN: csvRow[1],
+        data: {}
+      }
+
+      header.forEach((element, idx) => {
+        if(!isNaN(Number(element)) && element != ''){
+          cityObject.data[`${element}`] = csvRow[idx]
+        }
+      }, this)
+
+      customDataset.push(cityObject);
+    }
+  }).on('done', () => {
+    return customDataset;
+  })
+
+}
+
+function errorHandler(evt) {
+  if (evt.target.error.name == "NotReadableError") {
+    alert("Canno't read file !");
+  }
 }
 
 export function addFeinstaubLayer(name) {

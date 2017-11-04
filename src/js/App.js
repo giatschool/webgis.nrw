@@ -1,4 +1,4 @@
-import { changeStyle, updateData, setData, addFeinstaubLayer, removeFeinstaubLayer } from './Map.js'
+import { changeStyle, updateData, setData, importCSV, addFeinstaubLayer, removeFeinstaubLayer } from './Map.js'
 const config = require('./../config.js');
 
 class App {
@@ -18,6 +18,10 @@ class App {
     document.getElementById('satelliteMap').addEventListener("click", () => {
       changeStyle('satellite')
     });
+
+    document.getElementById('custom_csv_input').addEventListener("change", () => {
+      importCSV()
+    })
 
     document.getElementById('slider').addEventListener('input', function(e) {
         var year = parseInt(e.target.value, 10);
