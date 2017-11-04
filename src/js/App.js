@@ -1,4 +1,4 @@
-import { changeStyle, updateData, importCSV } from './Map.js'
+import { changeStyle, updateData, setData, importCSV, addFeinstaubLayer, removeFeinstaubLayer } from './Map.js'
 const config = require('./../config.js');
 
 class App {
@@ -28,6 +28,28 @@ class App {
         console.log(year)
         updateData(year)
     });
+
+    document.getElementsByName('population_data')[0].addEventListener("click", () => {
+      setData('population_data', 'population')
+    });
+
+    document.getElementById('feinstaub01').addEventListener("click", () => {
+      addFeinstaubLayer('band01_02112017')
+    });
+
+    document.getElementById('feinstaub12').addEventListener("click", () => {
+      addFeinstaubLayer('band12_02112017')
+    });
+
+    document.getElementById('feinstaub24').addEventListener("click", () => {
+      addFeinstaubLayer('band24_02112017')
+    });
+
+    document.getElementById('feinstaub-remove').addEventListener("click", () => {
+      removeFeinstaubLayer()
+    });
+
+
 
 
   }

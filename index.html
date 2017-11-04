@@ -19,6 +19,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
 
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+
 </head>
 
 <body>
@@ -45,7 +48,29 @@
         </div>
         <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne">
           <div class="card-block">
-            <button type="button" class="btn btn-secondary">Einwohnerzahlen</button>
+            <button type="button" class="btn btn-outline-primary btn-block" name="population_data"><i class="material-icons">group</i>
+Einwohnerzahlen</button>
+            <button type="button" class="btn btn-outline-primary btn-block" name="workless"><i class="material-icons">work</i>
+            Arbeitslosigkeit</button>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header" role="tab" id="headingTwo" class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+          <h5 class="mb-0">
+            Feinstaub
+          </h5>
+        </div>
+        <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="card-block">
+            <button type="button" class="btn btn-outline-primary btn-block" id="feinstaub01"><i class="material-icons">grain</i>
+            01:00 Uhr</button>
+            <button type="button" class="btn btn-outline-primary btn-block" id="feinstaub12"><i class="material-icons">grain</i>
+            12:00 Uhr</button>
+            <button type="button" class="btn btn-outline-primary btn-block" id="feinstaub24"><i class="material-icons">grain</i>
+            24:00 Uhr</button>
+            <button type="button" class="btn btn-outline-danger btn-block" id="feinstaub-remove"><i class="material-icons">grain</i>
+            Layer Entfernen</button>
           </div>
         </div>
       </div>
@@ -83,9 +108,9 @@
       <p>Hover over a state!</p>
     </div>
   </div>
-  <div class='map-overlay' id='timeslider'>
+  <div class='map-overlay' id='timeslider' hidden>
     <label id='year'>1962</label>
-    <input id='slider' type='range' min='1962' max='2010' step='1' value='0' />
+    <input id='slider' type='range' min='0' max='100' step='1' value='0' />
   </div>
 
 
