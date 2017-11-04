@@ -19,6 +19,18 @@ class App {
       changeStyle('satellite')
     });
 
+    document.getElementById('topMap').addEventListener("click", () => {
+      changeStyle('top')
+    });
+
+    document.getElementById('dtkMap').addEventListener("click", () => {
+      changeStyle('dtk')
+    });
+
+    document.getElementById('dopMap').addEventListener("click", () => {
+      changeStyle('dop')
+    });
+
     document.getElementById('custom_csv_input').addEventListener("change", () => {
       importCSV()
     })

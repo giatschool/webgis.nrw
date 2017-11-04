@@ -182,9 +182,63 @@ function getLastYearOfDataset() {
   return dataset_data[dataset_data.length - 1]
 }
 
-export function changeStyle(style) {
-  map.setStyle('mapbox://styles/mapbox/' + style + '-v9');
+const wmsLayerUrls = {
+  top: ['http://sgx.geodatenzentrum.de/wms_topplus_web_open?bbox={bbox-epsg-3857}&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&width=256&height=256&layers=web_grau&styles=default&format=image/png'],
+  dop: [
+    'https://www.wms.nrw.de/geobasis/wms_nw_dop20?bbox={bbox-epsg-3857}&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&width=256&height=256&layers=nw_dop20&styles=default&format=image/png',
+  ],
+  dop_overlay: [
+    'https://www.wms.nrw.de/geobasis/wms_nw_dop_overlay?bbox={bbox-epsg-3857}&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&width=256&height=256&layers=WMS_NW_DOP_OVERLAY&styles=default&format=image/png',
+  ],
+  dtk: ['https://www.wms.nrw.de/geobasis/wms_nw_dtk?bbox={bbox-epsg-3857}&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&width=256&height=256&layers=nw_dtk_col,nw_dtk_pan&styles=default&format=image/png']
+};
 
+export function changeStyle(style) {
+  const layers = Object.keys(wmsLayerUrls);
+  if (layers.includes(style)) {
+
+    if (!map.getLayer(style)) {
+      map.addLayer({
+        id: style,
+        paint: {},
+        type: 'raster',
+        source: {
+          type: 'raster',
+          tileSize: 256,
+          tiles: wmsLayerUrls[style]
+        }
+      }, 'kreisgrenzen');
+      // sonderfall dop
+      // if (style === 'dop') {
+      //   if (!map.getLayer('dop_overlay')) {
+      //     map.addLayer({
+      //       id: 'dop_overlay',
+      //       paint: {},
+      //       type: 'raster',
+      //       source: {
+      //         type: 'raster',
+      //         tileSize: 256,
+      //         tiles: wmsLayerUrls['dop_overlay']
+      //       }
+      //     });
+      //   } else {
+      //     map.setLayoutProperty('dop_overlay', 'visibility', 'visible');
+      //   }
+      //   layers.splice(layers.findIndex(l => l === 'dop_overlay'), 1);
+      // }
+    } else {
+      map.setLayoutProperty(style, 'visibility', 'visible');
+    }
+    layers.splice(layers.findIndex(l => l === style), 1);
+  } else {
+    map.setStyle('mapbox://styles/mapbox/' + style + '-v9');
+  }
+
+  for (const l of layers) {
+    if (map.getLayer(l)) {
+      map.setLayoutProperty(l, 'visibility', 'none');
+    }
+  }
 }
 
 export function importCSV() {
