@@ -25,7 +25,13 @@
   <div id='map' class='map'></div>
   <div class='map-overlay' id='functions'>
     <h1 class="hero-webgisnrw">webgis.<span class="n">n</span><span class="r">r</span><span class="w">w</span></h1>
-    <button id='themeToggle' type="button" class="btn btn-dark">Dark Mode</button>
+    <div class="btn-group">
+      <button type="button" class="btn btn-info" id='basicMap'>Basic</button>
+      <button type="button" class="btn btn-dark" id='darkMap'>Dark</button>
+      <button type="button" class="btn btn-light" id='lightMap'>Light</button>
+      <button type="button" class="btn btn-success" id='satelliteMap'>Satellit</button>
+    </div>
+    <!-- <button id='themeToggle' type="button" class="btn btn-dark">Dark Mode</button> -->
     <br/>
     <label id='year'>1962</label>
     <input id='slider' type='range' min='1962' max='2010' step='1' value='0' />

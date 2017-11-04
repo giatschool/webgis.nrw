@@ -3,12 +3,20 @@ const config = require('./../config.js');
 
 class App {
   static run() {
-    document.getElementById('themeToggle').addEventListener("click", () => {
-      config.theme = (config.theme == 'light' ? 'dark' : 'light')
-      changeStyle()
-      document.getElementById('themeToggle').innerHTML = (config.theme == 'light' ? 'Dark Mode' : 'Light Mode')
-      document.getElementById('themeToggle').classList.remove((config.theme == 'light' ? 'btn-light' : 'btn-dark'))
-      document.getElementById('themeToggle').classList.add((config.theme == 'light' ? 'btn-dark' : 'btn-light'))
+    document.getElementById('basicMap').addEventListener("click", () => {
+      changeStyle('basic')
+    });
+
+    document.getElementById('darkMap').addEventListener("click", () => {
+      changeStyle('dark')
+    });
+
+    document.getElementById('lightMap').addEventListener("click", () => {
+      changeStyle('light')
+    });
+
+    document.getElementById('satelliteMap').addEventListener("click", () => {
+      changeStyle('satellite')
     });
 
     document.getElementById('slider').addEventListener('input', function(e) {
