@@ -1,4 +1,4 @@
-import { changeStyle, updateData, setData, importCSV, addFeinstaubLayer, removeFeinstaubLayer } from './Map.js'
+import { changeStyle, updateData, setData, importCSV, addFeinstaubLayer, removeFeinstaubLayer, colorChanged, changeTransparency } from './Map.js'
 const config = require('./../config.js');
 
 class App {
@@ -27,6 +27,11 @@ class App {
         var year = parseInt(e.target.value, 10);
         console.log(year)
         updateData(year)
+    });
+
+    document.getElementById('transparency-slider').addEventListener('input', function(e) {
+        var transparency = e.target.value;
+        changeTransparency(transparency)
     });
 
     document.getElementsByName('population_data')[0].addEventListener("click", () => {
@@ -64,6 +69,14 @@ class App {
     document.getElementById('feinstaub-remove').addEventListener("click", () => {
       removeFeinstaubLayer()
     });
+
+    document.getElementById('lowColor').addEventListener("change", (e) => {
+      colorChanged('low', e.target.value)
+    },  true);
+
+    document.getElementById('highColor').addEventListener("change", (e) => {
+      colorChanged('high', e.target.value)
+    }, true);
 
 
 

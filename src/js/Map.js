@@ -9,6 +9,30 @@ var KreiseNRW
 var feature_dataset
 var current_feature = ''
 
+var lowColor = '#80BCFF';
+var highColor = '#1A5FAC';
+
+export function colorChanged(type, value) {
+  if(type == 'low') {
+    lowColor = value
+  } else if(type == 'high') {
+    highColor = value
+  }
+  map.setPaintProperty("kreisgrenzen", 'fill-color', {
+    "property": current_feature,
+    "stops": [
+      [getMinFeature(KreiseNRW, current_feature), lowColor],
+      [getMaxFeature(KreiseNRW, current_feature), highColor]
+    ]
+  });
+}
+
+export function changeTransparency(transparency) {
+  map.setPaintProperty("kreisgrenzen",
+    "fill-opacity", transparency / 100,
+  );
+}
+
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiZmVsaXhhZXRlbSIsImEiOiJjajNicW1lM2QwMDR3MzNwOWdyaXAzN282In0.Pci5KvNNLCjjxy9b4p0n7g';
 var map = new mapboxgl.Map({
@@ -42,12 +66,18 @@ map.on('load', () => {
     map.getCanvas().style.cursor = '';
   });
 
+
+})
+
+map.on('style.load', () => {
+  loadData()
+
   map.on('mousemove', function (e) {
     var states = map.queryRenderedFeatures(e.point, {
       layers: ['kreisgrenzen']
     });
 
-    console.log(states);
+    // console.log(states);
     if (states.length > 0) {
       document.getElementById('pd').innerHTML = '<h3><strong>' + states[0].properties.Gemeindename + '</strong></h3><p><strong><em>' + states[0].properties.population + '</strong> Einwohner</em></p>';
       // document.getElementById('pd').innerHTML = '<h3><strong>' + states[0].properties.GEN + '</strong></h3>';
@@ -55,9 +85,8 @@ map.on('load', () => {
       document.getElementById('pd').innerHTML = '<p>Hover over a state!</p>';
     }
   });
-})
 
-map.on('style.load', () => loadData())
+})
 
 function loadData() {
   fetch('http://nrw.ldproxy.net/rest/services/dvg/nw_dvg2_krs/?f=json&count=100')
@@ -120,8 +149,8 @@ export function setDataFromCSV(data, feature) {
   map.setPaintProperty("kreisgrenzen", 'fill-color', {
     "property": feature,
     "stops": [
-      [getMaxFeature(KreiseNRW, feature), '#80BCFF'],
-      [getMinFeature(KreiseNRW, feature), '#1A5FAC']
+      [getMaxFeature(KreiseNRW, feature), lowColor],
+      [getMinFeature(KreiseNRW, feature), highColor]
     ]
   });
 
@@ -146,8 +175,8 @@ export function updateData(year = getFirstYearOfDataset()) {
   map.setPaintProperty("kreisgrenzen", 'fill-color', {
     "property": current_feature,
     "stops": [
-      [getMinFeature(KreiseNRW, current_feature), '#80BCFF'],
-      [getMaxFeature(KreiseNRW, current_feature), '#1A5FAC']
+      [getMinFeature(KreiseNRW, current_feature), lowColor],
+      [getMaxFeature(KreiseNRW, current_feature), highColor]
     ]
   });
   document.getElementById('year').textContent = year;
