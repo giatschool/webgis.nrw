@@ -25,6 +25,11 @@ export function colorChanged(type, value) {
       [getMaxFeature(KreiseNRW, current_feature), highColor]
     ]
   });
+
+  document.getElementById('legend-min').innerHTML = getMinFeature(KreiseNRW, current_feature)
+  document.getElementById('legend-max').innerHTML = getMaxFeature(KreiseNRW, current_feature)
+  document.getElementById("legend-bar").style.background = `linear-gradient(to right, ${lowColor}, ${highColor})`;
+  // document.getElementById("legend-bar").style.display = 'none'
 }
 
 export function changeTransparency(transparency) {
@@ -127,6 +132,8 @@ export function setDataFromCSV(data, feature) {
   feature_dataset = data
   current_feature = feature
 
+  document.getElementById('legend-heading').innerHTML = feature
+
   KreiseNRW.features.map((kreis) => {
     data.forEach((data_feature) => {
       if(!String(data_feature.AGS).startsWith('0')) {
@@ -154,6 +161,8 @@ export function setDataFromCSV(data, feature) {
     ]
   });
 
+  document.getElementById('legend-min').innerHTML = getMinFeature(KreiseNRW, current_feature)
+  document.getElementById('legend-max').innerHTML = getMaxFeature(KreiseNRW, current_feature)
   document.getElementById('timeslider').removeAttribute('hidden')
   document.getElementById('slider').setAttribute('min', getFirstYearOfDataset())
   document.getElementById('slider').setAttribute('max', getLastYearOfDataset())
@@ -180,6 +189,8 @@ export function updateData(year = getFirstYearOfDataset()) {
     ]
   });
   document.getElementById('year').textContent = year;
+  document.getElementById('legend-min').innerHTML = getMinFeature(KreiseNRW, current_feature)
+  document.getElementById('legend-max').innerHTML = getMaxFeature(KreiseNRW, current_feature)
 }
 
 function getMaxFeature(data, feature) {
