@@ -1,18 +1,13 @@
 import mapboxgl from 'mapbox-gl';
-const KreiseNRW = require('./../data/landkreise_simplify0.json');
-const population = require('./../data/population_data.json');
+// const KreiseNRW_source = require('./../data/landkreise_simplify0.json');
 const config = require('./../config.js');
 import 'whatwg-fetch'
 import csv from 'csvtojson';
 
-fetch('https://www.ldproxy.nrw.de/kataster/VerwaltungsEinheit?f=json&art=Gemeinde')
-  .then(function (response) {
-    return response.json()
-  }).then(function (json) {
-    console.log('parsed json', json)
-  }).catch(function (ex) {
-    console.log('parsing failed', ex)
-  })
+var KreiseNRW
+
+var feature_dataset
+var current_feature = ''
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiZmVsaXhhZXRlbSIsImEiOiJjajNicW1lM2QwMDR3MzNwOWdyaXAzN282In0.Pci5KvNNLCjjxy9b4p0n7g';
 var map = new mapboxgl.Map({
@@ -32,7 +27,7 @@ map.on('load', () => {
   // location of the feature, with description HTML from its properties.
   map.on('click', 'kreisgrenzen', function (e) {
     if (e.features.length > 0) {
-      new mapboxgl.Popup().setLngLat(e.lngLat).setHTML(e.features[0].properties.GEN).addTo(map);
+      new mapboxgl.Popup().setLngLat(e.lngLat).setHTML(e.features[0].properties.Gemeindename).addTo(map);
     }
   });
 
@@ -46,13 +41,10 @@ map.on('load', () => {
     map.getCanvas().style.cursor = '';
   });
 
-  map.on('mousemove', function (e) {
-    var states = map.queryRenderedFeatures(e.point, {
-      layers: ['kreisgrenzen']
-    });
-
+  map.on('mousemove', function(e) {
+    var states = map.queryRenderedFeatures(e.point, {layers: ['kreisgrenzen']});
     if (states.length > 0) {
-      document.getElementById('pd').innerHTML = '<h3><strong>' + states[0].properties.GEN + '</strong></h3><p><strong><em>' + states[0].properties.population + '</strong> Einwohner</em></p>';
+      document.getElementById('pd').innerHTML = '<h3><strong>' + states[0].properties.Gemeindename + '</strong></h3><p><strong><em>' + states[0].properties.population + '</strong> Einwohner</em></p>';
       // document.getElementById('pd').innerHTML = '<h3><strong>' + states[0].properties.GEN + '</strong></h3>';
     } else {
       document.getElementById('pd').innerHTML = '<p>Hover over a state!</p>';
@@ -63,71 +55,109 @@ map.on('load', () => {
 map.on('style.load', () => loadData())
 
 function loadData() {
+  fetch('http://nrw.ldproxy.net/rest/services/dvg/nw_dvg2_krs/?f=json&count=100')
+    .then(function(response) {
+      return response.json()
+    }).then(function(json) {
+      console.log('parsed json', json)
+      KreiseNRW = json
+
+      map.addSource('KreiseNRW', {
+        'type': 'geojson',
+        'data': KreiseNRW
+      })
+      map.addLayer({
+        "id": "kreisgrenzen",
+        "type": "fill",
+        "source": "KreiseNRW",
+        "paint": {
+          "fill-opacity": 0.8,
+          'fill-color': '#5266B8'
+        }
+      });
+    }).catch(function(ex) {
+      console.log('parsing failed', ex)
+    })
+
+
+}
+
+export function setData(data_source, feature) {
+
+  const data = require(`./../data/${data_source}.json`);
+  feature_dataset = data
+  current_feature = feature
+
   KreiseNRW.features.map((kreis) => {
-    population.forEach((kreisPop) => {
-      if (kreis.properties.AGS === kreisPop.AGS) {
-        kreis.properties.population = parseInt(kreisPop.data['1962'])
+    data.forEach((data_feature) => {
+      if (kreis.properties.Kreisnummer.slice(0, kreis.properties.Kreisnummer.length - 3) == data_feature.AGS) {
+        kreis.properties[feature] = parseInt(data_feature.data[0])
       }
     })
   })
 
-  map.addSource('KreiseNRW', {
-    'type': 'geojson',
-    'data': KreiseNRW
-  })
-  map.addLayer({
-    "id": "kreisgrenzen",
-    "type": "fill",
-    "source": "KreiseNRW",
-    "paint": {
-      "fill-opacity": 0.8,
-      'fill-color': {
-        "property": "population",
-        "stops": [
-          [getMinPop(), '#80BCFF'],
-          [getMaxPop(), '#1A5FAC']
-        ]
-      }
-    }
+  map.getSource('KreiseNRW').setData(KreiseNRW)
+  map.setPaintProperty("kreisgrenzen", 'fill-color', {
+    "property": feature,
+    "stops": [
+      [getMaxFeature(KreiseNRW, feature), '#80BCFF'],
+      [getMinFeature(KreiseNRW, feature), '#1A5FAC']
+    ]
   });
+
+  document.getElementById('timeslider').removeAttribute('hidden')
+  document.getElementById('slider').setAttribute('min', getFirstYearOfDataset())
+  document.getElementById('slider').setAttribute('max', getLastYearOfDataset())
+  updateData()
+
 }
 
-export function updateData(year = '1962') {
+export function updateData(year = getFirstYearOfDataset()) {
   KreiseNRW.features.map((kreis) => {
-    population.forEach((kreisPop) => {
-      if (kreis.properties.AGS === kreisPop.AGS) {
-        kreis.properties.population = parseInt(kreisPop.data[String(year)])
+    feature_dataset.forEach((kreisPop) => {
+      if (kreis.properties.Kreisnummer.slice(0, kreis.properties.Kreisnummer.length - 3) == kreisPop.AGS) {
+        kreis.properties[current_feature] = parseInt(kreisPop.data[year])
       }
     })
   })
   map.getSource('KreiseNRW').setData(KreiseNRW)
+  map.setPaintProperty("kreisgrenzen", 'fill-color', {
+    "property": "population",
+    "stops": [
+      [getMinFeature(KreiseNRW, current_feature), '#80BCFF'],
+      [getMaxFeature(KreiseNRW, current_feature), '#1A5FAC']
+    ]
+  });
   document.getElementById('year').textContent = year;
-
 }
 
-function getMaxPop() {
-  var maxPop = 0;
-  KreiseNRW.features.forEach((kreis) => {
-    if (kreis.properties.population > maxPop) {
-      maxPop = kreis.properties.population
+function getMaxFeature(data, feature) {
+  var maxVal = 0;
+  data.features.forEach((child) => {
+    if (child.properties[feature] > maxVal) {
+      maxVal = child.properties[feature]
     }
   })
-  return maxPop
+  return maxVal
 }
 
-function getMinPop() {
-  var minPop = 999999999999;
-  KreiseNRW.features.forEach((kreis) => {
-    if (kreis.properties.population < minPop) {
-      minPop = kreis.properties.population
+function getMinFeature(data, feature) {
+  var minVal = 999999999999;
+  data.features.forEach((child) => {
+    if (child.properties[feature] < minVal) {
+      minVal = child.properties[feature]
     }
   })
-  return minPop
+  return minVal
 }
 
-function getColorValue(val) {
-  var normColor = val / getMaxPop();
-  return `rgb(${normColor * 255}, ${normColor * 100}, ${normColor * 255})`
+function getFirstYearOfDataset() {
+  return Object.keys(feature_dataset[0].data)[0]
+}
+
+function getLastYearOfDataset() {
+  var dataset_data = Object.keys(feature_dataset[0].data)
+  return dataset_data[dataset_data.length - 1]
 }
 
 export function changeStyle(style) {
@@ -155,7 +185,7 @@ export function importCSV() {
 
 function getAsText(fileToRead) {
   var reader = new FileReader();
-  // Read file into memory as UTF-8      
+  // Read file into memory as UTF-8
   reader.readAsText(fileToRead);
   // Handle errors load
   reader.onload = loadHandler;
