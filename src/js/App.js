@@ -33,6 +33,22 @@ class App {
       setData('population_data', 'population')
     });
 
+    document.getElementById('Anteil_Arbeitslose_UTF8').addEventListener("click", () => {
+      setData('Anteil_Arbeitslose_UTF8', 'arbeitslose')
+    });
+
+    document.getElementById('Erwerbstaetige_Dienstleistung').addEventListener("click", () => {
+      setData('Anteil_Erwerbstaetige_Dienstleistung_UTF8', 'Erwerbstaetige_Dienstleistung')
+    });
+
+    document.getElementById('Erwerbstaetige_Forst').addEventListener("click", () => {
+      setData('Anteil_Erwerbstaetige_Forst_UTF8', 'Erwerbstaetige_Forst')
+    });
+
+    document.getElementById('Erwerbstaetige_Gewerbe').addEventListener("click", () => {
+      setData('Anteil_Erwerbstaetige_ProduzierendesGewerbe_UTF8', 'Erwerbstaetige_Gewerbe')
+    });
+
     document.getElementById('feinstaub01').addEventListener("click", () => {
       addFeinstaubLayer('band01_02112017')
     });

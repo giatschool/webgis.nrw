@@ -46,6 +46,8 @@ map.on('load', () => {
     var states = map.queryRenderedFeatures(e.point, {
       layers: ['kreisgrenzen']
     });
+
+    console.log(states);
     if (states.length > 0) {
       document.getElementById('pd').innerHTML = '<h3><strong>' + states[0].properties.Gemeindename + '</strong></h3><p><strong><em>' + states[0].properties.population + '</strong> Einwohner</em></p>';
       // document.getElementById('pd').innerHTML = '<h3><strong>' + states[0].properties.GEN + '</strong></h3>';
@@ -98,11 +100,21 @@ export function setDataFromCSV(data, feature) {
 
   KreiseNRW.features.map((kreis) => {
     data.forEach((data_feature) => {
+      if(!String(data_feature.AGS).startsWith('0')) {
+        data_feature.AGS = '0' + data_feature.AGS
+      }
       if (kreis.properties.Kreisnummer.slice(0, kreis.properties.Kreisnummer.length - 3) == data_feature.AGS) {
-        kreis.properties[feature] = Number(data_feature.data[0])
+        // if(data_feature.data[0] && data_feature.data[0].contains(',')) {
+        //   var tempNumber = data_feature.data[0].replace(',', '.')
+        //   kreis.properties[feature] = Number(tempNumber)
+        // } else {
+          kreis.properties[feature] = Number(data_feature.data[0])
+        // }
       }
     })
   })
+
+  console.log(KreiseNRW);
 
   map.getSource('KreiseNRW').setData(KreiseNRW)
   map.setPaintProperty("kreisgrenzen", 'fill-color', {
@@ -127,9 +139,12 @@ export function updateData(year = getFirstYearOfDataset()) {
       }
     })
   })
+
+  console.log(current_feature);
+
   map.getSource('KreiseNRW').setData(KreiseNRW)
   map.setPaintProperty("kreisgrenzen", 'fill-color', {
-    "property": "population",
+    "property": current_feature,
     "stops": [
       [getMinFeature(KreiseNRW, current_feature), '#80BCFF'],
       [getMaxFeature(KreiseNRW, current_feature), '#1A5FAC']
@@ -186,7 +201,7 @@ export function importCSV() {
 
 function getAsText(fileToRead) {
   var reader = new FileReader();
-  // Read file into memory as UTF-8      
+  // Read file into memory as UTF-8
   reader.readAsText(fileToRead);
   // Handle errors load
   reader.onload = loadHandler;
@@ -195,10 +210,13 @@ function getAsText(fileToRead) {
 
 function loadHandler(event) {
   var csvString = event.target.result;
-  processData(csvString);
+  processData(csvString, (dataset) => {
+    console.log(dataset);
+    setDataFromCSV(dataset, 'arbeitslos')
+  })
 }
 
-function processData(csvString) {
+function processData(csvString, callback) {
   let header;
   let customDataset = [];
 
@@ -232,7 +250,7 @@ function processData(csvString) {
       customDataset.push(cityObject);
     }
   }).on('done', () => {
-    return customDataset;
+    callback(customDataset)
   })
 
 }
