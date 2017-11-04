@@ -114,8 +114,8 @@
         </div>
         <div id="collapseColor" class="collapse" role="tabpanel" aria-labelledby="headingColor">
           <div class="card-block">
-            Niedrig <input id='lowColor' type="color">
-            Hoch <input id='highColor' type="color">
+            Niedrig <input id='lowColor' type="color" value="#80BCFF">
+            Hoch <input id='highColor' type="color" value="#1A5FAC">
           </div>
         </div>
       </div>
@@ -127,10 +127,24 @@
   </div>
 
   <div class='map-overlay' id='features'>
+    <div class='session'>
+    <label id="legend-heading">Legende</label>
+    <div id='legend-bar' class='row colors'>
+    </div>
+      <div class='row labels'>
+        <div class='label' id="legend-min">0</div>
+        <div class='label'></div>
+        <div class='label'></div>
+        <div class='label'></div>
+        <div class='label'></div>
+        <div class='label' id="legend-max">100</div>
+      </div>
+    </div>
     <div id='pd'>
-      <p>Hover over a state!</p>
+      <p>Bewege die Maus über die Kreise</p>
     </div>
   </div>
+
   <div class='map-overlay' id='timeslider' hidden>
     <label id='year'>1962</label>
     <input id='slider' type='range' min='0' max='100' step='1' value='0' />
