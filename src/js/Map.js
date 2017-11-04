@@ -84,6 +84,11 @@ function loadData() {
 export function setData(data_source, feature) {
 
   const data = require(`./../data/${data_source}.json`);
+  setDataFromCSV(data, feature)
+
+}
+
+export function setDataFromCSV(data, feature) {
   feature_dataset = data
   current_feature = feature
 
@@ -108,7 +113,6 @@ export function setData(data_source, feature) {
   document.getElementById('slider').setAttribute('min', getFirstYearOfDataset())
   document.getElementById('slider').setAttribute('max', getLastYearOfDataset())
   updateData()
-
 }
 
 export function updateData(year = getFirstYearOfDataset()) {
@@ -163,4 +167,55 @@ export function changeStyle(style) {
   // console.log("changing style")
   map.setStyle('mapbox://styles/mapbox/' + style + '-v9');
 
+}
+
+export function addFeinstaubLayer(name) {
+  const band = require(`./../data/${name}.json`)
+
+  try {
+    map.addSource('feinstaub_band', {
+      'type': 'geojson',
+      'data': band
+    })
+    map.addLayer({
+      "id": "feinstaub_band_layer",
+      "type": "fill",
+      "source": "feinstaub_band",
+      'paint': {
+        'fill-color': {
+          "property": 'DN',
+          "stops": [
+            [0, '#B89EA7'],
+            [45, '#B80845']
+          ]
+        }
+      }
+    });
+  } catch (e) {
+    map.removeSource('feinstaub_band')
+    map.removeLayer("feinstaub_band_layer")
+    map.addSource('feinstaub_band', {
+      'type': 'geojson',
+      'data': band
+    })
+    map.addLayer({
+      "id": "feinstaub_band_layer",
+      "type": "fill",
+      "source": "feinstaub_band",
+      'paint': {
+        'fill-color': {
+          "property": 'DN',
+          "stops": [
+            [0, '#B89EA7'],
+            [45, '#B80845']
+          ]
+        }
+      }
+    });
+  }
+}
+
+export function removeFeinstaubLayer() {
+  map.removeSource('feinstaub_band')
+  map.removeLayer("feinstaub_band_layer")
 }
