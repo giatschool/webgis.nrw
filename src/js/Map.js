@@ -43,7 +43,7 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiZmVsaXhhZXRlbSIsImEiOiJjajNicW1lM2QwMDR3MzNwO
 var map = new mapboxgl.Map({
   container: 'map',
   center: [
-   6.555,51.478333
+   7.555,51.478333
   ],
   zoom: 7,
   style: (
