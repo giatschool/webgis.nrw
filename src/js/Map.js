@@ -2,6 +2,16 @@ import mapboxgl from 'mapbox-gl';
 const KreiseNRW = require('./../data/landkreise_simplify0.json');
 const population = require('./../data/population_data.json');
 const config = require('./../config.js');
+import 'whatwg-fetch'
+
+fetch('https://www.ldproxy.nrw.de/kataster/VerwaltungsEinheit?f=json&art=Gemeinde')
+  .then(function(response) {
+    return response.json()
+  }).then(function(json) {
+    console.log('parsed json', json)
+  }).catch(function(ex) {
+    console.log('parsing failed', ex)
+  })
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiZmVsaXhhZXRlbSIsImEiOiJjajNicW1lM2QwMDR3MzNwOWdyaXAzN282In0.Pci5KvNNLCjjxy9b4p0n7g';
 var map = new mapboxgl.Map({

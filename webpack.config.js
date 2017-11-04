@@ -9,7 +9,7 @@ module.exports = {
   context: path.join(__dirname, 'src'),
   devtool: "inline-sourcemap",
   entry: [
-    './index.js', './style/style.scss'
+    'whatwg-fetch', './index.js', './style/style.scss'
   ],
   module: {
     noParse: /node_modules\/mapbox-gl\/dist\/mapbox-gl.js/,

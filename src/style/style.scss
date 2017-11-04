@@ -38,7 +38,7 @@ p {
 }
 
 .w {
-  color: #EDEDED
+  color: #B8B8B8
 }
 
 /**
@@ -71,15 +71,15 @@ p {
   width: 250px;
 }
 
-#legend {
-  right: 0;
+#timeslider {
   bottom: 0;
-  padding: 10px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  line-height: 18px;
-  height: 150px;
-  margin-bottom: 40px;
-  width: 100px;
+  right: 0;
+  left: 0;
+  margin-left: auto;
+  margin-right: auto;
+  // height: 80px;
+  width: 50vw;
+  padding: 20px;
 }
 
 .legend-key {
