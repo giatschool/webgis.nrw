@@ -140,15 +140,10 @@ export function importCSV() {
   const file = document.getElementById('custom_csv_input').files[0];
   if (file.type == "text/csv") {
 
-    console.log(getAsText(file))
-    //console.log(csvRow);
-
-
+    let ownData = getAsText(file);
   } else {
     $('#csv_info').text('Die gewählte Datei ist keine .csv Datei!');
   }
-
-  console.log('csv input')
 }
 
 // CSV handler functions
@@ -168,15 +163,42 @@ function loadHandler(event) {
 }
 
 function processData(csvString) {
+  let header;
+  let customDataset = [];
+
   csv({
     delimiter: ';'
   })
   .fromString(csvString, {
     encoding: 'utf8'
   })
-  .on('csv', (csvRow) => {
-    console.log(csvRow);
+  .on('header', (parsedHeader) => {
+    console.log(parsedHeader);
+    header = parsedHeader;
   })
+  .on('csv', (csvRow) => {
+    // Wenn die Row mit einer Zahl beginnt..
+    if(!isNaN(Number(csvRow[0]))){
+
+      var cityObject = {
+        RS: csvRow[0],
+        AGS: csvRow[0],
+        GEN: csvRow[1],
+        data: {}
+      }
+
+      header.forEach((element, idx) => {
+        if(!isNaN(Number(element)) && element != ''){
+          cityObject.data[`${element}`] = csvRow[idx]
+        }
+      }, this)
+
+      customDataset.push(cityObject);
+    }
+  }).on('done', () => {
+    return customDataset;
+  })
+
 }
 
 function errorHandler(evt) {
