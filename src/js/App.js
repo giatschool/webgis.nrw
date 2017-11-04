@@ -1,4 +1,4 @@
-import { changeStyle, updateData } from './Map.js'
+import { changeStyle, updateData, setData } from './Map.js'
 const config = require('./../config.js');
 
 class App {
@@ -24,6 +24,12 @@ class App {
         console.log(year)
         updateData(year)
     });
+
+    document.getElementsByName('population_data')[0].addEventListener("click", () => {
+      setData('population_data', 'population')
+    });
+
+
 
 
   }
