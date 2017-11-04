@@ -1,5 +1,6 @@
 import { changeStyle, updateData, setData } from './Map.js'
 const config = require('./../config.js');
+import initCkan from './Ckan';
 
 class App {
   static run() {
@@ -33,8 +34,7 @@ class App {
       setData('population_data', 'population')
     });
 
-
-
+    initCkan();
 
   }
 }

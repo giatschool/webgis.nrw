@@ -214,3 +214,7 @@ function errorHandler(evt) {
     alert("Canno't read file !");
   }
 }
+
+export function addMapLayer (layer) {
+  map.addLayer(layer);
+}
