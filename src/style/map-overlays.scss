@@ -1,0 +1,64 @@
+/**
+* Set rules for how the map overlays
+* (info box and legend) will be displayed
+* on the page. */
+
+.map-overlay {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.8);;
+  margin-right: 20px;
+  overflow: auto;
+  border-radius: 3px;
+}
+
+#functions {
+  top: 0;
+  left: 0;
+  margin-top: 20px;
+  margin-left: 20px;
+  padding: 15px;
+
+  .card-header:hover{
+    cursor: pointer;
+  }
+
+  .card-block {
+    padding: 10px;
+  }
+}
+
+#features {
+  top: 0;
+  right: 0;
+  height: 100px;
+  margin-top: 20px;
+  width: 250px;
+}
+
+#timeslider {
+  bottom: 0;
+  right: 0;
+  left: 0;
+  margin-left: auto;
+  margin-right: auto;
+  // height: 80px;
+  width: 50vw;
+  padding: 20px;
+}
+
+.legend-key {
+  display: inline-block;
+  border-radius: 20%;
+  width: 10px;
+  height: 10px;
+  margin-right: 5px;
+}
+
+.map-overlay input {
+    background-color: transparent;
+    display: inline-block;
+    width: 100%;
+    position: relative;
+    margin: 0;
+    cursor: ew-resize;
+}
