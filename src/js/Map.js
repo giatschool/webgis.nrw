@@ -188,7 +188,8 @@ export function addFeinstaubLayer(name) {
             [0, '#B89EA7'],
             [45, '#B80845']
           ]
-        }
+        },
+        "fill-opacity": 0.8,
       }
     });
   } catch (e) {
@@ -209,7 +210,8 @@ export function addFeinstaubLayer(name) {
             [0, '#B89EA7'],
             [45, '#B80845']
           ]
-        }
+        },
+        "fill-opacity": 0.8,
       }
     });
   }
