@@ -1,4 +1,4 @@
-const csvFilePath = 'converted.csv'; // Bevölkerungsdaten
+const csvFilePath = '/Users/nico/Desktop/datasets/Wahlergebnisse_FDP_1976_bis_2013.csv'; // Bevölkerungsdaten
 const csv = require('csvtojson');
 
 const fs = require('fs');

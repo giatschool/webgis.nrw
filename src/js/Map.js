@@ -38,9 +38,9 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiZmVsaXhhZXRlbSIsImEiOiJjajNicW1lM2QwMDR3MzNwO
 var map = new mapboxgl.Map({
   container: 'map',
   center: [
-    7.8, 51.5
+   6.555,51.478333     
   ],
-  zoom: 6,
+  zoom: 7,
   style: (
     config.theme == 'light' ?
     'mapbox://styles/mapbox/light-v9' :
@@ -65,8 +65,6 @@ map.on('load', () => {
   map.on('mouseleave', function () {
     map.getCanvas().style.cursor = '';
   });
-
-
 })
 
 map.on('style.load', () => {
@@ -77,7 +75,6 @@ map.on('style.load', () => {
       layers: ['kreisgrenzen']
     });
 
-    // console.log(states);
     if (states.length > 0) {
       document.getElementById('pd').innerHTML = '<h3><strong>' + states[0].properties.Gemeindename + '</strong></h3><p><strong><em>' + states[0].properties.population + '</strong> Einwohner</em></p>';
       // document.getElementById('pd').innerHTML = '<h3><strong>' + states[0].properties.GEN + '</strong></h3>';

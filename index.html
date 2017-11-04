@@ -64,6 +64,12 @@
             Erwerbstätige Forst</button>
             <button type="button" class="btn btn-outline-primary btn-block" id="Erwerbstaetige_Gewerbe"><i class="material-icons">business</i>
             Erwerbstätige Gewerbe</button>
+            <button type="button" class="btn btn-outline-primary btn-block" id="Wahl17_CDU"><i class="material-icons">account_balance</i>
+              Wahl '17 - CDU</button>
+            <button type="button" class="btn btn-outline-primary btn-block" id="Wahl17_SPD"><i class="material-icons">account_balance</i>
+              Wahl '17 - SPD</button>
+            <button type="button" class="btn btn-outline-primary btn-block" id="Wahl17_FDP"><i class="material-icons">account_balance</i>
+              Wahl '17 - FDP</button>
           </div>
         </div>
       </div>
@@ -89,12 +95,13 @@
       <div class="card">
         <div class="card-header" role="tab" id="headingThree" class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
           <h5 class="mb-0">
-            Custom Dataset
+            Eigener Daten
           </h5>
         </div>
         <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree">
           <div class="card-block">
-            Load your file here! <input type="file" id="custom_csv_input" accept=".csv">
+            Wähle hier deine Datei aus! 
+            <input type="file" id="custom_csv_input" accept=".csv">
             <p id="csv_info"></p>
           </div>
         </div>
@@ -117,7 +124,6 @@
     </div>
     <!-- End Accordeon -->
     <!-- ##### -->
-
   </div>
 
   <div class='map-overlay' id='features'>
@@ -129,7 +135,6 @@
     <label id='year'>1962</label>
     <input id='slider' type='range' min='0' max='100' step='1' value='0' />
   </div>
-
 
   <script src="assets/js/main.min.js"></script>
 
