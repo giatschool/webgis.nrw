@@ -99,7 +99,7 @@ export function setDataFromCSV(data, feature) {
   KreiseNRW.features.map((kreis) => {
     data.forEach((data_feature) => {
       if (kreis.properties.Kreisnummer.slice(0, kreis.properties.Kreisnummer.length - 3) == data_feature.AGS) {
-        kreis.properties[feature] = parseInt(data_feature.data[0])
+        kreis.properties[feature] = Number(data_feature.data[0])
       }
     })
   })
@@ -123,7 +123,7 @@ export function updateData(year = getFirstYearOfDataset()) {
   KreiseNRW.features.map((kreis) => {
     feature_dataset.forEach((kreisPop) => {
       if (kreis.properties.Kreisnummer.slice(0, kreis.properties.Kreisnummer.length - 3) == kreisPop.AGS) {
-        kreis.properties[current_feature] = parseInt(kreisPop.data[year])
+        kreis.properties[current_feature] = Number(kreisPop.data[year])
       }
     })
   })
@@ -168,7 +168,6 @@ function getLastYearOfDataset() {
 }
 
 export function changeStyle(style) {
-  // console.log("changing style")
   map.setStyle('mapbox://styles/mapbox/' + style + '-v9');
 
 }
@@ -263,7 +262,8 @@ export function addFeinstaubLayer(name) {
             [0, '#B89EA7'],
             [45, '#B80845']
           ]
-        }
+        },
+        "fill-opacity": 0.8,
       }
     });
   } catch (e) {
@@ -284,7 +284,8 @@ export function addFeinstaubLayer(name) {
             [0, '#B89EA7'],
             [45, '#B80845']
           ]
-        }
+        },
+        "fill-opacity": 0.8,
       }
     });
   }
