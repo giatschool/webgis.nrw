@@ -43,7 +43,7 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiZmVsaXhhZXRlbSIsImEiOiJjajNicW1lM2QwMDR3MzNwO
 var map = new mapboxgl.Map({
   container: 'map',
   center: [
-   6.555,51.478333     
+   6.555,51.478333
   ],
   zoom: 7,
   style: (
@@ -81,8 +81,14 @@ map.on('style.load', () => {
     });
 
     if (states.length > 0) {
-      document.getElementById('pd').innerHTML = '<h3><strong>' + states[0].properties.Gemeindename + '</strong></h3><p><strong><em>' + states[0].properties.population + '</strong> Einwohner</em></p>';
-      // document.getElementById('pd').innerHTML = '<h3><strong>' + states[0].properties.GEN + '</strong></h3>';
+      var myString = ''
+      if(states[0].properties[current_feature]) {
+        myString = '<h3><strong>' + states[0].properties.Gemeindename + '</strong></h3>' +
+        '<p><strong><em>' + states[0].properties[current_feature] + '</strong> ' + current_feature + '</em></p>';
+      } else {
+        myString = '<h3><strong>' + states[0].properties.Gemeindename + '</strong></h3>';
+      }
+      document.getElementById('pd').innerHTML = myString
     } else {
       document.getElementById('pd').innerHTML = '<p>Hover over a state!</p>';
     }
