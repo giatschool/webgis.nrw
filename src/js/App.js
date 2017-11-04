@@ -74,10 +74,6 @@ class App {
       setData('Wahlergebnisse_CDU_1976_bis_2013', 'Wahl17_SPD')
     });
 
-    document.getElementById('Wahl17_FDP').addEventListener("click", () => {
-      setData('Wahlergebnisse_FDP_1976_bis_2013', 'Wahl17_FDP')
-    });
-
     document.getElementById('feinstaub01').addEventListener("click", () => {
       addFeinstaubLayer('band01_02112017')
     });
