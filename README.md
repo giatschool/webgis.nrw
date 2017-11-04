@@ -21,7 +21,7 @@ WebGIS für Schulen
 * Einbindung von Open Data Daten zu verschiedenen Themen
 * vorkonfigurierte Karten mit aktuellen, offenen Daten
 
-###Zielgruppe
+### Zielgruppe
 * Lehrer
 * (Schüler)
 
