@@ -46,9 +46,21 @@
   left: 0;
   margin-left: auto;
   margin-right: auto;
-  // height: 80px;
   width: 50vw;
   padding: 20px;
+  text-align: center;
+}
+
+#timeslide-min {
+  position: absolute;
+  left: 0;
+  margin-left: 10px;
+}
+
+#timeslide-max {
+  position: absolute;
+  right: 0;
+  margin-right: 10px;
 }
 
 .legend-key {
