@@ -167,6 +167,8 @@ export function setDataFromCSV(data, feature) {
   document.getElementById('legend-min').innerHTML = getMinFeature(KreiseNRW, current_feature)
   document.getElementById('legend-max').innerHTML = getMaxFeature(KreiseNRW, current_feature)
   document.getElementById('timeslider').removeAttribute('hidden')
+  document.getElementById('timeslide-min').innerHTML = getFirstYearOfDataset()
+  document.getElementById('timeslide-max').innerHTML = getLastYearOfDataset()
   document.getElementById('slider').setAttribute('min', getFirstYearOfDataset())
   document.getElementById('slider').setAttribute('max', getLastYearOfDataset())
   updateData()
