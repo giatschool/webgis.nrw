@@ -47,6 +47,11 @@ button i {
   vertical-align: middle;
 }
 
-button {
-  text-align: center;
+.btn-group {
+  display: flex;
+  flex-direction: row;
+}
+
+.btn-group > button {
+  width: 100%;
 }
