@@ -243,7 +243,7 @@ function processData(csvString, callback) {
 
       header.forEach((element, idx) => {
         if(!isNaN(Number(element)) && element != ''){
-          cityObject.data[`${element}`] = csvRow[idx]
+          cityObject.data[`${element}`] = csvRow[idx].replace(',', '.')
         }
       }, this)
 
