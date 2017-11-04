@@ -117,8 +117,8 @@ function getColorValue(val) {
   return `rgb(${normColor * 255}, ${normColor * 100}, ${normColor * 255})`
 }
 
-export function changeStyle() {
-  console.log("changing style")
-  map.setStyle('mapbox://styles/mapbox/' + config.theme + '-v9');
+export function changeStyle(style) {
+  // console.log("changing style")
+  map.setStyle('mapbox://styles/mapbox/' + style + '-v9');
 
 }
