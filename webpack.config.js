@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const CompressionPlugin = require("compression-webpack-plugin");
 
 // hide deprication warnings
 process.noDeprecation = true
@@ -53,6 +54,7 @@ module.exports = {
       jQuery: 'jquery/dist/jquery.slim.js',
       'window.jQuery': 'jquery/dist/jquery.slim.js',
       Popper: ['popper.js', 'default'],
-    })
+    }),
+    new CompressionPlugin()
   ]
 };
