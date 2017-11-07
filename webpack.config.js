@@ -8,7 +8,7 @@ process.noDeprecation = true
 
 module.exports = {
   context: path.join(__dirname, 'src'),
-  devtool: "inline-sourcemap",
+  devtool: "hidden-source-map",
   entry: [
     'whatwg-fetch', './index.js', './style/style.scss'
   ],
