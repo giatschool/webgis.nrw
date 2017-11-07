@@ -1,6 +1,6 @@
-var webpack = require('webpack');
-var path = require('path');
-let ExtractTextPlugin = require("extract-text-webpack-plugin");
+const webpack = require('webpack');
+const path = require('path');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 // hide deprication warnings
 process.noDeprecation = true
@@ -38,12 +38,21 @@ module.exports = {
           fallback: "style-loader"
         })
 
-      }
+      },
+      { test: /\.css$/, loader: 'style-loader!css-loader' },
     ]
   },
   output: {
     path: __dirname + "/assets/",
     filename: "js/[name].min.js"
   },
-  plugins: [new ExtractTextPlugin({filename: 'css/[name].min.css'})]
+  plugins: [
+    new ExtractTextPlugin({filename: 'css/[name].min.css'}),
+    new webpack.ProvidePlugin({
+      $: 'jquery/dist/jquery.slim.js',
+      jQuery: 'jquery/dist/jquery.slim.js',
+      'window.jQuery': 'jquery/dist/jquery.slim.js',
+      Popper: ['popper.js', 'default'],
+    })
+  ]
 };
