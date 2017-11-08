@@ -1,105 +1,107 @@
-import { changeStyle, updateData, setData, importCSV, addFeinstaubLayer, removeFeinstaubLayer, colorChanged, changeTransparency } from './Map.js'
+import Map from './Map.js'
 
 class App {
   static run() {
+    var map = new Map('map', [7.555,51.478333], 7, () => {
+      // finished loading
+      document.getElementById('start').removeAttribute('disabled')
+      document.getElementById('start').innerHTML = 'Los geht&#39;s!'
+      document.getElementById('start').setAttribute('data-dismiss', 'modal')
+    })
+
     document.getElementById('basicMap').addEventListener("click", () => {
-      changeStyle('basic')
+      map.changeStyle('basic')
     });
 
     document.getElementById('darkMap').addEventListener("click", () => {
-      changeStyle('dark')
+      map.changeStyle('dark')
     });
 
     document.getElementById('lightMap').addEventListener("click", () => {
-      changeStyle('light')
+      map.changeStyle('light')
     });
 
     document.getElementById('satelliteMap').addEventListener("click", () => {
-      changeStyle('satellite')
+      map.changeStyle('satellite')
     });
 
     document.getElementById('topMap').addEventListener("click", () => {
-      changeStyle('top')
+      map.changeStyle('top')
     });
 
     document.getElementById('dtkMap').addEventListener("click", () => {
-      changeStyle('dtk')
+      map.changeStyle('dtk')
     });
 
     document.getElementById('dopMap').addEventListener("click", () => {
-      changeStyle('dop')
+      map.changeStyle('dop')
     });
 
     document.getElementById('custom_csv_input').addEventListener("change", () => {
-      importCSV()
+      map.importCSV()
     })
 
     document.getElementById('slider').addEventListener('input', function(e) {
         var year = parseInt(e.target.value, 10);
-        console.log(year)
-        updateData(year)
+        map.updateData(year)
     });
 
     document.getElementById('transparency-slider').addEventListener('input', function(e) {
         var transparency = e.target.value;
-        changeTransparency(transparency)
+        map.changeTransparency(transparency)
     });
 
     document.getElementsByName('population_data')[0].addEventListener("click", () => {
-      setData('population_data', 'population')
+      map.setData('population_data', 'population')
     });
 
     document.getElementById('Anteil_Arbeitslose_UTF8').addEventListener("click", () => {
-      setData('Anteil_Arbeitslose_UTF8', 'arbeitslose')
+      map.setData('Anteil_Arbeitslose_UTF8', 'arbeitslose')
     });
 
     document.getElementById('Erwerbstaetige_Dienstleistung').addEventListener("click", () => {
-      setData('Anteil_Erwerbstaetige_Dienstleistung_UTF8', 'Erwerbstaetige_Dienstleistung')
+      map.setData('Anteil_Erwerbstaetige_Dienstleistung_UTF8', 'Erwerbstaetige_Dienstleistung')
     });
 
     document.getElementById('Erwerbstaetige_Forst').addEventListener("click", () => {
-      setData('Anteil_Erwerbstaetige_Forst_UTF8', 'Erwerbstaetige_Forst')
+      map.setData('Anteil_Erwerbstaetige_Forst_UTF8', 'Erwerbstaetige_Forst')
     });
 
     document.getElementById('Erwerbstaetige_Gewerbe').addEventListener("click", () => {
-      setData('Anteil_Erwerbstaetige_ProduzierendesGewerbe_UTF8', 'Erwerbstaetige_Gewerbe')
+      map.setData('Anteil_Erwerbstaetige_ProduzierendesGewerbe_UTF8', 'Erwerbstaetige_Gewerbe')
     });
 
     document.getElementById('Wahl17_CDU').addEventListener("click", () => {
-      setData('Wahlergebnisse_CDU_1976_bis_2013', 'Wahl17_CDU')
+      map.setData('Wahlergebnisse_CDU_1976_bis_2013', 'Wahl17_CDU')
     });
 
     document.getElementById('Wahl17_SPD').addEventListener("click", () => {
-      setData('Wahlergebnisse_CDU_1976_bis_2013', 'Wahl17_SPD')
+      map.setData('Wahlergebnisse_CDU_1976_bis_2013', 'Wahl17_SPD')
     });
 
     document.getElementById('feinstaub01').addEventListener("click", () => {
-      addFeinstaubLayer('band01_02112017')
+      map.addFeinstaubLayer('band01_02112017')
     });
 
     document.getElementById('feinstaub12').addEventListener("click", () => {
-      addFeinstaubLayer('band12_02112017')
+      map.addFeinstaubLayer('band12_02112017')
     });
 
     document.getElementById('feinstaub24').addEventListener("click", () => {
-      addFeinstaubLayer('band24_02112017')
+      map.addFeinstaubLayer('band24_02112017')
     });
 
     document.getElementById('feinstaub-remove').addEventListener("click", () => {
-      removeFeinstaubLayer()
+      map.removeFeinstaubLayer()
     });
 
     document.getElementById('lowColor').addEventListener("change", (e) => {
-      colorChanged('low', e.target.value)
+      map.changeColor('low', e.target.value)
     },  true);
 
     document.getElementById('highColor').addEventListener("change", (e) => {
-      colorChanged('high', e.target.value)
+      map.changeColor('high', e.target.value)
     }, true);
-
-
-
-
   }
 }
 

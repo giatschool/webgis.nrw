@@ -8,7 +8,6 @@
   <title>webgis.nrw</title>
 
   <!-- CSS includes -->
-  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Nunito:400,700|Material+Icons" type="text/css">
   <link href='assets/css/main.min.css' rel='stylesheet' />
 
 </head>
@@ -17,19 +16,20 @@
   <div id='map' class='map'></div>
   <div class='map-overlay' id='functions'>
     <h1 class="hero-webgisnrw">webgis.<span class="n">n</span><span class="r">r</span><span class="w">w</span></h1>
-    <div class="btn-group">
-      <button type="button" class="btn btn-info" id='topMap' data-toggle="tooltip" data-placement="top" data-html="true" title="TOP - Topographische Karte BKG<br />Quelle: Bundesamt für Kartographie und Geodäsie">TOP</button>
-      <button type="button" class="btn btn-dark" id='dtkMap' data-toggle="tooltip" data-placement="top" data-html="true" title="DTK - Digitale Topographische Karten<br />Quelle: GEObasis.nrw">DTK</button>
-      <button type="button" class="btn btn-light" id='dopMap' data-toggle="tooltip" data-placement="top" data-html="true" title="DOP - Digitale Orthophotos<br />Quelle: GEObasis.nrw">DOP</button>
+    <div class="layer-control">
+      <div class="btn-group">
+        <button type="button" class="btn btn-info" id='topMap' data-toggle="tooltip" data-placement="top" data-html="true" title="TOP - Topographische Karte BKG<br />Quelle: Bundesamt für Kartographie und Geodäsie">TOP</button>
+        <button type="button" class="btn btn-dark" id='dtkMap' data-toggle="tooltip" data-placement="top" data-html="true" title="DTK - Digitale Topographische Karten<br />Quelle: GEObasis.nrw">DTK</button>
+        <button type="button" class="btn btn-light" id='dopMap' data-toggle="tooltip" data-placement="top" data-html="true" title="DOP - Digitale Orthophotos<br />Quelle: GEObasis.nrw">DOP</button>
+      </div>
+      <br />
+      <div class="btn-group">
+        <button type="button" class="btn btn-info" id='basicMap'>Basic</button>
+        <button type="button" class="btn btn-dark" id='darkMap'>Dark</button>
+        <button type="button" class="btn btn-light" id='lightMap'>Light</button>
+        <button type="button" class="btn btn-success" id='satelliteMap'>Satellit</button>
+      </div>
     </div>
-    <br />
-    <div class="btn-group">
-      <button type="button" class="btn btn-info" id='basicMap'>Basic</button>
-      <button type="button" class="btn btn-dark" id='darkMap'>Dark</button>
-      <button type="button" class="btn btn-light" id='lightMap'>Light</button>
-      <button type="button" class="btn btn-success" id='satelliteMap'>Satellit</button>
-    </div>
-    <br/>
     <hr>
 
     <!-- ##### -->
@@ -137,10 +137,6 @@
       </div>
       <div class='row labels'>
         <div class='label' id="legend-min">0</div>
-        <div class='label'></div>
-        <div class='label'></div>
-        <div class='label'></div>
-        <div class='label'></div>
         <div class='label' id="legend-max">100</div>
       </div>
     </div>
@@ -173,7 +169,7 @@
           <p>Made with <span style="color:#e74c3c">&hearts;</span> @ #nrwhack17</p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-dismiss="modal">Los geht's!</button>
+          <button type="button" id="start" class="btn btn-primary" disabled>Laden...</button>
         </div>
       </div>
     </div>
