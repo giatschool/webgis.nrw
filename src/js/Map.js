@@ -121,8 +121,9 @@ export default class Map {
             'fill-color': '#5266B8'
           }
         });
-        loadDone()
+        loadDone(true)
       }).catch(function (ex) {
+        loadDone(false)
         console.log('parsing failed', ex)
       })
   }

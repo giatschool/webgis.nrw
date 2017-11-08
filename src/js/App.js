@@ -2,11 +2,17 @@ import Map from './Map.js'
 
 class App {
   static run() {
-    var map = new Map('map', [7.555,51.478333], 7, () => {
-      // finished loading
-      document.getElementById('start').removeAttribute('disabled')
-      document.getElementById('start').innerHTML = 'Los geht&#39;s!'
-      document.getElementById('start').setAttribute('data-dismiss', 'modal')
+    var map = new Map('map', [7.555,51.478333], 7, (success) => {
+      if(success) {
+        // finished loading
+        document.getElementById('start').removeAttribute('disabled')
+        document.getElementById('start').innerHTML = 'Los geht&#39;s!'
+        document.getElementById('start').setAttribute('data-dismiss', 'modal')
+      } else {
+        document.getElementById('start').innerHTML = 'Daten konnten nicht geladen werden :('
+        document.getElementById('start').classList.remove('btn-primary');
+        document.getElementById('start').classList.add('btn-danger');
+      }
     })
 
     document.getElementById('basicMap').addEventListener("click", () => {
