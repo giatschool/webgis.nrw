@@ -25,11 +25,17 @@
     "webpack-dev-server": "^2.9.4",
     "whatwg-fetch": "^2.0.3"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "eslint": "^4.10.0",
+    "eslint-config-prettier": "^2.7.0",
+    "eslint-plugin-prettier": "^2.3.1",
+    "prettier": "^1.8.1"
+  },
   "scripts": {
     "dev": "webpack --watch",
     "start": "webpack | webpack-dev-server --content-base ./ --host 0.0.0.0 --port 8080",
-    "prod": "webpack -p"
+    "prod": "webpack -p",
+    "lint": "node_modules/.bin/eslint --fix \"src/**/*.js\""
   },
   "author": "",
   "license": "ISC"
