@@ -1,5 +1,4 @@
 import { changeStyle, updateData, setData, importCSV, addFeinstaubLayer, removeFeinstaubLayer, colorChanged, changeTransparency } from './Map.js'
-const config = require('./../config.js');
 
 class App {
   static run() {
