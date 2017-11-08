@@ -1,10 +1,12 @@
 @import "map-overlays";
+@import url('https://fonts.googleapis.com/css?family=Nunito|Material+Icons');
+
 
 body {
   position: relative;
   margin: 0px;
   height: 100%;
-  font-family: 'Nunito', sans-serif;
+  font-family: 'Nunito', sans-serif !important;
 }
 
 .map {
@@ -54,4 +56,8 @@ button i {
 
 .btn-group > button {
   width: 100%;
+}
+
+input[type=color] {
+  height: 20px;
 }
