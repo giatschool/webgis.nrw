@@ -57,34 +57,42 @@ export default class Map {
       this.loadData(loadDone);
 
       // show current Kreis on legend overlay
-      map.on('mousemove', function(e) {
-        if (map.getLayer('kreisgrenzen')) {
-          const states = map.queryRenderedFeatures(e.point, {
-            layers: ['kreisgrenzen']
-          });
+      map.on('mousemove', 'kreisgrenzen', function(e) {
+        const states = map.queryRenderedFeatures(e.point, {
+          layers: ['kreisgrenzen']
+        });
 
-          if (states.length > 0) {
-            let myString = '';
-            if (states[0].properties[current_feature]) {
-              myString =
-                `<h3><strong>${
-                  states[0].properties.Gemeindename
-                }</strong></h3>` +
-                `<p><strong><em>${
-                  states[0].properties[current_feature]
-                }</strong> ${current_feature}</em></p>`;
-            } else {
-              myString = `<h3><strong>${
-                states[0].properties.Gemeindename
-              }</strong></h3>`;
-            }
-            document.getElementById('pd').innerHTML = myString;
+        // console.log(states)
+
+        if (states.length > 0) {
+          map.setFilter('kreis-border-hover', [
+            '==',
+            'Gemeindename',
+            states[0].properties.Gemeindename
+          ]);
+
+          let myString = '';
+          if (states[0].properties[current_feature]) {
+            myString =
+              `<h3><strong>${states[0].properties.Gemeindename}</strong></h3>` +
+              `<p><strong><em>${
+                states[0].properties[current_feature]
+              }</strong> ${current_feature}</em></p>`;
           } else {
-            document.getElementById('pd').innerHTML =
-              '<p>Bewege die Maus über die Kreise</p>';
+            myString = `<h3><strong>${
+              states[0].properties.Gemeindename
+            }</strong></h3>`;
           }
+          document.getElementById('pd').innerHTML = myString;
+        } else {
+          document.getElementById('pd').innerHTML =
+            '<p>Bewege die Maus über die Kreise</p>';
         }
       });
+    });
+
+    map.on('mouseleave', 'kreisgrenzen', function() {
+      map.setFilter('kreis-border-hover', ['==', 'Gemeindename', '']);
     });
   }
 
@@ -115,6 +123,19 @@ export default class Map {
             'fill-color': '#5266B8'
           }
         });
+
+        map.addLayer({
+          id: 'kreis-border-hover',
+          type: 'line',
+          source: 'KreiseNRW',
+          layout: {},
+          paint: {
+            'line-color': '#627BC1',
+            'line-width': 5
+          },
+          filter: ['==', 'Gemeindename', '']
+        });
+
         loadDone(true);
       })
       .catch(function(ex) {

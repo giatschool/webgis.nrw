@@ -56,7 +56,7 @@ module.exports = {
       'window.jQuery': 'jquery/dist/jquery.slim.js',
       Popper: ['popper.js', 'default'],
     }),
-    new CompressionPlugin(),
-    new BrotliPlugin()
+    // new CompressionPlugin(),
+    // new BrotliPlugin()
   ]
 };

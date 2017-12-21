@@ -4,11 +4,11 @@
 * on the page. */
 
 .map-overlay {
-  position: absolute;
-  background: rgba(255, 255, 255, 0.8);;
-  margin-right: 20px;
+  background: rgba(255, 255, 255, 0.8);
+  // margin-right: 20px;
   overflow: auto;
   border-radius: 3px;
+  z-index: 1
 }
 
 .layer-control {
@@ -20,12 +20,12 @@
 }
 
 #functions {
-  top: 0;
-  left: 0;
-  margin-top: 20px;
-  margin-left: 20px;
+  grid-column: 1 / 2;
+  grid-row: 1 / 3;
+
   padding: 15px;
-  max-height: 85vh;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
 
   .card-header:hover{
     cursor: pointer;
@@ -50,15 +50,18 @@
   padding: 15px;
 }
 
-#timeslider {
-  bottom: 0;
-  right: 0;
-  left: 0;
-  margin-left: auto;
-  margin-right: auto;
-  width: 50vw;
+#bottom-bar {
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
   padding: 20px;
   text-align: center;
+
+  display: flex;
+  flex-direction: row;
+}
+
+#timeslider {
+  position: relative;
 }
 
 #timeslide-min {
@@ -94,9 +97,6 @@
 #legend-bar {
   margin: 0px;
 }
-.session {
-  margin-bottom: 20px;
-}
 
 .row {
   height: 12px;
@@ -109,18 +109,31 @@
 }
 
 #legend-min {
-  position: absolute;
-  left: 0;
-  margin-left: 15px;
+  float: left;
 }
 
 #legend-max {
-  position: absolute;
-  right: 0;
-  margin-right: 15px;
+  float: right;
 }
 
 
 #custom_csv_input {
   width: 140px;
+}
+
+.flex-legend {
+  flex-grow: 1;
+  max-width: 30%;
+}
+
+.flex-timeslider {
+  flex-grow: 3;
+}
+
+.legend-wrapper {
+  padding-bottom: 20px;
+}
+
+.info {
+  margin-top: 20px;
 }
