@@ -139,6 +139,12 @@ class App {
       },
       true
     );
+
+    document
+      .getElementById('stats_equal_interval')
+      .addEventListener('click', () => {
+        map.changeStatistics('EQUAL_INTERVAL');
+      });
   }
 }
 

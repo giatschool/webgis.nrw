@@ -1,6 +1,8 @@
 import mapboxgl from 'mapbox-gl';
 import 'whatwg-fetch';
 
+import Statistics from './Statistics.js';
+
 // const KreiseNRW_source = require('./../data/landkreise_simplify0.json');
 import { mapboxToken, wmsLayerUrls, kreiseNRWUrl } from './../config.js';
 import CSVParser from './CSVParser.js';
@@ -338,6 +340,18 @@ export default class Map {
     map.removeLayer('feinstaub_band_layer');
   }
 
+  changeStatistics(type) {
+    switch (type) {
+      case 'EQUAL_INTERVAL':
+        console.log('calculating EQUAL_INTERVAL');
+        Statistics.getEqualInterval(
+          this._getData(),
+          document.getElementById('stats_equal_interval_classes').value
+        );
+        break;
+    }
+  }
+
   /**
    * @description styles layer according to data
    * @param {json object} data data that should be applied
@@ -453,5 +467,17 @@ export default class Map {
     const dataset_data = Object.keys(feature_dataset[0].data);
 
     return dataset_data[dataset_data.length - 1];
+  }
+
+  _getData() {
+    const temp = [];
+    KreiseNRW.features.forEach(e => {
+      const val = e.properties[current_feature];
+      if (val) {
+        temp.push(e.properties[current_feature]);
+      }
+    });
+
+    return temp;
   }
 }

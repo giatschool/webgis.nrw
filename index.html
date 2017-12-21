@@ -130,6 +130,23 @@
             </div>
           </div>
         </div>
+        <div class="card">
+          <div class="card-header" role="tab" id="headingFour" class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseStats"
+            aria-expanded="false" aria-controls="headingFour">
+            <h5 class="mb-0">
+              Statistiken
+            </h5>
+          </div>
+          <div id="collapseStats" class="collapse" role="tabpanel" aria-labelledby="headingStats">
+            <button type="button" class="btn btn-outline-primary btn-block" name="stats_standard">
+              Standart</button>
+            <div class="form-row">
+              <button type="button" class="col btn btn-outline-primary btn-block" id="stats_equal_interval">
+                Gleiche Intervalle</button>
+              <input type="number" class="col form-control" id="stats_equal_interval_classes" value="4">
+            </div>
+          </div>
+        </div>
         <label>Transparenz</label>
         <input id='transparency-slider' type='range' min='0' max='100' step='1' value='80' />
       </div>
