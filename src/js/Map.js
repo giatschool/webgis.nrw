@@ -2,7 +2,11 @@ import mapboxgl from 'mapbox-gl';
 import 'whatwg-fetch';
 
 // const KreiseNRW_source = require('./../data/landkreise_simplify0.json');
-import { mapboxToken, wmsLayerUrls, kreiseNRWUrl } from './../config.js';
+import {
+  mapboxToken,
+  wmsLayerUrls,
+  kreiseNRWUrl
+} from './../config.js';
 import CSVParser from './CSVParser.js';
 
 let KreiseNRW;
@@ -42,12 +46,12 @@ export default class Map {
       // });
 
       // Change the cursor to a pointer when the mouse is over the places layer.
-      map.on('mouseenter', function() {
+      map.on('mouseenter', function () {
         map.getCanvas().style.cursor = 'pointer';
       });
 
       // Change it back to a pointer when it leaves.
-      map.on('mouseleave', function() {
+      map.on('mouseleave', function () {
         map.getCanvas().style.cursor = '';
       });
     });
@@ -57,7 +61,7 @@ export default class Map {
       this.loadData(loadDone);
 
       // show current Kreis on legend overlay
-      map.on('mousemove', function(e) {
+      map.on('mousemove', function (e) {
         if (map.getLayer('kreisgrenzen')) {
           const states = map.queryRenderedFeatures(e.point, {
             layers: ['kreisgrenzen']
@@ -93,34 +97,22 @@ export default class Map {
    * @param {function} loadDone called when data was fetched successful
    */
   loadData(loadDone) {
-    console.log('fetching data');
-    fetch(kreiseNRWUrl)
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(json) {
-        console.log('parsed json', json);
-        KreiseNRW = json;
+    KreiseNRW = require('./../data/nw_dvg2_krs.json')
 
-        map.addSource('KreiseNRW', {
-          type: 'geojson',
-          data: KreiseNRW
-        });
-        map.addLayer({
-          id: 'kreisgrenzen',
-          type: 'fill',
-          source: 'KreiseNRW',
-          paint: {
-            'fill-opacity': 0.8,
-            'fill-color': '#5266B8'
-          }
-        });
-        loadDone(true);
-      })
-      .catch(function(ex) {
-        loadDone(false);
-        console.log('parsing failed', ex);
-      });
+    map.addSource('KreiseNRW', {
+      type: 'geojson',
+      data: KreiseNRW
+    });
+    map.addLayer({
+      id: 'kreisgrenzen',
+      type: 'fill',
+      source: 'KreiseNRW',
+      paint: {
+        'fill-opacity': 0.8,
+        'fill-color': '#5266B8'
+      }
+    });
+    loadDone(true);
   }
 
   /**
@@ -132,8 +124,7 @@ export default class Map {
     const layers = Object.keys(wmsLayerUrls);
     if (layers.includes(style)) {
       if (!map.getLayer(style)) {
-        map.addLayer(
-          {
+        map.addLayer({
             id: style,
             paint: {},
             type: 'raster',
@@ -194,7 +185,10 @@ export default class Map {
     if (map.getLayer('feinstaub_band_layer')) {
       map.setPaintProperty('feinstaub_band_layer', 'fill-color', {
         property: 'DN',
-        stops: [[0, lowColor], [45, highColor]]
+        stops: [
+          [0, lowColor],
+          [45, highColor]
+        ]
       });
     }
 
@@ -299,7 +293,10 @@ export default class Map {
         paint: {
           'fill-color': {
             property: 'DN',
-            stops: [[0, lowColor], [45, highColor]]
+            stops: [
+              [0, lowColor],
+              [45, highColor]
+            ]
           },
           'fill-opacity': 0.8
         }
