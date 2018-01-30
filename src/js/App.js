@@ -16,6 +16,8 @@ class App {
       }
     });
 
+    $('.map-overlay').collapse('show');
+
     document.getElementById('basicMap').addEventListener('click', () => {
       map.changeStyle('basic');
     });
@@ -106,23 +108,23 @@ class App {
       map.setData('Wahlergebnisse_CDU_1976_bis_2013', 'Wahl17_SPD');
     });
 
-    document.getElementById('feinstaub01').addEventListener('click', () => {
-      map.addFeinstaubLayer('band01_02112017');
-    });
+    // document.getElementById('feinstaub01').addEventListener('click', () => {
+    //   map.addFeinstaubLayer('band01_02112017');
+    // });
 
-    document.getElementById('feinstaub12').addEventListener('click', () => {
-      map.addFeinstaubLayer('band12_02112017');
-    });
+    // document.getElementById('feinstaub12').addEventListener('click', () => {
+    //   map.addFeinstaubLayer('band12_02112017');
+    // });
 
-    document.getElementById('feinstaub24').addEventListener('click', () => {
-      map.addFeinstaubLayer('band24_02112017');
-    });
+    // document.getElementById('feinstaub24').addEventListener('click', () => {
+    //   map.addFeinstaubLayer('band24_02112017');
+    // });
 
-    document
-      .getElementById('feinstaub-remove')
-      .addEventListener('click', () => {
-        map.removeFeinstaubLayer();
-      });
+    // document
+    //   .getElementById('feinstaub-remove')
+    //   .addEventListener('click', () => {
+    //     map.removeFeinstaubLayer();
+    //   });
 
     document.getElementById('lowColor').addEventListener(
       'change',
@@ -164,17 +166,13 @@ class App {
         map.changeStatistics('GEOMETRIC_PROGRESSION');
       });
 
-    document
-      .getElementById('stats_quantile')
-      .addEventListener('click', () => {
-        map.changeStatistics('QUANTILE');
-      });
+    document.getElementById('stats_quantile').addEventListener('click', () => {
+      map.changeStatistics('QUANTILE');
+    });
 
-    document
-      .getElementById('stats_jenks')
-      .addEventListener('click', () => {
-        map.changeStatistics('JENKS');
-      });
+    document.getElementById('stats_jenks').addEventListener('click', () => {
+      map.changeStatistics('JENKS');
+    });
 
     document.getElementById('stats_standard').addEventListener('click', () => {
       map.changeStatistics('STANDARD');

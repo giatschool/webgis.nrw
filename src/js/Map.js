@@ -357,44 +357,44 @@ export default class Map {
         );
         break;
       case 'STD_DEVIATION':
-      this._applyStatistic(
-        Statistics.getClassStdDeviation(
-          this._getData(),
-          document.getElementById('stats_classes').value
-        )
-      );
+        this._applyStatistic(
+          Statistics.getClassStdDeviation(
+            this._getData(),
+            document.getElementById('stats_classes').value
+          )
+        );
         break;
       case 'ARITHMETIC_PROGRESSION':
-      this._applyStatistic(
-        Statistics.getClassArithmeticProgression(
-          this._getData(),
-          document.getElementById('stats_classes').value
-        )
-      );
+        this._applyStatistic(
+          Statistics.getClassArithmeticProgression(
+            this._getData(),
+            document.getElementById('stats_classes').value
+          )
+        );
         break;
       case 'GEOMETRIC_PROGRESSION':
-      this._applyStatistic(
-        Statistics.getClassGeometricProgression(
-          this._getData(),
-          document.getElementById('stats_classes').value
-        )
-      );
+        this._applyStatistic(
+          Statistics.getClassGeometricProgression(
+            this._getData(),
+            document.getElementById('stats_classes').value
+          )
+        );
         break;
       case 'QUANTILE':
-      this._applyStatistic(
-        Statistics.getClassQuantile(
-          this._getData(),
-          document.getElementById('stats_classes').value
-        )
-      );
+        this._applyStatistic(
+          Statistics.getClassQuantile(
+            this._getData(),
+            document.getElementById('stats_classes').value
+          )
+        );
         break;
       case 'JENKS':
-      this._applyStatistic(
-        Statistics.getClassJenks(
-          this._getData(),
-          document.getElementById('stats_classes').value
-        )
-      );
+        this._applyStatistic(
+          Statistics.getClassJenks(
+            this._getData(),
+            document.getElementById('stats_classes').value
+          )
+        );
         break;
     }
   }
@@ -426,7 +426,6 @@ export default class Map {
 
     console.log(stops);
     map.setPaintProperty('kreisgrenzen', 'fill-color', stops);
-
   }
 
   /**
