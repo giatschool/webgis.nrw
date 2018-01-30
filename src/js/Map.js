@@ -97,11 +97,17 @@ export default class Map {
    * @param {function} loadDone called when data was fetched successful
    */
   loadData(loadDone) {
-    KreiseNRW = require('./../data/nw_dvg2_krs.json')
+    fetch('/data/nw_dvg2_krs.json').then(function (response) {
+      response.json().then(function (data) {
+        KreiseNRW = data;
+      });
+    }).catch(function (ex) {
+      console.log('parsing failed', ex);
+    })
 
     map.addSource('KreiseNRW', {
       type: 'geojson',
-      data: KreiseNRW
+      data: './../data/nw_dvg2_krs.json'
     });
     map.addLayer({
       id: 'kreisgrenzen',
@@ -212,9 +218,21 @@ export default class Map {
    */
   setData(data_source, feature) {
     /* eslint-disable global-require */
-    const data = require(`./../data/${data_source}.json`);
-    /* eslint-enable global-require */
-    this._setDataFromJSON(data, feature);
+    let data;
+
+    const url = `/data/${data_source}.json`;
+
+    fetch(url).then((response) => {
+      response.json().then((_data) => {
+        // data = _data;
+        /* eslint-enable global-require */
+        return this._setDataFromJSON(_data, feature);
+      })
+    }).catch((ex) => {
+      console.log('parsing failed', ex)
+    })
+
+
   }
 
   /**
@@ -234,7 +252,6 @@ export default class Map {
         }
       });
     });
-    console.log(current_feature);
 
     map.getSource('KreiseNRW').setData(KreiseNRW);
     map.setPaintProperty('kreisgrenzen', 'fill-color', {
@@ -262,9 +279,7 @@ export default class Map {
     const file = document.getElementById('custom_csv_input').files[0];
     if (file.type === 'text/csv') {
       const parser = new CSVParser();
-
       parser.getAsText(file, data => {
-        console.log(data);
         this._setDataFromJSON(data, file.name);
       });
     } else {
@@ -341,8 +356,6 @@ export default class Map {
         }
       });
     });
-
-    console.log(KreiseNRW);
 
     // apply styling
     map.getSource('KreiseNRW').setData(KreiseNRW);

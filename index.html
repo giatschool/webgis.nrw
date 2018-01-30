@@ -8,174 +8,189 @@
   <title>webgis.nrw</title>
 
   <!-- CSS includes -->
-  <link href='assets/css/main.min.css' rel='stylesheet' />
+  <link href='assets/css/main.min.css' type="text/css" rel="stylesheet" />
 
 </head>
 
 <body>
-  <div id='map' class='map'></div>
-  <div class='map-overlay' id='functions'>
-    <h1 class="hero-webgisnrw">webgis.<span class="n">n</span><span class="r">r</span><span class="w">w</span></h1>
-    <div class="layer-control">
-      <div class="btn-group">
-        <button type="button" class="btn btn-info" id='topMap' data-toggle="tooltip" data-placement="top" data-html="true" title="TOP - Topographische Karte BKG<br />Quelle: Bundesamt für Kartographie und Geodäsie">TOP</button>
-        <button type="button" class="btn btn-dark" id='dtkMap' data-toggle="tooltip" data-placement="top" data-html="true" title="DTK - Digitale Topographische Karten<br />Quelle: GEObasis.nrw">DTK</button>
-        <button type="button" class="btn btn-light" id='dopMap' data-toggle="tooltip" data-placement="top" data-html="true" title="DOP - Digitale Orthophotos<br />Quelle: GEObasis.nrw">DOP</button>
+  <div class="webgis-view" style="float:left; width: 100vw;">
+    <div id='map' class='map'></div>
+    <div class='map-overlay' id='functions'>
+      <h1 class="hero-webgisnrw">webgis.
+        <span class="n">n</span>
+        <span class="r">r</span>
+        <span class="w">w</span>
+      </h1>
+      <div class="layer-control">
+        <div class="btn-group">
+          <button type="button" class="btn btn-info" id='topMap' data-toggle="tooltip" data-placement="top" data-html="true" title="TOP - Topographische Karte BKG<br />Quelle: Bundesamt für Kartographie und Geodäsie">TOP</button>
+          <button type="button" class="btn btn-dark" id='dtkMap' data-toggle="tooltip" data-placement="top" data-html="true" title="DTK - Digitale Topographische Karten<br />Quelle: GEObasis.nrw">DTK</button>
+          <button type="button" class="btn btn-light" id='dopMap' data-toggle="tooltip" data-placement="top" data-html="true" title="DOP - Digitale Orthophotos<br />Quelle: GEObasis.nrw">DOP</button>
+          <button type="button" class="btn btn-light" id='splitMap' data-toggle="tooltip" data-placement="top" data-html="true" title="SM">Split</button>
+        </div>
+        <br />
+        <div class="btn-group">
+          <button type="button" class="btn btn-info" id='basicMap'>Basic</button>
+          <button type="button" class="btn btn-dark" id='darkMap'>Dark</button>
+          <button type="button" class="btn btn-light" id='lightMap'>Light</button>
+          <button type="button" class="btn btn-success" id='satelliteMap'>Satellit</button>
+        </div>
       </div>
-      <br />
-      <div class="btn-group">
-        <button type="button" class="btn btn-info" id='basicMap'>Basic</button>
-        <button type="button" class="btn btn-dark" id='darkMap'>Dark</button>
-        <button type="button" class="btn btn-light" id='lightMap'>Light</button>
-        <button type="button" class="btn btn-success" id='satelliteMap'>Satellit</button>
+      <hr>
+
+      <!-- ##### -->
+      <!-- Start Accordeon -->
+      <div id="accordion" role="tablist" aria-multiselectable="true">
+        <div class="card">
+          <div class="card-header" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true"
+            aria-controls="collapseOne">
+            <h5 class="mb-0">
+              Statistische Daten
+            </h5>
+          </div>
+          <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne">
+            <div class="card-block">
+              <button type="button" class="btn btn-outline-primary btn-block" id="population_data">
+                <i class="material-icons">group</i>
+                Einwohnerzahlen</button>
+              <button type="button" class="btn btn-outline-primary btn-block" id="Anteil_Arbeitslose_UTF8">
+                <i class="material-icons">work</i>
+                Anteil Arbeitslose</button>
+              <button type="button" class="btn btn-outline-primary btn-block" id="Erwerbstaetige_Dienstleistung">
+                <i class="material-icons">record_voice_over</i>
+                Erwerbstätige Dienstleistung</button>
+              <button type="button" class="btn btn-outline-primary btn-block" id="Erwerbstaetige_Forst">
+                <i class="material-icons">nature_people</i>
+                Erwerbstätige Forst</button>
+              <button type="button" class="btn btn-outline-primary btn-block" id="Erwerbstaetige_Gewerbe">
+                <i class="material-icons">business</i>
+                Erwerbstätige Gewerbe</button>
+              <!-- <button type="button" class="btn btn-outline-primary btn-block" id="Wahl17_CDU">
+                <i class="material-icons">account_balance</i>
+                Wahlen - CDU</button>
+              <button type="button" class="btn btn-outline-primary btn-block" id="Wahl17_SPD">
+                <i class="material-icons">account_balance</i>
+                Wahlen - SPD</button> -->
+            </div>
+          </div>
+        </div>
+        <!-- <div class="card">
+          <div class="card-header" role="tab" id="headingTwo" class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"
+            aria-expanded="false" aria-controls="collapseTwo">
+            <h5 class="mb-0">
+              Feinstaub (gestern)
+            </h5>
+          </div>
+          <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+            <div class="card-block">
+              <button type="button" class="btn btn-outline-primary btn-block" id="feinstaub01">
+                <i class="material-icons">grain</i>
+                01:00 Uhr</button>
+              <button type="button" class="btn btn-outline-primary btn-block" id="feinstaub12">
+                <i class="material-icons">grain</i>
+                12:00 Uhr</button>
+              <button type="button" class="btn btn-outline-primary btn-block" id="feinstaub24">
+                <i class="material-icons">grain</i>
+                24:00 Uhr</button>
+              <button type="button" class="btn btn-outline-danger btn-block" id="feinstaub-remove">
+                <i class="material-icons">grain</i>
+                Layer Entfernen</button>
+            </div>
+          </div>
+        </div> -->
+        <div class="card">
+          <div class="card-header" role="tab" id="headingThree" class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree"
+            aria-expanded="false" aria-controls="collapseThree">
+            <h5 class="mb-0">
+              Eigene Daten
+            </h5>
+          </div>
+          <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree">
+            <div class="card-block">
+              Wähle hier deine Datei aus! (csv)
+              <br/>
+              <input type="file" id="custom_csv_input" accept=".csv">
+              <p id="csv_info"></p>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header" role="tab" id="headingThree" class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseColor"
+            aria-expanded="false" aria-controls="collapseThree">
+            <h5 class="mb-0">
+              Farbschema anpassen
+            </h5>
+          </div>
+          <div id="collapseColor" class="collapse" role="tabpanel" aria-labelledby="headingColor">
+            <div class="card-block">
+              Niedrig
+              <input id='lowColor' type="color" value="#80BCFF"> Hoch
+              <input id='highColor' type="color" value="#1A5FAC">
+            </div>
+          </div>
+        </div>
+        <label>Transparenz</label>
+        <input id='transparency-slider' type='range' min='0' max='100' step='1' value='80' />
+      </div>
+      <!-- End Accordeon -->
+      <!-- ##### -->
+    </div>
+
+    <div class='map-overlay' id='features'>
+      <div class='session'>
+        <label id="legend-heading">Legende</label>
+        <div id='legend-bar' class='row colors'>
+        </div>
+        <div class='row labels'>
+          <div class='label' id="legend-min">0</div>
+          <div class='label' id="legend-max">100</div>
+        </div>
+      </div>
+      <div id='pd'>
+        <p>Bewege die Maus über die Kreise</p>
       </div>
     </div>
-    <hr>
 
-    <!-- ##### -->
-    <!-- Start Accordeon -->
-    <div id="accordion" role="tablist" aria-multiselectable="true">
-      <div class="card">
-        <div class="card-header" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true"
-          aria-controls="collapseOne">
-          <h5 class="mb-0">
-            Statistische Daten
-          </h5>
-        </div>
-        <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne">
-          <div class="card-block">
-            <button type="button" class="btn btn-outline-primary btn-block" name="population_data">
-              <i class="material-icons">group</i>
-              Einwohnerzahlen</button>
-            <button type="button" class="btn btn-outline-primary btn-block" id="Anteil_Arbeitslose_UTF8">
-              <i class="material-icons">work</i>
-              Anteil Arbeitslose</button>
-            <button type="button" class="btn btn-outline-primary btn-block" id="Erwerbstaetige_Dienstleistung">
-              <i class="material-icons">record_voice_over</i>
-              Erwerbstätige Dienstleistung</button>
-            <button type="button" class="btn btn-outline-primary btn-block" id="Erwerbstaetige_Forst">
-              <i class="material-icons">nature_people</i>
-              Erwerbstätige Forst</button>
-            <button type="button" class="btn btn-outline-primary btn-block" id="Erwerbstaetige_Gewerbe">
-              <i class="material-icons">business</i>
-              Erwerbstätige Gewerbe</button>
-            <button type="button" class="btn btn-outline-primary btn-block" id="Wahl17_CDU">
-              <i class="material-icons">account_balance</i>
-              Wahlen - CDU</button>
-            <button type="button" class="btn btn-outline-primary btn-block" id="Wahl17_SPD">
-              <i class="material-icons">account_balance</i>
-              Wahlen - SPD</button>
+    <div class='map-overlay' id='timeslider' hidden>
+      <label id='timeslide-min'>1962</label>
+      <label id='timeslide-max'>2010</label>
+      <b>
+        <label id='year'>1962</label>
+        <b/>
+        <input id='slider' type='range' min='0' max='100' step='1' value='0' />
+    </div>
+
+    <!-- Large modal -->
+    <div class="modal fade" id="launchModal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title hero-webgisnrw">Willkommen auf dem webgis.
+              <span class="n">n</span>
+              <span class="r">r</span>
+              <span class="w">w</span>
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Das webgis.nrw ist die Plattform für modernen Schulunterricht in NRW.</p>
+            <p>Dank offener Daten können aktuelle Themen aus allen Bereichen der Gesellschaft fächerübergreifend genutzt werden.</p>
+            <p>Der Quellcode kann hier gefunden werden:
+              <a href="https://github.com/giatschool/webgis.nrw">https://github.com/giatschool/webgis.nrw</a>
+            </p>
+            <p>Made with
+              <span style="color:#e74c3c">&hearts;</span> @ #nrwhack17</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="start" class="btn btn-primary" disabled>Laden...</button>
           </div>
         </div>
       </div>
-      <div class="card">
-        <div class="card-header" role="tab" id="headingTwo" class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"
-          aria-expanded="false" aria-controls="collapseTwo">
-          <h5 class="mb-0">
-            Feinstaub (gestern)
-          </h5>
-        </div>
-        <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
-          <div class="card-block">
-            <button type="button" class="btn btn-outline-primary btn-block" id="feinstaub01">
-              <i class="material-icons">grain</i>
-              01:00 Uhr</button>
-            <button type="button" class="btn btn-outline-primary btn-block" id="feinstaub12">
-              <i class="material-icons">grain</i>
-              12:00 Uhr</button>
-            <button type="button" class="btn btn-outline-primary btn-block" id="feinstaub24">
-              <i class="material-icons">grain</i>
-              24:00 Uhr</button>
-            <button type="button" class="btn btn-outline-danger btn-block" id="feinstaub-remove">
-              <i class="material-icons">grain</i>
-              Layer Entfernen</button>
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header" role="tab" id="headingThree" class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree"
-          aria-expanded="false" aria-controls="collapseThree">
-          <h5 class="mb-0">
-            Eigene Daten
-          </h5>
-        </div>
-        <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree">
-          <div class="card-block">
-            Wähle hier deine Datei aus! (csv)
-            <br/>
-            <input type="file" id="custom_csv_input" accept=".csv">
-            <p id="csv_info"></p>
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header" role="tab" id="headingThree" class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseColor"
-          aria-expanded="false" aria-controls="collapseThree">
-          <h5 class="mb-0">
-            Farbschema anpassen
-          </h5>
-        </div>
-        <div id="collapseColor" class="collapse" role="tabpanel" aria-labelledby="headingColor">
-          <div class="card-block">
-            Niedrig
-            <input id='lowColor' type="color" value="#80BCFF"> Hoch
-            <input id='highColor' type="color" value="#1A5FAC">
-          </div>
-        </div>
-      </div>
-      <label>Transparenz</label>
-      <input id='transparency-slider' type='range' min='0' max='100' step='1' value='80' />
-    </div>
-    <!-- End Accordeon -->
-    <!-- ##### -->
-  </div>
-
-  <div class='map-overlay' id='features'>
-    <div class='session'>
-      <label id="legend-heading">Legende</label>
-      <div id='legend-bar' class='row colors'>
-      </div>
-      <div class='row labels'>
-        <div class='label' id="legend-min">0</div>
-        <div class='label' id="legend-max">100</div>
-      </div>
-    </div>
-    <div id='pd'>
-      <p>Bewege die Maus über die Kreise</p>
     </div>
   </div>
-
-  <div class='map-overlay' id='timeslider' hidden>
-    <label id='timeslide-min'>1962</label>
-    <label id='timeslide-max'>2010</label>
-    <b><label id='year'>1962</label><b/>
-    <input id='slider' type='range' min='0' max='100' step='1' value='0' />
-  </div>
-
-  <!-- Large modal -->
-  <div class="modal fade" id="launchModal">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title hero-webgisnrw">Willkommen auf dem webgis.<span class="n">n</span><span class="r">r</span><span class="w">w</span></h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <p>Das webgis.nrw ist die Plattform für modernen Schulunterricht in NRW.</p>
-          <p>Dank offener Daten können aktuelle Themen aus allen Bereichen der Gesellschaft fächerübergreifend genutzt werden.</p>
-          <p>Der Quellcode kann hier gefunden werden: <a href="https://github.com/giatschool/webgis.nrw">https://github.com/giatschool/webgis.nrw</a></p>
-          <p>Made with <span style="color:#e74c3c">&hearts;</span> @ #nrwhack17</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" id="start" class="btn btn-primary" disabled>Laden...</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script src="assets/js/main.min.js"></script>
+  <script src="assets/js/main.min.js" type="application/javascript"></script>
 
 </body>
 
