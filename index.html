@@ -14,161 +14,157 @@
 
 <body>
 
-    <div id='map' class='map'></div>
+  <div id='map' class='map'></div>
 
-    <nav class="navbar fixed-bottom navbar-expand-sm navbar-dark bg-dark">
-      <a class="navbar-brand" href="#">
-        <!-- <h1 class="hero-webgisnrw">webgis.
+  <div class='map-overlay collapse multi-collapse' id='bottom-bar'>
+    <div class="flex-legend">
+      <div class='legend-wrapper'>
+        <label id="legend-heading">Legende</label>
+        <div id='legend-bar' class='row colors'>
+        </div>
+        <div class='labels'>
+          <div class='label' id="legend-min">0</div>
+          <div class='label' id="legend-max">100</div>
+        </div>
+      </div>
+      <div class='info'>
+        <div id='pd'>
+          <p>Bewege die Maus über die Kreise</p>
+        </div>
+      </div>
+    </div>
+    <div class="flex-timeslider">
+      Timeslider
+      <div class='timeslider-wrapper'>
+        <div id='timeslider' hidden>
+          <div class='labels'>
+              <label id='timeslide-min'>1962</label>
+              <label id='year'>1962</label>
+              <label id='timeslide-max'>2010</label>
+          </div> 
+          <input id='slider' type='range' min='0' max='100' step='1' value='0' />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="navbar fixed-bottom navbar-expand-sm navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">
+      <!-- <h1 class="hero-webgisnrw">webgis.
           <span class="n">n</span>
           <span class="r">r</span>
           <span class="w">w</span>
         </h1> -->
-        webgis.
-          <span class="n">n</span>
-          <span class="r">r</span>
-          <span class="w">w</span>
-        
-      </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item dropup">
-            <a class="nav-link dropdown-toggle" id="dropdown_map_settings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Karteneinstellungen</a>
-            <div class="dropdown-menu" aria-labelledby="dropdown_map_settings">
-              <div class="layer-control">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-info" id='topMap' data-toggle="tooltip" data-placement="top" data-html="true" title="TOP - Topographische Karte BKG<br />Quelle: Bundesamt für Kartographie und Geodäsie">TOP</button>
-                  <button type="button" class="btn btn-dark" id='dtkMap' data-toggle="tooltip" data-placement="top" data-html="true" title="DTK - Digitale Topographische Karten<br />Quelle: GEObasis.nrw">DTK</button>
-                  <button type="button" class="btn btn-light" id='dopMap' data-toggle="tooltip" data-placement="top" data-html="true" title="DOP - Digitale Orthophotos<br />Quelle: GEObasis.nrw">DOP</button>
-                </div>
-                <br />
-                <div class="btn-group">
-                  <button type="button" class="btn btn-info" id='basicMap'>Basic</button>
-                  <button type="button" class="btn btn-dark" id='darkMap'>Dark</button>
-                  <button type="button" class="btn btn-light" id='lightMap'>Light</button>
-                  <button type="button" class="btn btn-success" id='satelliteMap'>Satellit</button>
-                </div>
+      webgis.
+      <span class="n">n</span>
+      <span class="r">r</span>
+      <span class="w">w</span>
+
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item dropup">
+          <a class="nav-link dropdown-toggle" id="dropdown_map_settings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Karteneinstellungen</a>
+          <div class="dropdown-menu" aria-labelledby="dropdown_map_settings">
+            <div class="layer-control">
+              <div class="btn-group">
+                <button type="button" class="btn btn-info" id='topMap' data-toggle="tooltip" data-placement="top" data-html="true" title="TOP - Topographische Karte BKG<br />Quelle: Bundesamt für Kartographie und Geodäsie">TOP</button>
+                <button type="button" class="btn btn-dark" id='dtkMap' data-toggle="tooltip" data-placement="top" data-html="true" title="DTK - Digitale Topographische Karten<br />Quelle: GEObasis.nrw">DTK</button>
+                <button type="button" class="btn btn-light" id='dopMap' data-toggle="tooltip" data-placement="top" data-html="true" title="DOP - Digitale Orthophotos<br />Quelle: GEObasis.nrw">DOP</button>
+              </div>
+              <br />
+              <div class="btn-group">
+                <button type="button" class="btn btn-info" id='basicMap'>Basic</button>
+                <button type="button" class="btn btn-dark" id='darkMap'>Dark</button>
+                <button type="button" class="btn btn-light" id='lightMap'>Light</button>
+                <button type="button" class="btn btn-success" id='satelliteMap'>Satellit</button>
               </div>
             </div>
-          </li>
-          <li class="nav-item dropup">
-            <a class="nav-link dropdown-toggle" id="dropdown_stat_data" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Statistische Daten</a>
-            <div class="dropdown-menu" aria-labelledby="dropdown_stat_data">
-              <div class="card-block">
-                <button type="button" class="btn btn-outline-primary btn-block" name="population_data">
-                  <i class="material-icons">group</i>
-                  Einwohnerzahlen</button>
-                <button type="button" class="btn btn-outline-primary btn-block" id="Anteil_Arbeitslose_UTF8">
-                  <i class="material-icons">work</i>
-                  Anteil Arbeitslose</button>
-                <button type="button" class="btn btn-outline-primary btn-block" id="Erwerbstaetige_Dienstleistung">
-                  <i class="material-icons">record_voice_over</i>
-                  Erwerbstätige Dienstleistung</button>
-                <button type="button" class="btn btn-outline-primary btn-block" id="Erwerbstaetige_Forst">
-                  <i class="material-icons">nature_people</i>
-                  Erwerbstätige Forst</button>
-                <button type="button" class="btn btn-outline-primary btn-block" id="Erwerbstaetige_Gewerbe">
-                  <i class="material-icons">business</i>
-                  Erwerbstätige Gewerbe</button>
-                <button type="button" class="btn btn-outline-primary btn-block" id="Wahl17_CDU">
-                  <i class="material-icons">account_balance</i>
-                  Wahlen - CDU</button>
-                <button type="button" class="btn btn-outline-primary btn-block" id="Wahl17_SPD">
-                  <i class="material-icons">account_balance</i>
-                  Wahlen - SPD</button>
-              </div>
-            </div>
-          </li>
-          <li class="nav-item dropup">
-            <a class="nav-link dropdown-toggle" id="dropdown_own_data" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Eigene Daten</a>
-            <div class="dropdown-menu" aria-labelledby="dropdown_own_data">
-              <div class="card-block">
-                Wähle hier deine Datei aus! (csv)
-                <br/>
-                <input type="file" id="custom_csv_input" accept=".csv">
-                <p id="csv_info"></p>
-              </div>
-            </div>
-          </li>
-          <li class="nav-item dropup">
-            <a class="nav-link dropdown-toggle" id="dropdown_stats" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Statistiken</a>
-            <div class="dropdown-menu" aria-labelledby="dropdown_stats">
-              <button type="button" class="btn btn-outline-primary btn-block" id="stats_standard">
-                Standart</button>
-              <button type="button" class="col btn btn-outline-primary btn-block" id="stats_equal_interval">
-                Gleiche Intervalle</button>
-              <button type="button" class="col btn btn-outline-primary btn-block" id="stats_std_deviation">
-                Standardabweichung</button>
-              <button type="button" class="col btn btn-outline-primary btn-block" id="stats_arithmetic_progression">
-                Arithmetische Folge</button>
-              <button type="button" class="col btn btn-outline-primary btn-block" id="stats_geometric_progression">
-                Geometrische Folge</button>
-              <button type="button" class="col btn btn-outline-primary btn-block" id="stats_quantile">
-                Quantile</button>
-              <button type="button" class="col btn btn-outline-primary btn-block" id="stats_jenks">
-                Jenks</button>
-              <input type="number" class="col form-control" id="stats_classes" value="4" min="1">
-            </div>
-          </li>
-          <li class="nav-item dropup">
-            <a class="nav-link dropdown-toggle" id="dropdown_visualization" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Darstellung</a>
-            <div class="dropdown-menu" aria-labelledby="dropdown_visualization">
-              <h5 class="mb-0">
-                Farbschema anpassen
-              </h5>
-              <div class="card-block">
-                Niedrig
-                <input id='lowColor' type="color" value="#80BCFF"> Hoch
-                <input id='highColor' type="color" value="#1A5FAC">
-              </div>
-              <label>Transparenz</label>
-              <input id='transparency-slider' type='range' min='0' max='100' step='1' value='80' />
-            </div>
-          </li>
-        </ul>
-
-
-        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target=".map-overlay" aria-expanded="false" aria-controls="multiCollapseExample2">Legende</button>
-
-      </div>
-    </nav>
-
-    <div class='map-overlay collapse multi-collapse' id='bottom-bar'>
-      <div class="flex-legend">
-        <div class='legend-wrapper'>
-          <label id="legend-heading">Legende</label>
-          <div id='legend-bar' class='row colors'>
           </div>
-          <div class='labels'>
-            <div class='label' id="legend-min">0</div>
-            <div class='label' id="legend-max">100</div>
+        </li>
+        <li class="nav-item dropup">
+          <a class="nav-link dropdown-toggle" id="dropdown_stat_data" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Statistische Daten</a>
+          <div class="dropdown-menu" aria-labelledby="dropdown_stat_data">
+            <div class="card-block">
+              <button type="button" class="btn btn-outline-primary btn-block" name="population_data">
+                <i class="material-icons">group</i>
+                Einwohnerzahlen</button>
+              <button type="button" class="btn btn-outline-primary btn-block" id="Anteil_Arbeitslose_UTF8">
+                <i class="material-icons">work</i>
+                Anteil Arbeitslose</button>
+              <button type="button" class="btn btn-outline-primary btn-block" id="Erwerbstaetige_Dienstleistung">
+                <i class="material-icons">record_voice_over</i>
+                Erwerbstätige Dienstleistung</button>
+              <button type="button" class="btn btn-outline-primary btn-block" id="Erwerbstaetige_Forst">
+                <i class="material-icons">nature_people</i>
+                Erwerbstätige Forst</button>
+              <button type="button" class="btn btn-outline-primary btn-block" id="Erwerbstaetige_Gewerbe">
+                <i class="material-icons">business</i>
+                Erwerbstätige Gewerbe</button>
+              <button type="button" class="btn btn-outline-primary btn-block" id="Wahl17_CDU">
+                <i class="material-icons">account_balance</i>
+                Wahlen - CDU</button>
+              <button type="button" class="btn btn-outline-primary btn-block" id="Wahl17_SPD">
+                <i class="material-icons">account_balance</i>
+                Wahlen - SPD</button>
+            </div>
           </div>
-        </div>
-        <div class='info'>
-          <div id='pd'>
-            <p>Bewege die Maus über die Kreise</p>
+        </li>
+        <li class="nav-item dropup">
+          <a class="nav-link dropdown-toggle" id="dropdown_own_data" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Eigene Daten</a>
+          <div class="dropdown-menu" aria-labelledby="dropdown_own_data">
+            <div class="card-block">
+              Wähle hier deine Datei aus! (csv)
+              <br/>
+              <input type="file" id="custom_csv_input" accept=".csv">
+              <p id="csv_info"></p>
+            </div>
           </div>
-        </div>
-      </div>
-      <div class="flex-timeslider">
-        Timeslider
-        <div class='timeslider-wrapper'>
-          <div id='timeslider' hidden>
-            <label id='timeslide-min'>1962</label>
-            <b>
-              <label id='year'>1962</label>
-              <b/>
-              <label id='timeslide-max'>2010</label>
-              <input id='slider' type='range' min='0' max='100' step='1' value='0' />
+        </li>
+        <li class="nav-item dropup">
+          <a class="nav-link dropdown-toggle" id="dropdown_stats" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Statistiken</a>
+          <div class="dropdown-menu" aria-labelledby="dropdown_stats">
+            <button type="button" class="btn btn-outline-primary btn-block" id="stats_standard">
+              Standart</button>
+            <button type="button" class="col btn btn-outline-primary btn-block" id="stats_equal_interval">
+              Gleiche Intervalle</button>
+            <button type="button" class="col btn btn-outline-primary btn-block" id="stats_std_deviation">
+              Standardabweichung</button>
+            <button type="button" class="col btn btn-outline-primary btn-block" id="stats_arithmetic_progression">
+              Arithmetische Folge</button>
+            <button type="button" class="col btn btn-outline-primary btn-block" id="stats_geometric_progression">
+              Geometrische Folge</button>
+            <button type="button" class="col btn btn-outline-primary btn-block" id="stats_quantile">
+              Quantile</button>
+            <button type="button" class="col btn btn-outline-primary btn-block" id="stats_jenks">
+              Jenks</button>
+            <input type="number" class="col form-control" id="stats_classes" value="4" min="1">
           </div>
-        </div>
-      </div>
-    </div>
+        </li>
+        <li class="nav-item dropup">
+          <a class="nav-link dropdown-toggle" id="dropdown_visualization" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Darstellung</a>
+          <div class="dropdown-menu" aria-labelledby="dropdown_visualization">
+            <h5 class="mb-0">
+              Farbschema anpassen
+            </h5>
+            <div class="card-block">
+              Niedrig
+              <input id='lowColor' type="color" value="#80BCFF"> Hoch
+              <input id='highColor' type="color" value="#1A5FAC">
+            </div>
+            <label>Transparenz</label>
+            <input id='transparency-slider' type='range' min='0' max='100' step='1' value='80' />
+          </div>
+        </li>
+      </ul>
 
-  </div>
 
+      <button class="btn btn-primary" type="button" data-toggle="collapse" data-target=".map-overlay" aria-expanded="false" aria-controls="multiCollapseExample2">Legende</button>
+  </nav>
 
   <!-- Large modal -->
   <div class="modal fade" id="launchModal">
@@ -198,8 +194,8 @@
         </div>
       </div>
     </div>
+  </div>
 
-  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <script src="assets/js/main.min.js"></script>
 
 </body>
