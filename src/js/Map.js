@@ -1,5 +1,8 @@
 import mapboxgl from 'mapbox-gl';
 import 'whatwg-fetch';
+import tinycolor from 'tinycolor2';
+
+import colorLerp from 'color-lerp';
 
 import Statistics from './Statistics.js';
 
@@ -67,11 +70,11 @@ export default class Map {
         // console.log(states)
 
         if (states.length > 0) {
-          map.setFilter('kreis-border-hover', [
-            '==',
-            'Gemeindename',
-            states[0].properties.Gemeindename
-          ]);
+          // map.setFilter('kreis-border-hover', [
+          //   '==',
+          //   'Gemeindename',
+          //   states[0].properties.Gemeindename
+          // ]);
 
           let myString = '';
           if (states[0].properties[current_feature]) {
@@ -93,9 +96,9 @@ export default class Map {
       });
     });
 
-    map.on('mouseleave', 'kreisgrenzen', function() {
-      map.setFilter('kreis-border-hover', ['==', 'Gemeindename', '']);
-    });
+    // map.on('mouseleave', 'kreisgrenzen', function() {
+    //   map.setFilter('kreis-border-hover', ['==', 'Gemeindename', '']);
+    // });
   }
 
   /**
@@ -125,18 +128,18 @@ export default class Map {
             'fill-color': '#5266B8'
           }
         });
-
-        map.addLayer({
-          id: 'kreis-border-hover',
-          type: 'line',
-          source: 'KreiseNRW',
-          layout: {},
-          paint: {
-            'line-color': '#627BC1',
-            'line-width': 5
-          },
-          filter: ['==', 'Gemeindename', '']
-        });
+        // gemeinde border
+        // map.addLayer({
+        //   id: 'kreis-border-hover',
+        //   type: 'line',
+        //   source: 'KreiseNRW',
+        //   layout: {},
+        //   paint: {
+        //     'line-color': '#627BC1',
+        //     'line-width': 5
+        //   },
+        //   filter: ['==', 'Gemeindename', '']
+        // });
 
         loadDone(true);
       })
@@ -342,14 +345,88 @@ export default class Map {
 
   changeStatistics(type) {
     switch (type) {
+      case 'STANDARD':
+        this._applyStandard();
+        break;
       case 'EQUAL_INTERVAL':
-        console.log('calculating EQUAL_INTERVAL');
-        Statistics.getEqualInterval(
-          this._getData(),
-          document.getElementById('stats_equal_interval_classes').value
+        this._applyStatistic(
+          Statistics.getEqualInterval(
+            this._getData(),
+            document.getElementById('stats_classes').value
+          )
         );
         break;
+      case 'STD_DEVIATION':
+      this._applyStatistic(
+        Statistics.getClassStdDeviation(
+          this._getData(),
+          document.getElementById('stats_classes').value
+        )
+      );
+        break;
+      case 'ARITHMETIC_PROGRESSION':
+      this._applyStatistic(
+        Statistics.getClassArithmeticProgression(
+          this._getData(),
+          document.getElementById('stats_classes').value
+        )
+      );
+        break;
+      case 'GEOMETRIC_PROGRESSION':
+      this._applyStatistic(
+        Statistics.getClassGeometricProgression(
+          this._getData(),
+          document.getElementById('stats_classes').value
+        )
+      );
+        break;
+      case 'QUANTILE':
+      this._applyStatistic(
+        Statistics.getClassQuantile(
+          this._getData(),
+          document.getElementById('stats_classes').value
+        )
+      );
+        break;
+      case 'JENKS':
+      this._applyStatistic(
+        Statistics.getClassJenks(
+          this._getData(),
+          document.getElementById('stats_classes').value
+        )
+      );
+        break;
     }
+  }
+
+  _applyStandard() {
+    map.setPaintProperty('kreisgrenzen', 'fill-color', {
+      property: current_feature,
+      stops: [
+        [this._getMinFeature(KreiseNRW, current_feature), lowColor],
+        [this._getMaxFeature(KreiseNRW, current_feature), highColor]
+      ]
+    });
+  }
+
+  _applyStatistic(classes) {
+    const colors = colorLerp(
+      lowColor,
+      highColor,
+      Number(document.getElementById('stats_classes').value) + 1,
+      'hex'
+    );
+
+    const stops = ['step', ['get', current_feature], '#BABABA'];
+
+    classes.forEach((e, i) => {
+      stops.push(e);
+      stops.push(colors[i]);
+    });
+
+    console.log(stops);
+    map.setPaintProperty('kreisgrenzen', 'fill-color', stops);
+
   }
 
   /**

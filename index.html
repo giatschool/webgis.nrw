@@ -138,13 +138,21 @@
             </h5>
           </div>
           <div id="collapseStats" class="collapse" role="tabpanel" aria-labelledby="headingStats">
-            <button type="button" class="btn btn-outline-primary btn-block" name="stats_standard">
+            <button type="button" class="btn btn-outline-primary btn-block" id="stats_standard">
               Standart</button>
-            <div class="form-row">
-              <button type="button" class="col btn btn-outline-primary btn-block" id="stats_equal_interval">
-                Gleiche Intervalle</button>
-              <input type="number" class="col form-control" id="stats_equal_interval_classes" value="4">
-            </div>
+            <button type="button" class="col btn btn-outline-primary btn-block" id="stats_equal_interval">
+              Gleiche Intervalle</button>
+            <button type="button" class="col btn btn-outline-primary btn-block" id="stats_std_deviation">
+              Standardabweichung</button>
+            <button type="button" class="col btn btn-outline-primary btn-block" id="stats_arithmetic_progression">
+              Arithmetische Folge</button>
+            <button type="button" class="col btn btn-outline-primary btn-block" id="stats_geometric_progression">
+              Geometrische Folge</button>
+            <button type="button" class="col btn btn-outline-primary btn-block" id="stats_quantile">
+              Quantile</button>
+            <button type="button" class="col btn btn-outline-primary btn-block" id="stats_jenks">
+              Jenks</button>
+            <input type="number" class="col form-control" id="stats_classes" value="4" min="1">
           </div>
         </div>
         <label>Transparenz</label>
@@ -170,7 +178,26 @@
             <p>Bewege die Maus über die Kreise</p>
           </div>
         </div>
-      </div>   
+      </div>
+      <!-- <div class="flex-statistics">
+        <div class="statistics-wrapper">
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Klassifikation
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" href="#">Kontinuierlich</a>
+              <a class="dropdown-item" href="#">Gleiches Interval</a>
+              <a class="dropdown-item" href="#">Quantile</a>
+            </div>
+          </div>
+            Farben
+            <input id='lowColor' type="color" value="#80BCFF">
+            <input id='highColor' type="color" value="#1A5FAC">
+            Klassen
+
+        </div>
+      </div> -->
       <div class="flex-timeslider">
         Timeslider
         <div class='timeslider-wrapper'>
@@ -178,9 +205,9 @@
             <label id='timeslide-min'>1962</label>
             <b>
               <label id='year'>1962</label>
-            <b/>
-            <label id='timeslide-max'>2010</label>
-            <input id='slider' type='range' min='0' max='100' step='1' value='0' />
+              <b/>
+              <label id='timeslide-max'>2010</label>
+              <input id='slider' type='range' min='0' max='100' step='1' value='0' />
           </div>
         </div>
       </div>

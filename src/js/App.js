@@ -145,6 +145,40 @@ class App {
       .addEventListener('click', () => {
         map.changeStatistics('EQUAL_INTERVAL');
       });
+
+    document
+      .getElementById('stats_std_deviation')
+      .addEventListener('click', () => {
+        map.changeStatistics('STD_DEVIATION');
+      });
+
+    document
+      .getElementById('stats_arithmetic_progression')
+      .addEventListener('click', () => {
+        map.changeStatistics('ARITHMETIC_PROGRESSION');
+      });
+
+    document
+      .getElementById('stats_geometric_progression')
+      .addEventListener('click', () => {
+        map.changeStatistics('GEOMETRIC_PROGRESSION');
+      });
+
+    document
+      .getElementById('stats_quantile')
+      .addEventListener('click', () => {
+        map.changeStatistics('QUANTILE');
+      });
+
+    document
+      .getElementById('stats_jenks')
+      .addEventListener('click', () => {
+        map.changeStatistics('JENKS');
+      });
+
+    document.getElementById('stats_standard').addEventListener('click', () => {
+      map.changeStatistics('STANDARD');
+    });
   }
 }
 
