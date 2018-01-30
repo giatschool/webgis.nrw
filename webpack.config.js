@@ -1,8 +1,11 @@
+'use strict'
+
 const webpack = require('webpack');
 const path = require('path');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const CompressionPlugin = require("compression-webpack-plugin");
 const BrotliPlugin = require('brotli-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 // hide deprication warnings
 process.noDeprecation = true
@@ -23,10 +26,13 @@ module.exports = {
         query: {
           presets: ['es2015', 'stage-0']
         }
-      }, {
+      }, 
+      {
         test: /\.(json|geojson)$/,
-        loader: 'json-loader'
-      }, {
+        loader: 'json-loader',
+        exclude: [path.resolve(__dirname, '/data')]
+      },
+       {
         test: /\.scss$/,
         use: ExtractTextPlugin.extract({
           use: [
@@ -57,6 +63,9 @@ module.exports = {
       Popper: ['popper.js', 'default'],
     }),
     new CompressionPlugin(),
-    new BrotliPlugin()
+    new BrotliPlugin(),
+    new CopyWebpackPlugin([
+      {from: 'data', to: __dirname + '/assets/data'}
+    ])
   ]
 };

@@ -1,4 +1,5 @@
 import Map from './Map.js';
+import Listeners from './Listeners.js';
 
 class App {
   static run() {
@@ -16,129 +17,41 @@ class App {
       }
     });
 
-    document.getElementById('basicMap').addEventListener('click', () => {
-      map.changeStyle('basic');
-    });
+    const listeners = new Listeners(document, map, loadDone => {
 
-    document.getElementById('darkMap').addEventListener('click', () => {
-      map.changeStyle('dark');
-    });
+      console.log('Loaded');
 
-    document.getElementById('lightMap').addEventListener('click', () => {
-      map.changeStyle('light');
-    });
+    })
 
-    document.getElementById('satelliteMap').addEventListener('click', () => {
-      map.changeStyle('satellite');
-    });
+    // Function for splitView
 
-    document.getElementById('topMap').addEventListener('click', () => {
-      map.changeStyle('top');
-    });
+    let splitView = false;
+    document.getElementById('splitMap').addEventListener('click', () =>  {
+      console.log('splitView triggered');
 
-    document.getElementById('dtkMap').addEventListener('click', () => {
-      map.changeStyle('dtk');
-    });
+      console.log(document.getElementsByClassName('webgis-view'));
 
-    document.getElementById('dopMap').addEventListener('click', () => {
-      map.changeStyle('dop');
-    });
+      if (!splitView) {
+        $('.webgis-view').after('<div class="webgis-view split_map" style="float: right;"><div id="split_map" style="height: 100vh"></div></div>')
+        $('.webgis-view').css('width', '50vw');
+        $('.webgis-view').css('height', '100vh');
 
-    document
-      .getElementById('custom_csv_input')
-      .addEventListener('change', () => {
-        map.importCSV();
-      });
+        console.log('initialize sec map');
 
-    document.getElementById('slider').addEventListener('input', function(e) {
-      const year = parseInt(e.target.value, 10);
-      map.updateData(year);
-    });
+        const split_map = new Map('split_map', [7.555, 51.478333], 7, success => {
+          console.log('sec map init');
+        })
 
-    document
-      .getElementById('transparency-slider')
-      .addEventListener('input', function(e) {
-        const transparency = e.target.value;
-        map.changeTransparency(transparency);
-      });
+        splitView = true
 
-    document
-      .getElementsByName('population_data')[0]
-      .addEventListener('click', () => {
-        map.setData('population_data', 'population');
-      });
+      }
+      //$('.split_map').hide();
+      $('.webgis-view').css('width', '50vw');
 
-    document
-      .getElementById('Anteil_Arbeitslose_UTF8')
-      .addEventListener('click', () => {
-        map.setData('Anteil_Arbeitslose_UTF8', 'arbeitslose');
-      });
 
-    document
-      .getElementById('Erwerbstaetige_Dienstleistung')
-      .addEventListener('click', () => {
-        map.setData(
-          'Anteil_Erwerbstaetige_Dienstleistung_UTF8',
-          'Erwerbstaetige_Dienstleistung'
-        );
-      });
+    })
 
-    document
-      .getElementById('Erwerbstaetige_Forst')
-      .addEventListener('click', () => {
-        map.setData('Anteil_Erwerbstaetige_Forst_UTF8', 'Erwerbstaetige_Forst');
-      });
 
-    document
-      .getElementById('Erwerbstaetige_Gewerbe')
-      .addEventListener('click', () => {
-        map.setData(
-          'Anteil_Erwerbstaetige_ProduzierendesGewerbe_UTF8',
-          'Erwerbstaetige_Gewerbe'
-        );
-      });
-
-    document.getElementById('Wahl17_CDU').addEventListener('click', () => {
-      map.setData('Wahlergebnisse_CDU_1976_bis_2013', 'Wahl17_CDU');
-    });
-
-    document.getElementById('Wahl17_SPD').addEventListener('click', () => {
-      map.setData('Wahlergebnisse_CDU_1976_bis_2013', 'Wahl17_SPD');
-    });
-
-    document.getElementById('feinstaub01').addEventListener('click', () => {
-      map.addFeinstaubLayer('band01_02112017');
-    });
-
-    document.getElementById('feinstaub12').addEventListener('click', () => {
-      map.addFeinstaubLayer('band12_02112017');
-    });
-
-    document.getElementById('feinstaub24').addEventListener('click', () => {
-      map.addFeinstaubLayer('band24_02112017');
-    });
-
-    document
-      .getElementById('feinstaub-remove')
-      .addEventListener('click', () => {
-        map.removeFeinstaubLayer();
-      });
-
-    document.getElementById('lowColor').addEventListener(
-      'change',
-      e => {
-        map.changeColor('low', e.target.value);
-      },
-      true
-    );
-
-    document.getElementById('highColor').addEventListener(
-      'change',
-      e => {
-        map.changeColor('high', e.target.value);
-      },
-      true
-    );
   }
 }
 
