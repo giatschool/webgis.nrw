@@ -8,53 +8,20 @@
   <title>webgis.nrw</title>
 
   <!-- CSS includes -->
+  
   <link href='assets/css/main.min.css' rel='stylesheet' />
 
 </head>
 
 <body>
 
-  <div id='map' class='map'></div>
-
-  <div class='map-overlay collapse multi-collapse' id='bottom-bar'>
-    <div class="flex-legend">
-      <div class='legend-wrapper'>
-        <label id="legend-heading">Legende</label>
-        <div id='legend-bar' class='row colors'>
-        </div>
-        <div class='labels'>
-          <div class='label' id="legend-min">0</div>
-          <div class='label' id="legend-max">100</div>
-        </div>
-      </div>
-      <div class='info'>
-        <div id='pd'>
-          <p>Bewege die Maus über die Kreise</p>
-        </div>
-      </div>
-    </div>
-    <div class="flex-timeslider">
-      Timeslider
-      <div class='timeslider-wrapper'>
-        <div id='timeslider' hidden>
-          <div class='labels'>
-              <label id='timeslide-min'>1962</label>
-              <label id='year'>1962</label>
-              <label id='timeslide-max'>2010</label>
-          </div> 
-          <input id='slider' type='range' min='0' max='100' step='1' value='0' />
-        </div>
-      </div>
-    </div>
-  </div>
-
   <nav class="navbar fixed-bottom navbar-expand-sm navbar-dark bg-dark">
     <a class="navbar-brand" href="#">
       <!-- <h1 class="hero-webgisnrw">webgis.
-          <span class="n">n</span>
-          <span class="r">r</span>
-          <span class="w">w</span>
-        </h1> -->
+              <span class="n">n</span>
+              <span class="r">r</span>
+              <span class="w">w</span>
+            </h1> -->
       webgis.
       <span class="n">n</span>
       <span class="r">r</span>
@@ -70,6 +37,7 @@
         <li class="nav-item dropup">
           <a class="nav-link dropdown-toggle" id="dropdown_map_settings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Karteneinstellungen</a>
           <div class="dropdown-menu" aria-labelledby="dropdown_map_settings">
+            <h5>Basemap</h5>
             <div class="layer-control">
               <div class="btn-group">
                 <button type="button" class="btn btn-info" id='topMap' data-toggle="tooltip" data-placement="top" data-html="true" title="TOP - Topographische Karte BKG<br />Quelle: Bundesamt für Kartographie und Geodäsie">TOP</button>
@@ -84,6 +52,18 @@
                 <button type="button" class="btn btn-success" id='satelliteMap'>Satellit</button>
               </div>
             </div>
+            <hr />
+            <h5>Farbschema</h5>
+            <div class="card-block">
+                <label>Niedrig</label>
+                <input id='lowColor' type="color" value="#80BCFF" />
+                </br> 
+                <label>Hoch</label>
+                <input id='highColor' type="color" value="#1A5FAC" />
+            </div>
+            <hr />
+            <h5>Transparenz</h5>
+            <input id='transparency-slider' type='range' min='0' max='100' step='1' value='80' />
           </div>
         </li>
         <li class="nav-item dropup">
@@ -146,18 +126,10 @@
           </div>
         </li>
         <li class="nav-item dropup">
-          <a class="nav-link dropdown-toggle" id="dropdown_visualization" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Darstellung</a>
+          <a class="nav-link dropdown-toggle" id="dropdown_visualization" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">???</a>
           <div class="dropdown-menu" aria-labelledby="dropdown_visualization">
-            <h5 class="mb-0">
-              Farbschema anpassen
-            </h5>
-            <div class="card-block">
-              Niedrig
-              <input id='lowColor' type="color" value="#80BCFF"> Hoch
-              <input id='highColor' type="color" value="#1A5FAC">
-            </div>
-            <label>Transparenz</label>
-            <input id='transparency-slider' type='range' min='0' max='100' step='1' value='80' />
+            
+            
           </div>
         </li>
       </ul>
@@ -165,6 +137,47 @@
 
       <button class="btn btn-primary" type="button" data-toggle="collapse" data-target=".map-overlay" aria-expanded="false" aria-controls="multiCollapseExample2">Legende</button>
   </nav>
+
+  <div> 
+
+    <div id='map' class='map'></div>
+
+    <div class='map-overlay collapse multi-collapse' id='bottom-bar'>
+      <div class="flex-legend">
+        <div class='legend-wrapper'>
+          <label id="legend-heading">Legende</label>
+          <div id='legend-bar' class='row colors'>
+          </div>
+          <div class='labels'>
+            <div class='label' id="legend-min">0</div>
+            <div class='label' id="legend-max">100</div>
+          </div>
+        </div>
+        <div class='info'>
+          <div id='pd'>
+            <p>Bewege die Maus über die Kreise</p>
+          </div>
+        </div>
+      </div>
+      <div class="flex-timeslider">
+        Timeslider
+        <div class='timeslider-wrapper'>
+          <div id='timeslider' hidden>
+            <div class='labels'>
+              <label id='timeslide-min'>1962</label>
+              <label id='year'>1962</label>
+              <label id='timeslide-max'>2010</label>
+            </div>
+            <input id='slider' type='range' min='0' max='100' step='1' value='0' />
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+
 
   <!-- Large modal -->
   <div class="modal fade" id="launchModal">

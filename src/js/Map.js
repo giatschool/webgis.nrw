@@ -1,6 +1,5 @@
 import mapboxgl from 'mapbox-gl';
 import 'whatwg-fetch';
-import tinycolor from 'tinycolor2';
 
 import colorLerp from 'color-lerp';
 
@@ -36,6 +35,8 @@ export default class Map {
       zoom: zoom,
       style: 'mapbox://styles/mapbox/light-v9'
     });
+
+    map.addControl(new mapboxgl.NavigationControl(), 'top-left');
 
     map.on('load', () => {
       // When a click event occurs on a feature in the places layer, open a popup at the
