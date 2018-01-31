@@ -177,6 +177,11 @@ class App {
     document.getElementById('stats_standard').addEventListener('click', () => {
       map.changeStatistics('STANDARD');
     });
+
+    // https://stackoverflow.com/a/32922725/5660646
+    $(document).on('click', '.dropdown-menu', e => {
+      e.stopPropagation();
+    });
   }
 }
 
