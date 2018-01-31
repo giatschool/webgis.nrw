@@ -3,7 +3,7 @@ import Listeners from './Listeners.js';
 
 class App {
   static run() {
-    const map = new Map('map', [7.555, 51.478333], 7, success => {
+    const primary_map = new Map('map', [7.555, 51.478333], 7, success => {
       if (success) {
         // finished loading
         document.getElementById('start').removeAttribute('disabled');
@@ -17,39 +17,46 @@ class App {
       }
     });
 
-    const listeners = new Listeners(document, map, loadDone => {
+    let secondary_map;
 
-      console.log('Loaded');
-
-    })
+    let listeners = new Listeners(
+      document,
+      primary_map,
+      secondary_map,
+      loadDone => {
+        console.log('Loaded');
+      }
+    );
 
     // Function for splitView
-
     let splitView = false;
-    document.getElementById('splitMap').addEventListener('click', () =>  {
+
+    document.getElementById('splitMap').addEventListener('click', () => {
       console.log('splitView triggered');
-
-      console.log(document.getElementsByClassName('webgis-view'));
-
       if (!splitView) {
-        $('.webgis-view').after('<div class="webgis-view split_map" style="float: right;"><div id="split_map" style="height: 100vh"></div></div>')
+        $('.webgis-view').after(
+          '<div class="webgis-view split_map" style="float: right;"><div id="split_map" style="height: 100vh"></div></div>'
+        );
         $('.webgis-view').css('width', '50vw');
         $('.webgis-view').css('height', '100vh');
 
-        console.log('initialize sec map');
+        secondary_map = new Map('split_map', [7.555, 51.478333], 7, success => {
+          secondary_map.center();
+          primary_map.center();
+        });
 
-        const split_map = new Map('split_map', [7.555, 51.478333], 7, success => {
-          console.log('sec map init');
-        })
+        listeners = new Listeners(
+          document,
+          primary_map,
+          secondary_map,
+          loadDone => {
+            console.log('Loaded');
+          }
+        );
 
-        splitView = true
-
+        splitView = true;
       }
-      //$('.split_map').hide();
-      $('.webgis-view').css('width', '50vw');
-
-
-    })
+    });
 
 
   }
