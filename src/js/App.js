@@ -182,6 +182,16 @@ class App {
     $(document).on('click', '.dropdown-menu', e => {
       e.stopPropagation();
     });
+
+    $('#mode-dual, #mode-split').on('change', () => {
+      console.log('clicked');
+      $('#map-select').collapse('show');
+    });
+
+    $('#mode-standard').on('change', () => {
+      console.log('clicked');
+      $('#map-select').collapse('hide');
+    });
   }
 }
 

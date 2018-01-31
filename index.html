@@ -34,6 +34,16 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarCollapse">
       <ul class="navbar-nav mr-auto">
+        <li class="nav-item collapse" id="map-select">
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                <label class="btn btn-secondary active">
+                  <input type="radio" name="options" id="option1" autocomplete="off" checked>Karte 1
+                </label>
+                <label class="btn btn-secondary">
+                  <input type="radio" name="options" id="option2" autocomplete="off">Karte 2
+                </label>
+              </div>
+        </li>
         <li class="nav-item dropup">
           <a class="nav-link dropdown-toggle" id="dropdown_map_settings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Karteneinstellungen</a>
           <div class="dropdown-menu" aria-labelledby="dropdown_map_settings">
@@ -64,6 +74,19 @@
             <hr />
             <h5>Transparenz</h5>
             <input id='transparency-slider' type='range' min='0' max='100' step='1' value='80' />
+            <hr/>
+            <h5>Kartenmodus</h5>
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-light active">
+                  <input type="radio" name="options" id="mode-standard" autocomplete="off" checked>Standart
+                </label>
+                <label class="btn btn-light">
+                  <input type="radio" name="options" id="mode-dual" autocomplete="off">Dual View
+                </label>
+                <label class="btn btn-light">
+                  <input type="radio" name="options" id="mode-split" autocomplete="off">Split View
+                </label>
+              </div>
           </div>
         </li>
         <li class="nav-item dropup">
