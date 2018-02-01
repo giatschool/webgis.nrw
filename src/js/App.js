@@ -16,7 +16,7 @@ class App {
         document.getElementById('start').classList.add('btn-danger');
       }
     });
-    
+
     let secondary_map;
 
     let listeners = new Listeners(
@@ -54,6 +54,8 @@ class App {
           }
         );
 
+        listeners.setActiveMap(primary_map);
+
         splitView = true;
       }
     });
@@ -75,18 +77,28 @@ class App {
           }
         );
 
+        listeners.setActiveMap(primary_map);
+
         splitView = false;
       }
     });
 
     $('#mode-dual, #mode-split').on('change', () => {
-      console.log('clicked');
       $('#map-select').collapse('show');
     });
 
     $('#mode-standard').on('change', () => {
-      console.log('clicked');
       $('#map-select').collapse('hide');
+    });
+
+    $('#edit-map-one, #edit-map-two').on('change', () => {
+      if ($('#edit-map-one').is(':checked')) {
+        listeners.setActiveMap(primary_map);
+        console.log('checked map 1');
+      } else {
+        listeners.setActiveMap(secondary_map);
+        console.log('checked map 2');
+      }
     });
   }
 }

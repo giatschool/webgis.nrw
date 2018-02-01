@@ -1,66 +1,70 @@
+let activeMap = undefined;
+
 export default class Listeners {
   constructor(document, map, secondary_map, loadDone) {
+    this.setActiveMap(map);
+
     document.getElementById('basicMap').addEventListener('click', () => {
-      map.changeStyle('basic');
+      this.getActiveMap().changeStyle('basic');
     });
 
     document.getElementById('darkMap').addEventListener('click', () => {
-      map.changeStyle('dark');
+      this.getActiveMap().changeStyle('dark');
     });
 
     document.getElementById('lightMap').addEventListener('click', () => {
-      map.changeStyle('light');
+      this.getActiveMap().changeStyle('light');
     });
 
     document.getElementById('satelliteMap').addEventListener('click', () => {
-      map.changeStyle('satellite');
+      this.getActiveMap().changeStyle('satellite');
     });
 
     document.getElementById('topMap').addEventListener('click', () => {
-      map.changeStyle('top');
+      this.getActiveMap().changeStyle('top');
     });
 
     document.getElementById('dtkMap').addEventListener('click', () => {
-      map.changeStyle('dtk');
+      this.getActiveMap().changeStyle('dtk');
     });
 
     document.getElementById('dopMap').addEventListener('click', () => {
-      map.changeStyle('dop');
+      this.getActiveMap().changeStyle('dop');
     });
 
     document
       .getElementById('custom_csv_input')
       .addEventListener('change', () => {
-        map.importCSV();
+        this.getActiveMap().importCSV();
       });
 
-    document.getElementById('slider').addEventListener('input', function(e) {
+    document.getElementById('slider').addEventListener('input', e => {
       const year = parseInt(e.target.value, 10);
-      map.updateData(year);
+      this.getActiveMap().updateData(year);
     });
 
     document
       .getElementById('transparency-slider')
-      .addEventListener('input', function(e) {
+      .addEventListener('input', e => {
         const transparency = e.target.value;
-        map.changeTransparency(transparency);
+        this.getActiveMap().changeTransparency(transparency);
       });
 
     document.getElementById('population_data').addEventListener('click', () => {
       console.log('pop');
-      map.setData('population_data', 'population');
+      this.getActiveMap().setData('population_data', 'population');
     });
 
     document
       .getElementById('Anteil_Arbeitslose_UTF8')
       .addEventListener('click', () => {
-        map.setData('Anteil_Arbeitslose_UTF8', 'arbeitslose');
+        this.getActiveMap().setData('Anteil_Arbeitslose_UTF8', 'arbeitslose');
       });
 
     document
       .getElementById('Erwerbstaetige_Dienstleistung')
       .addEventListener('click', () => {
-        map.setData(
+        this.getActiveMap().setData(
           'Anteil_Erwerbstaetige_Dienstleistung_UTF8',
           'Erwerbstaetige_Dienstleistung'
         );
@@ -69,13 +73,16 @@ export default class Listeners {
     document
       .getElementById('Erwerbstaetige_Forst')
       .addEventListener('click', () => {
-        map.setData('Anteil_Erwerbstaetige_Forst_UTF8', 'Erwerbstaetige_Forst');
+        this.getActiveMap().setData(
+          'Anteil_Erwerbstaetige_Forst_UTF8',
+          'Erwerbstaetige_Forst'
+        );
       });
 
     document
       .getElementById('Erwerbstaetige_Gewerbe')
       .addEventListener('click', () => {
-        map.setData(
+        this.getActiveMap().setData(
           'Anteil_Erwerbstaetige_ProduzierendesGewerbe_UTF8',
           'Erwerbstaetige_Gewerbe'
         );
@@ -84,7 +91,7 @@ export default class Listeners {
     document.getElementById('lowColor').addEventListener(
       'change',
       e => {
-        map.changeColor('low', e.target.value);
+        this.getActiveMap().changeColor('low', e.target.value);
       },
       true
     );
@@ -92,7 +99,7 @@ export default class Listeners {
     document.getElementById('highColor').addEventListener(
       'change',
       e => {
-        map.changeColor('high', e.target.value);
+        this.getActiveMap().changeColor('high', e.target.value);
       },
       true
     );
@@ -100,37 +107,37 @@ export default class Listeners {
     document
       .getElementById('stats_equal_interval')
       .addEventListener('click', () => {
-        map.changeStatistics('EQUAL_INTERVAL');
+        this.getActiveMap().changeStatistics('EQUAL_INTERVAL');
       });
 
     document
       .getElementById('stats_std_deviation')
       .addEventListener('click', () => {
-        map.changeStatistics('STD_DEVIATION');
+        this.getActiveMap().changeStatistics('STD_DEVIATION');
       });
 
     document
       .getElementById('stats_arithmetic_progression')
       .addEventListener('click', () => {
-        map.changeStatistics('ARITHMETIC_PROGRESSION');
+        this.getActiveMap().changeStatistics('ARITHMETIC_PROGRESSION');
       });
 
     document
       .getElementById('stats_geometric_progression')
       .addEventListener('click', () => {
-        map.changeStatistics('GEOMETRIC_PROGRESSION');
+        this.getActiveMap().changeStatistics('GEOMETRIC_PROGRESSION');
       });
 
     document.getElementById('stats_quantile').addEventListener('click', () => {
-      map.changeStatistics('QUANTILE');
+      this.getActiveMap().changeStatistics('QUANTILE');
     });
 
     document.getElementById('stats_jenks').addEventListener('click', () => {
-      map.changeStatistics('JENKS');
+      this.getActiveMap().changeStatistics('JENKS');
     });
 
     document.getElementById('stats_standard').addEventListener('click', () => {
-      map.changeStatistics('STANDARD');
+      this.getActiveMap().changeStatistics('STANDARD');
     });
 
     // https://stackoverflow.com/a/32922725/5660646
@@ -164,22 +171,14 @@ export default class Listeners {
     //         map.removeFeinstaubLayer();
     //     });
 
-    // document.getElementById('lowColor').addEventListener(
-    //     'change',
-    //     e => {
-    //         map.changeColor('low', e.target.value);
-    //     },
-    //     true
-    // );
-
-    // document.getElementById('highColor').addEventListener(
-    //     'change',
-    //     e => {
-    //         map.changeColor('high', e.target.value);
-    //     },
-    //     true
-    // );
-
     loadDone();
+  }
+
+  setActiveMap(map) {
+    activeMap = map;
+  }
+
+  getActiveMap() {
+    return activeMap;
   }
 }
