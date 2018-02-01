@@ -83,6 +83,8 @@ class App {
       }
     });
 
+    $('.map-overlay').collapse('show');
+
     $('#mode-dual, #mode-split').on('change', () => {
       $('#map-select').collapse('show');
     });
