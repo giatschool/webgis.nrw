@@ -17,7 +17,7 @@ let current_feature;
 let lowColor = '#80BCFF';
 let highColor = '#1A5FAC';
 
-let map = undefined;
+const map = undefined;
 
 export default class Map {
   /**
@@ -29,16 +29,25 @@ export default class Map {
    */
   constructor(container, center, zoom, loadDone) {
     mapboxgl.accessToken = mapboxToken;
-    map = new mapboxgl.Map({
+    this.map = new mapboxgl.Map({
       container: container,
       center: center,
       zoom: zoom,
       style: 'mapbox://styles/mapbox/light-v9'
     });
 
-    map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+    this.map.addControl(new mapboxgl.NavigationControl(), 'top-left');
 
-    map.on('load', () => {
+    // map.on('load', () => {
+    //   this.map.fitBounds(
+    //     // Boundary of NRW
+    //     new mapboxgl.LngLatBounds([5.8664, 50.3276], [9.4623, 52.5325]),
+    //     {
+    //       padding: 20
+    //     }
+    //   );
+
+    this.map.on('load', () => {
       // When a click event occurs on a feature in the places layer, open a popup at the
       // location of the feature, with description HTML from its properties.
       // map.on('click', 'kreisgrenzen', function (e) {
@@ -48,55 +57,50 @@ export default class Map {
       // });
 
       // Change the cursor to a pointer when the mouse is over the places layer.
-      map.on('mouseenter', function() {
+      this.map.on('mouseenter', function () {
         map.getCanvas().style.cursor = 'pointer';
       });
 
       // Change it back to a pointer when it leaves.
-      map.on('mouseleave', function() {
+      this.map.on('mouseleave', function () {
         map.getCanvas().style.cursor = '';
       });
     });
 
-    map.on('style.load', () => {
+    this.map.on('style.load', () => {
       // load initial NRW data and callback when load is done
       this.loadData(loadDone);
 
       // show current Kreis on legend overlay
-      map.on('mousemove', 'kreisgrenzen', function(e) {
-        const states = map.queryRenderedFeatures(e.point, {
-          layers: ['kreisgrenzen']
-        });
+      this.map.on('mousemove', e => {
+        if (this.map.getLayer('kreisgrenzen')) {
+          const states = this.map.queryRenderedFeatures(e.point, {
+            layers: ['kreisgrenzen']
+          });
 
-        // console.log(states)
-
-        if (states.length > 0) {
-          // map.setFilter('kreis-border-hover', [
-          //   '==',
-          //   'Gemeindename',
-          //   states[0].properties.Gemeindename
-          // ]);
-
-          let myString = '';
-          if (states[0].properties[current_feature]) {
-            myString =
-              `<h3><strong>${states[0].properties.Gemeindename}</strong></h3>` +
-              `<p><strong><em>${
+          if (states.length > 0) {
+            let myString = '';
+            if (states[0].properties[current_feature]) {
+              myString =
+                `<h3><strong>${
+                states[0].properties.Gemeindename
+                }</strong></h3>` +
+                `<p><strong><em>${
                 states[0].properties[current_feature]
-              }</strong> ${current_feature}</em></p>`;
+                }</strong> ${current_feature}</em></p>`;
+            } else {
+              myString = `<h3><strong>${
+                states[0].properties.Gemeindename
+                }</strong></h3>`;
+            }
+            document.getElementById('pd').innerHTML = myString;
           } else {
-            myString = `<h3><strong>${
-              states[0].properties.Gemeindename
-            }</strong></h3>`;
+            document.getElementById('pd').innerHTML =
+              '<p>Bewege die Maus über die Kreise</p>';
           }
-          document.getElementById('pd').innerHTML = myString;
-        } else {
-          document.getElementById('pd').innerHTML =
-            '<p>Bewege die Maus über die Kreise</p>';
         }
       });
     });
-
     // map.on('mouseleave', 'kreisgrenzen', function() {
     //   map.setFilter('kreis-border-hover', ['==', 'Gemeindename', '']);
     // });
@@ -107,47 +111,43 @@ export default class Map {
    * @param {function} loadDone called when data was fetched successful
    */
   loadData(loadDone) {
-    console.log('fetching data');
-    fetch(kreiseNRWUrl)
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(json) {
-        console.log('parsed json', json);
-        KreiseNRW = json;
-
-        map.addSource('KreiseNRW', {
-          type: 'geojson',
-          data: KreiseNRW
+    fetch('/data/nw_dvg2_krs.json')
+      .then(function (response) {
+        response.json().then(function (data) {
+          KreiseNRW = data;
         });
-        map.addLayer({
-          id: 'kreisgrenzen',
-          type: 'fill',
-          source: 'KreiseNRW',
-          paint: {
-            'fill-opacity': 0.8,
-            'fill-color': '#5266B8'
-          }
-        });
-        // gemeinde border
-        // map.addLayer({
-        //   id: 'kreis-border-hover',
-        //   type: 'line',
-        //   source: 'KreiseNRW',
-        //   layout: {},
-        //   paint: {
-        //     'line-color': '#627BC1',
-        //     'line-width': 5
-        //   },
-        //   filter: ['==', 'Gemeindename', '']
-        // });
-
-        loadDone(true);
       })
-      .catch(function(ex) {
-        loadDone(false);
+      .catch(function (ex) {
         console.log('parsing failed', ex);
       });
+
+    this.map.addSource('KreiseNRW', {
+      type: 'geojson',
+      data: '/data/nw_dvg2_krs.json'
+    });
+    this.map.addLayer({
+      id: 'kreisgrenzen',
+      type: 'fill',
+      source: 'KreiseNRW',
+      paint: {
+        'fill-opacity': 0.8,
+        'fill-color': '#5266B8'
+      }
+    });
+    loadDone(true);
+  }
+
+  /**
+   * @description centers the the map around NRW to fit the viewport
+   */
+  center() {
+    this.map.resize();
+    this.map.fitBounds(
+      // Fit around the center of Northrhine-Westphalia
+      new mapboxgl.LngLatBounds([5.8664, 50.3276], [9.4623, 52.5325], {
+        padding: 20
+      })
+    );
   }
 
   /**
@@ -158,8 +158,8 @@ export default class Map {
   changeStyle(style) {
     const layers = Object.keys(wmsLayerUrls);
     if (layers.includes(style)) {
-      if (!map.getLayer(style)) {
-        map.addLayer(
+      if (!this.map.getLayer(style)) {
+        this.map.addLayer(
           {
             id: style,
             paint: {},
@@ -173,16 +173,16 @@ export default class Map {
           'kreisgrenzen'
         );
       } else {
-        map.setLayoutProperty(style, 'visibility', 'visible');
+        this.map.setLayoutProperty(style, 'visibility', 'visible');
       }
       layers.splice(layers.findIndex(l => l === style), 1);
     } else {
-      map.setStyle(`mapbox://styles/mapbox/${style}-v9`);
+      this.map.setStyle(`mapbox://styles/mapbox/${style}-v9`);
     }
 
     for (const l of layers) {
-      if (map.getLayer(l)) {
-        map.setLayoutProperty(l, 'visibility', 'none');
+      if (this.map.getLayer(l)) {
+        this.map.setLayoutProperty(l, 'visibility', 'none');
       }
     }
   }
@@ -192,7 +192,11 @@ export default class Map {
    * @param {Number} transparency transparency value between 0 and 100
    */
   changeTransparency(transparency) {
-    map.setPaintProperty('kreisgrenzen', 'fill-opacity', transparency / 100);
+    this.map.setPaintProperty(
+      'kreisgrenzen',
+      'fill-opacity',
+      transparency / 100
+    );
   }
 
   /**
@@ -208,8 +212,8 @@ export default class Map {
     }
 
     if (current_feature) {
-      if (map.getLayer('kreisgrenzen')) {
-        map.setPaintProperty('kreisgrenzen', 'fill-color', {
+      if (this.map.getLayer('kreisgrenzen')) {
+        this.map.setPaintProperty('kreisgrenzen', 'fill-color', {
           property: current_feature,
           stops: [
             [this._getMinFeature(KreiseNRW, current_feature), lowColor],
@@ -218,8 +222,8 @@ export default class Map {
         });
       }
     }
-    if (map.getLayer('feinstaub_band_layer')) {
-      map.setPaintProperty('feinstaub_band_layer', 'fill-color', {
+    if (this.map.getLayer('feinstaub_band_layer')) {
+      this.map.setPaintProperty('feinstaub_band_layer', 'fill-color', {
         property: 'DN',
         stops: [[0, lowColor], [45, highColor]]
       });
@@ -245,9 +249,19 @@ export default class Map {
    */
   setData(data_source, feature) {
     /* eslint-disable global-require */
-    const data = require(`./../data/${data_source}.json`);
-    /* eslint-enable global-require */
-    this._setDataFromJSON(data, feature);
+
+    const url = `/data/${data_source}.json`;
+
+    fetch(url)
+      .then(response => {
+        response.json().then(_data => {
+          /* eslint-enable global-require */
+          return this._setDataFromJSON(_data, feature);
+        });
+      })
+      .catch(ex => {
+        console.log('parsing failed', ex);
+      });
   }
 
   /**
@@ -267,10 +281,9 @@ export default class Map {
         }
       });
     });
-    console.log(current_feature);
 
-    map.getSource('KreiseNRW').setData(KreiseNRW);
-    map.setPaintProperty('kreisgrenzen', 'fill-color', {
+    this.map.getSource('KreiseNRW').setData(KreiseNRW);
+    this.map.setPaintProperty('kreisgrenzen', 'fill-color', {
       property: current_feature,
       stops: [
         [this._getMinFeature(KreiseNRW, current_feature), lowColor],
@@ -295,9 +308,7 @@ export default class Map {
     const file = document.getElementById('custom_csv_input').files[0];
     if (file.type === 'text/csv') {
       const parser = new CSVParser();
-
       parser.getAsText(file, data => {
-        console.log(data);
         this._setDataFromJSON(data, file.name);
       });
     } else {
@@ -314,12 +325,12 @@ export default class Map {
     const band = require(`./../data/${name}.json`);
     /* eslint-enable global-require */
 
-    if (!map.getLayer('feinstaub_band_layer')) {
-      map.addSource('feinstaub_band', {
+    if (!this.map.getLayer('feinstaub_band_layer')) {
+      this.map.addSource('feinstaub_band', {
         type: 'geojson',
         data: band
       });
-      map.addLayer({
+      this.map.addLayer({
         id: 'feinstaub_band_layer',
         type: 'fill',
         source: 'feinstaub_band',
@@ -332,7 +343,7 @@ export default class Map {
         }
       });
     } else {
-      map.getSource('feinstaub_band').setData(band);
+      this.map.getSource('feinstaub_band').setData(band);
     }
   }
 
@@ -340,8 +351,12 @@ export default class Map {
    * @description removes fine dust layer
    */
   removeFeinstaubLayer() {
-    map.removeSource('feinstaub_band');
-    map.removeLayer('feinstaub_band_layer');
+    this.map.removeSource('feinstaub_band');
+    this.map.removeLayer('feinstaub_band_layer');
+  }
+
+  resize() {
+    this.map.resize();
   }
 
   changeStatistics(type) {
@@ -401,7 +416,7 @@ export default class Map {
   }
 
   _applyStandard() {
-    map.setPaintProperty('kreisgrenzen', 'fill-color', {
+    this.map.setPaintProperty('kreisgrenzen', 'fill-color', {
       property: current_feature,
       stops: [
         [this._getMinFeature(KreiseNRW, current_feature), lowColor],
@@ -426,7 +441,7 @@ export default class Map {
     });
 
     console.log(stops);
-    map.setPaintProperty('kreisgrenzen', 'fill-color', stops);
+    this.map.setPaintProperty('kreisgrenzen', 'fill-color', stops);
   }
 
   /**
@@ -457,11 +472,9 @@ export default class Map {
       });
     });
 
-    console.log(KreiseNRW);
-
     // apply styling
-    map.getSource('KreiseNRW').setData(KreiseNRW);
-    map.setPaintProperty('kreisgrenzen', 'fill-color', {
+    this.map.getSource('KreiseNRW').setData(KreiseNRW);
+    this.map.setPaintProperty('kreisgrenzen', 'fill-color', {
       property: feature,
       stops: [
         [this._getMaxFeature(KreiseNRW, feature), lowColor],

@@ -8,8 +8,7 @@
   <title>webgis.nrw</title>
 
   <!-- CSS includes -->
-  
-  <link href='assets/css/main.min.css' rel='stylesheet' />
+  <link href='assets/css/main.min.css' type="text/css" rel="stylesheet" />
 
 </head>
 
@@ -93,7 +92,7 @@
           <a class="nav-link dropdown-toggle" id="dropdown_stat_data" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Statistische Daten</a>
           <div class="dropdown-menu" aria-labelledby="dropdown_stat_data">
             <div class="card-block">
-              <button type="button" class="btn btn-outline-primary btn-block" name="population_data">
+              <button type="button" class="btn btn-outline-primary btn-block" id="population_data">
                 <i class="material-icons">group</i>
                 Einwohnerzahlen</button>
               <button type="button" class="btn btn-outline-primary btn-block" id="Anteil_Arbeitslose_UTF8">
@@ -161,7 +160,7 @@
       <button class="btn btn-primary" type="button" data-toggle="collapse" data-target=".map-overlay" aria-expanded="false" aria-controls="multiCollapseExample2">Legende</button>
   </nav>
 
-  <div> 
+  <div class="webgis-view" style="float:left; width: 100vw;"> 
 
     <div id='map' class='map'></div>
 
@@ -194,6 +193,8 @@
             <input id='slider' type='range' min='0' max='100' step='1' value='0' />
           </div>
         </div>
+        <label>Transparenz</label>
+        <input id='transparency-slider' type='range' min='0' max='100' step='1' value='80' />
       </div>
     </div>
 
@@ -231,8 +232,7 @@
       </div>
     </div>
   </div>
-
-  <script src="assets/js/main.min.js"></script>
+  <script src="assets/js/main.min.js" type="application/javascript"></script>
 
 </body>
 

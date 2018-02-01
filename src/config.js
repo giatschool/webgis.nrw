@@ -14,7 +14,5 @@ module.exports = {
     dtk: [
       'https://www.wms.nrw.de/geobasis/wms_nw_dtk?bbox={bbox-epsg-3857}&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&width=256&height=256&layers=nw_dtk_col,nw_dtk_pan&styles=default&format=image/png'
     ]
-  },
-  kreiseNRWUrl:
-    'http://nrw.ldproxy.net/rest/services/dvg/nw_dvg2_krs/?f=json&count=100'
+  }
 };
