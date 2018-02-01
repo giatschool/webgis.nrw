@@ -106,6 +106,10 @@ export default class Map {
     // });
   }
 
+  getMap() {
+    return this.map;
+  }
+
   /**
    * @description Loads data in the map
    * @param {function} loadDone called when data was fetched successful

@@ -1,5 +1,6 @@
 import Map from './Map.js';
 import Listeners from './Listeners.js';
+import syncMove from '@mapbox/mapbox-gl-sync-move';
 
 class App {
   static run() {
@@ -44,6 +45,8 @@ class App {
           secondary_map.center();
           primary_map.center();
         });
+
+        syncMove(primary_map.getMap(), secondary_map.getMap());
 
         listeners = new Listeners(
           document,
