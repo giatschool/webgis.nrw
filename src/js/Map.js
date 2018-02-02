@@ -50,19 +50,23 @@ export default class Map {
     this.map.on('load', () => {
       // When a click event occurs on a feature in the places layer, open a popup at the
       // location of the feature, with description HTML from its properties.
-      // map.on('click', 'kreisgrenzen', function (e) {
-      //   if (e.features.length > 0) {
-      //     new mapboxgl.Popup().setLngLat(e.lngLat).setHTML(e.features[0].properties.Gemeindename).addTo(map);
-      //   }
-      // });
+      this.map.on('click', 'kreisgrenzen', e => {
+        if (e.features.length > 0) {
+          console.log(e.features[0].properties);
+          new mapboxgl.Popup()
+            .setLngLat(e.lngLat)
+            .setHTML(e.features[0].properties.Gemeindename)
+            .addTo(this.map);
+        }
+      });
 
       // Change the cursor to a pointer when the mouse is over the places layer.
-      this.map.on('mouseenter', function () {
+      this.map.on('mouseenter', function() {
         map.getCanvas().style.cursor = 'pointer';
       });
 
       // Change it back to a pointer when it leaves.
-      this.map.on('mouseleave', function () {
+      this.map.on('mouseleave', function() {
         map.getCanvas().style.cursor = '';
       });
     });
@@ -82,16 +86,16 @@ export default class Map {
             let myString = '';
             if (states[0].properties[current_feature]) {
               myString =
-                `<h3><strong>${
-                states[0].properties.Gemeindename
-                }</strong></h3>` +
+                `<h4><strong>${
+                  states[0].properties.Gemeindename
+                }</strong></h4>` +
                 `<p><strong><em>${
-                states[0].properties[current_feature]
+                  states[0].properties[current_feature]
                 }</strong> ${current_feature}</em></p>`;
             } else {
               myString = `<h3><strong>${
                 states[0].properties.Gemeindename
-                }</strong></h3>`;
+              }</strong></h3>`;
             }
             document.getElementById('pd').innerHTML = myString;
           } else {
@@ -116,12 +120,12 @@ export default class Map {
    */
   loadData(loadDone) {
     fetch('/data/nw_dvg2_krs.json')
-      .then(function (response) {
-        response.json().then(function (data) {
+      .then(function(response) {
+        response.json().then(function(data) {
           KreiseNRW = data;
         });
       })
-      .catch(function (ex) {
+      .catch(function(ex) {
         console.log('parsing failed', ex);
       });
 
@@ -427,25 +431,39 @@ export default class Map {
         [this._getMaxFeature(KreiseNRW, current_feature), highColor]
       ]
     });
+    $('.discrete-legend').hide();
+    $('.scale-legend').show();
   }
 
   _applyStatistic(classes) {
     const colors = colorLerp(
       lowColor,
       highColor,
-      Number(document.getElementById('stats_classes').value) + 1,
+      Number(document.getElementById('stats_classes').value),
       'hex'
     );
 
-    const stops = ['step', ['get', current_feature], '#BABABA'];
+    const stops = ['step', ['get', current_feature]];
 
-    classes.forEach((e, i) => {
+    $('.legend-labels').empty();
+
+    colors.forEach((e, i) => {
+      if (i !== 0) {
+        stops.push(classes[i]);
+      }
       stops.push(e);
-      stops.push(colors[i]);
+
+      $('.legend-labels').append(
+        `<li><span style="background:${e};"></span><br/>${Math.round(
+          classes[i] * 10
+        ) / 10} - ${Math.round(classes[i + 1] * 10) / 10}</li>`
+      );
     });
 
-    console.log(stops);
     this.map.setPaintProperty('kreisgrenzen', 'fill-color', stops);
+
+    $('.discrete-legend').show();
+    $('.scale-legend').hide();
   }
 
   /**

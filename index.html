@@ -8,22 +8,22 @@
   <title>webgis.nrw</title>
 
   <link rel="apple-touch-icon" sizes="57x57" href="./favicons/apple-icon-57x57.png">
-<link rel="apple-touch-icon" sizes="60x60" href="./favicons/apple-icon-60x60.png">
-<link rel="apple-touch-icon" sizes="72x72" href="./favicons/apple-icon-72x72.png">
-<link rel="apple-touch-icon" sizes="76x76" href="./favicons/apple-icon-76x76.png">
-<link rel="apple-touch-icon" sizes="114x114" href="./favicons/apple-icon-114x114.png">
-<link rel="apple-touch-icon" sizes="120x120" href="./favicons/apple-icon-120x120.png">
-<link rel="apple-touch-icon" sizes="144x144" href="./favicons/apple-icon-144x144.png">
-<link rel="apple-touch-icon" sizes="152x152" href="./favicons/apple-icon-152x152.png">
-<link rel="apple-touch-icon" sizes="180x180" href="./favicons/apple-icon-180x180.png">
-<link rel="icon" type="image/png" sizes="192x192"  href="./favicons/android-icon-192x192.png">
-<link rel="icon" type="image/png" sizes="32x32" href="./favicons/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="96x96" href="./favicons/favicon-96x96.png">
-<link rel="icon" type="image/png" sizes="16x16" href="./favicons/favicon-16x16.png">
-<link rel="manifest" href="./favicons/manifest.json">
-<meta name="msapplication-TileColor" content="#ffffff">
-<meta name="msapplication-TileImage" content="./favicons/ms-icon-144x144.png">
-<meta name="theme-color" content="#ffffff">
+  <link rel="apple-touch-icon" sizes="60x60" href="./favicons/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="./favicons/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="./favicons/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="./favicons/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="./favicons/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="./favicons/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="./favicons/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="./favicons/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="./favicons/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="./favicons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="./favicons/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./favicons/favicon-16x16.png">
+  <link rel="manifest" href="./favicons/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="./favicons/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
 
   <!-- CSS includes -->
   <link href='assets/css/main.min.css' type="text/css" rel="stylesheet" />
@@ -39,9 +39,12 @@
               <span class="r">r</span>
               <span class="w">w</span>
             </h1> -->
-      webgis.<span class="n">n</span><span class="r">r</span><span class="w">w</span>
+      webgis.
+      <span class="n">n</span>
+      <span class="r">r</span>
+      <span class="w">w</span>
 
-          </div>
+    </div>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse"
       aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -49,26 +52,26 @@
     <div class="collapse navbar-collapse" id="navbarCollapse">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item collapse" id="map-select">
-            <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                <label class="btn btn-light active no-margin-bottom">
-                  <input type="radio" name="options" id="edit-map-one" autocomplete="off" checked>Karte 1
-                </label>
-                <label class="btn btn-light no-margin-bottom">
-                  <input type="radio" name="options" id="edit-map-two" autocomplete="off">Karte 2
-                </label>
-              </div>
+          <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-light active no-margin-bottom">
+              <input type="radio" name="options" id="edit-map-one" autocomplete="off" checked>Karte 1
+            </label>
+            <label class="btn btn-light no-margin-bottom">
+              <input type="radio" name="options" id="edit-map-two" autocomplete="off">Karte 2
+            </label>
+          </div>
         </li>
         <li class="nav-item dropup">
           <a class="nav-link dropdown-toggle" id="dropdown_map_settings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Karteneinstellungen</a>
           <div class="dropdown-menu" aria-labelledby="dropdown_map_settings">
             <h5>Basemap</h5>
             <div class="layer-control">
-              <div class="btn-group">
+              <div class="btn-group" style="margin-bottom: 10px !important">
                 <button type="button" class="btn btn-info" id='topMap' data-toggle="tooltip" data-placement="top" data-html="true" title="TOP - Topographische Karte BKG<br />Quelle: Bundesamt für Kartographie und Geodäsie">TOP</button>
                 <button type="button" class="btn btn-dark" id='dtkMap' data-toggle="tooltip" data-placement="top" data-html="true" title="DTK - Digitale Topographische Karten<br />Quelle: GEObasis.nrw">DTK</button>
                 <button type="button" class="btn btn-light" id='dopMap' data-toggle="tooltip" data-placement="top" data-html="true" title="DOP - Digitale Orthophotos<br />Quelle: GEObasis.nrw">DOP</button>
+                <button type="button" class="btn btn-light" id='blankMap' data-toggle="tooltip" data-placement="top" data-html="true" title="Blank - Keine Hinergrundkarte">Blank</button>
               </div>
-              <br />
               <div class="btn-group">
                 <button type="button" class="btn btn-info" id='basicMap'>Basic</button>
                 <button type="button" class="btn btn-dark" id='darkMap'>Dark</button>
@@ -77,69 +80,56 @@
               </div>
             </div>
             <hr />
-            <h5>Farbschema</h5>
-            <div class="card-block">
-                <label>Niedrig</label>
-                <input id='lowColor' type="color" value="#80BCFF" />
-                </br> 
-                <label>Hoch</label>
-                <input id='highColor' type="color" value="#1A5FAC" />
-            </div>
-            <hr />
             <h5>Transparenz</h5>
             <input id='transparency-slider' type='range' min='0' max='100' step='1' value='80' />
             <hr/>
             <h5>Kartenmodus</h5>
             <div class="btn-group" data-toggle="buttons">
-                <label class="btn btn-light active">
-                  <input type="radio" name="options" id="mode-standard" autocomplete="off" checked>Standart
-                </label>
-                <label class="btn btn-light">
-                  <input type="radio" name="options" id="mode-dual" autocomplete="off">Dual View
-                </label>
-                <label class="btn btn-light">
-                  <input type="radio" name="options" id="mode-split" autocomplete="off">Split View
-                </label>
-              </div>
+              <label class="btn btn-light active">
+                <input type="radio" name="options" id="mode-standard" autocomplete="off" checked>Standart
+              </label>
+              <label class="btn btn-light">
+                <input type="radio" name="options" id="mode-dual" autocomplete="off">Dual View
+              </label>
+              <label class="btn btn-light">
+                <input type="radio" name="options" id="mode-split" autocomplete="off">Split View
+              </label>
+            </div>
           </div>
         </li>
         <li class="nav-item dropup">
           <a class="nav-link dropdown-toggle" id="dropdown_stat_data" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Statistische Daten</a>
           <div class="dropdown-menu" aria-labelledby="dropdown_stat_data">
-            <div class="card-block">
-              <button type="button" class="btn btn-outline-primary btn-block" id="population_data">
-                <i class="material-icons">group</i>
-                Einwohnerzahlen</button>
-              <button type="button" class="btn btn-outline-primary btn-block" id="Anteil_Arbeitslose_UTF8">
-                <i class="material-icons">work</i>
-                Anteil Arbeitslose</button>
-              <button type="button" class="btn btn-outline-primary btn-block" id="Erwerbstaetige_Dienstleistung">
-                <i class="material-icons">record_voice_over</i>
-                Erwerbstätige Dienstleistung</button>
-              <button type="button" class="btn btn-outline-primary btn-block" id="Erwerbstaetige_Forst">
-                <i class="material-icons">nature_people</i>
-                Erwerbstätige Forst</button>
-              <button type="button" class="btn btn-outline-primary btn-block" id="Erwerbstaetige_Gewerbe">
-                <i class="material-icons">business</i>
-                Erwerbstätige Gewerbe</button>
-              <button type="button" class="btn btn-outline-primary btn-block" id="Wahl17_CDU">
-                <i class="material-icons">account_balance</i>
-                Wahlen - CDU</button>
-              <button type="button" class="btn btn-outline-primary btn-block" id="Wahl17_SPD">
-                <i class="material-icons">account_balance</i>
-                Wahlen - SPD</button>
-            </div>
+            <button type="button" class="btn btn-outline-primary btn-block" id="population_data">
+              <i class="material-icons">group</i>
+              Einwohnerzahlen</button>
+            <button type="button" class="btn btn-outline-primary btn-block" id="Anteil_Arbeitslose_UTF8">
+              <i class="material-icons">work</i>
+              Anteil Arbeitslose</button>
+            <button type="button" class="btn btn-outline-primary btn-block" id="Erwerbstaetige_Dienstleistung">
+              <i class="material-icons">record_voice_over</i>
+              Erwerbstätige Dienstleistung</button>
+            <button type="button" class="btn btn-outline-primary btn-block" id="Erwerbstaetige_Forst">
+              <i class="material-icons">nature_people</i>
+              Erwerbstätige Forst</button>
+            <button type="button" class="btn btn-outline-primary btn-block" id="Erwerbstaetige_Gewerbe">
+              <i class="material-icons">business</i>
+              Erwerbstätige Gewerbe</button>
+            <button type="button" class="btn btn-outline-primary btn-block" id="Wahl17_CDU">
+              <i class="material-icons">account_balance</i>
+              Wahlen - CDU</button>
+            <button type="button" class="btn btn-outline-primary btn-block" id="Wahl17_SPD">
+              <i class="material-icons">account_balance</i>
+              Wahlen - SPD</button>
           </div>
         </li>
         <li class="nav-item dropup">
           <a class="nav-link dropdown-toggle" id="dropdown_own_data" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Eigene Daten</a>
           <div class="dropdown-menu" aria-labelledby="dropdown_own_data">
-            <div class="card-block">
-              Wähle hier deine Datei aus! (csv)
-              <br/>
-              <input type="file" id="custom_csv_input" accept=".csv">
-              <p id="csv_info"></p>
-            </div>
+            Wähle hier deine Datei aus! (csv)
+            <br/>
+            <input type="file" id="custom_csv_input" accept=".csv">
+            <p id="csv_info"></p>
           </div>
         </li>
         <li class="nav-item dropup">
@@ -147,6 +137,7 @@
           <div class="dropdown-menu" aria-labelledby="dropdown_stats">
             <button type="button" class="btn btn-outline-primary btn-block" id="stats_standard">
               Standart</button>
+            <hr/>
             <button type="button" class="col btn btn-outline-primary btn-block" id="stats_equal_interval">
               Gleiche Intervalle</button>
             <button type="button" class="col btn btn-outline-primary btn-block" id="stats_std_deviation">
@@ -159,52 +150,81 @@
               Quantile</button>
             <button type="button" class="col btn btn-outline-primary btn-block" id="stats_jenks">
               Jenks</button>
-            <input type="number" class="col form-control" id="stats_classes" value="4" min="1">
-          </div>
-        </li>
-        <li class="nav-item dropup">
-          <a class="nav-link dropdown-toggle" id="dropdown_visualization" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">???</a>
-          <div class="dropdown-menu" aria-labelledby="dropdown_visualization">
-            
-            
+            <br />
+            <div class="form-group row">
+              <label for="stats_classes" class="col-4 col-form-label">Klassen</label>
+              <div class="col-8">
+                <input type="number" class="col form-control" id="stats_classes" value="4" min="2">
+              </div>
+            </div>
+            <hr />
+            <h5>Farbschema</h5>
+            <div class="form-group row">
+              <label for "lowColor" class="col-4 col-form-label">Niedrig</label>
+              <div class="col-8">
+                <input id='lowColor' type="color" value="#80BCFF" />
+              </div>
+              </br>
+              <label for="highColor" class="col-4 col-form-label">Hoch</label>
+              <div class="col-8">
+                <input id='highColor' type="color" value="#1A5FAC" />
+              </div>
+            </div>
           </div>
         </li>
       </ul>
 
 
-      <button class="btn btn-light" type="button" data-toggle="collapse" data-target=".map-overlay" aria-expanded="false" aria-controls="multiCollapseExample2">Legende</button>
+      <button class="btn btn-light" type="button" data-toggle="collapse" data-target=".legend" aria-expanded="false" aria-controls="multiCollapseExample2">Legende</button>
   </nav>
 
-  <div class="webgis-view" style="float:left; width: 100vw;"> 
-
+  <div class="webgis-view" style="float:left; width: 100vw;">
     <div id='map' class='map'></div>
-
-    
-
-
   </div>
 
-  <div class='map-overlay collapse multi-collapse' id='bottom-bar'>
-    <div class="flex-legend">
-      <div class='legend-wrapper'>
-        <label id="legend-heading">Legende</label>
-        <div id='legend-bar' class='row colors'>
-        </div>
-        <div class='labels'>
-          <div class='label' id="legend-min">0</div>
-          <div class='label' id="legend-max">100</div>
-        </div>
+  <div class='legend collapse multi-collapse'>
+
+    <div class='my-legend'>
+      <div id='legend-heading' class='legend-title'>The Title or Explanation of your Map</div>
+      <div class="scale-legend">
+          <div id='legend-bar'>
+            </div>
+            <div class='labels'>
+              <div class='label' id="legend-min">0</div>
+              <div class='label' id="legend-max">100</div>
+            </div>
       </div>
+      <div class='discrete-legend' style="display: none;">
+        <ul class='legend-labels'>
+          <li>
+            <span style='background:#F1EEF6;'></span>
+            <br/>0 - 20%</li>
+          <li>
+            <span style='background:#BDC9E1;'></span>
+            <br/>40%</li>
+          <li>
+            <span style='background:#74A9CF;'></span>
+            <br/>60%</li>
+          <li>
+            <span style='background:#2B8CBE;'></span>
+            <br/>80%</li>
+          <li>
+            <span style='background:#045A8D;'></span>
+            <br/>100%</li>
+        </ul>
+      </div>
+      <br/>
       <div class='info'>
         <div id='pd'>
           <p>Bewege die Maus über die Kreise</p>
         </div>
       </div>
     </div>
+
     <div class="flex-timeslider">
-      Timeslider
       <div class='timeslider-wrapper'>
         <div id='timeslider' hidden>
+          Timeslider
           <div class='labels'>
             <label id='timeslide-min'>1962</label>
             <label id='year'>1962</label>
@@ -222,14 +242,11 @@
   <div class="modal fade" id="launchModal">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title hero-webgisnrw">Willkommen auf dem webgis.
-            <span class="n">n</span>
-            <span class="r">r</span>
-            <span class="w">w</span>
+        <div class="modal-header bg-dark" style="color: white;">
+          <h5 class="modal-title hero-webgisnrw">Willkommen auf dem webgis.<span class="n">n</span><span class="r">r</span><span class="w">w</span>
           </h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
+            <span aria-hidden="true" style="color: white">&times;</span>
           </button>
         </div>
         <div class="modal-body">

@@ -1,4 +1,7 @@
-@import "map-overlays";
+$card-padding: 20px;
+
+
+@import "legend";
 @import url('https://fonts.googleapis.com/css?family=Nunito|Material+Icons');
 
 * {box-sizing: border-box;}
@@ -14,26 +17,6 @@ body {
   height: 100vh;
 }
 
-h2, h3 {
-  margin: 10px;
-  font-size: 1.2em;
-}
-
-h3 {
-  font-size: 1em;
-}
-
-p {
-  font-size: 0.85em;
-  margin: 10px;
-  text-align: left;
-}
-
-.hero-webgisnrw {
-  font-weight: bold;
-  text-align: center;
-}
-
 .n {
   color: #FF4136
 }
@@ -46,21 +29,9 @@ p {
   color: #ffffff
 }
 
-button i {
-  vertical-align: middle;
-}
-
-.btn-group {
-  display: flex;
-  flex-direction: row;
-}
-
-.btn-group > button {
-  width: 100%;
-}
-
 input[type=color] {
   height: 20px;
+  width: 100%;
 }
 
 #split_map {
@@ -70,4 +41,12 @@ input[type=color] {
 
 .no-margin-bottom {
   margin-bottom: 0px;
+}
+
+.dropdown-menu {
+  padding: $card-padding !important;
+}
+
+#transparency-slider {
+  width: 100%;
 }

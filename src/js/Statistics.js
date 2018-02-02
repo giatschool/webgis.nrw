@@ -36,4 +36,10 @@ export default class Statistics {
 
     return serie.getClassJenks(number_of_classes);
   }
+
+  static getRanges(data) {
+    const serie = new geostats(data);
+
+    return serie.getRanges();
+  }
 }

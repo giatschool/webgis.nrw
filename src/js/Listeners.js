@@ -32,6 +32,10 @@ export default class Listeners {
       this.getActiveMap().changeStyle('dop');
     });
 
+    document.getElementById('blankMap').addEventListener('click', () => {
+      this.getActiveMap().changeStyle('empty');
+    });
+
     document
       .getElementById('custom_csv_input')
       .addEventListener('change', () => {
