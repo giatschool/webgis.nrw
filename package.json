@@ -11,7 +11,6 @@
     "babel-preset-stage-0": "^6.5.0",
     "bootstrap": "4.0.0-beta.2",
     "brotli-webpack-plugin": "^0.4.3",
-    "chart.js": "^2.7.1",
     "color-lerp": "^1.0.5",
     "compression-webpack-plugin": "^1.0.1",
     "css-loader": "^0.28.7",
@@ -26,7 +25,6 @@
     "popper.js": "^1.12.3",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.19.0",
-    "tinycolor2": "^1.4.1",
     "webpack": "^3.8.1",
     "webpack-dev-server": "^2.9.4",
     "whatwg-fetch": "^2.0.3"
@@ -36,12 +34,14 @@
     "eslint": "^4.10.0",
     "eslint-config-prettier": "^2.7.0",
     "eslint-plugin-prettier": "^2.3.1",
-    "prettier": "^1.8.1"
+    "prettier": "^1.8.1",
+    "uglifyjs-webpack-plugin": "^1.1.8",
+    "webpack-merge": "^4.1.1"
   },
   "scripts": {
-    "dev": "webpack --watch",
-    "start": "webpack | webpack-dev-server --content-base ./ --host 0.0.0.0 --port 8080",
-    "prod": "webpack -p",
+    "dev": "webpack --watch --config webpack.dev.js",
+    "start": "webpack | webpack-dev-server --config webpack.dev.js --content-base ./ --host 0.0.0.0 --port 8080",
+    "prod": "webpack -p --config webpack.prod.js",
     "lint": "node_modules/.bin/eslint --fix \"src/**/*.js\""
   },
   "author": "",

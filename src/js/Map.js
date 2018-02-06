@@ -119,19 +119,22 @@ export default class Map {
    * @param {function} loadDone called when data was fetched successful
    */
   loadData(loadDone) {
-    fetch('/data/nw_dvg2_krs.json')
-      .then(function(response) {
-        response.json().then(function(data) {
-          KreiseNRW = data;
-        });
-      })
-      .catch(function(ex) {
-        console.log('parsing failed', ex);
-      });
+    // fetch('/assets/data/nw_dvg2_krs.json')
+    //   .then(function(response) {
+    //     response.json().then(function(data) {
+    //       KreiseNRW = data;
+    //     });
+    //   })
+    //   .catch(function(ex) {
+    //     console.log('parsing failed', ex);
+    //   });
+
+    /* eslint-disable global-require */
+    KreiseNRW = require('./../data/nw_dvg2_krs.json');
 
     this.map.addSource('KreiseNRW', {
       type: 'geojson',
-      data: '/data/nw_dvg2_krs.json'
+      data: KreiseNRW
     });
     this.map.addLayer({
       id: 'kreisgrenzen',
@@ -256,20 +259,23 @@ export default class Map {
    * @param {string} feature name of the feature e.g. arbeitslose
    */
   setData(data_source, feature) {
+    // const url = `./../data/${data_source}.json`;
+
     /* eslint-disable global-require */
+    const _data = require(`./../data/${data_source}.json`);
 
-    const url = `/data/${data_source}.json`;
+    this._setDataFromJSON(_data, feature);
 
-    fetch(url)
-      .then(response => {
-        response.json().then(_data => {
-          /* eslint-enable global-require */
-          return this._setDataFromJSON(_data, feature);
-        });
-      })
-      .catch(ex => {
-        console.log('parsing failed', ex);
-      });
+    // fetch(url)
+    //   .then(response => {
+    //     response.json().then(_data => {
+    //       /* eslint-enable global-require */
+    //       return this._setDataFromJSON(_data, feature);
+    //     });
+    //   })
+    //   .catch(ex => {
+    //     console.log('parsing failed', ex);
+    //   });
   }
 
   /**
