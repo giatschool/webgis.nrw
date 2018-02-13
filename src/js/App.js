@@ -25,7 +25,7 @@ class App {
       primary_map,
       secondary_map,
       loadDone => {
-        console.log('Loaded');
+        loadDone ? console.log('Loaded') : console.log('Loading failed');
       }
     );
 
@@ -42,8 +42,10 @@ class App {
         $('.webgis-view, #map').css('height', '100vh');
 
         secondary_map = new Map('split_map', [7.555, 51.478333], 7, success => {
-          secondary_map.center();
-          primary_map.center();
+          if (success) {
+            secondary_map.center();
+            primary_map.center();
+          }
         });
 
         syncMove(primary_map.getMap(), secondary_map.getMap());
@@ -53,7 +55,7 @@ class App {
           primary_map,
           secondary_map,
           loadDone => {
-            console.log('Loaded');
+            loadDone ? console.log('Loaded') : console.log('Loading failed');
           }
         );
 
@@ -76,7 +78,7 @@ class App {
           primary_map,
           secondary_map,
           loadDone => {
-            console.log('Loaded');
+            loadDone ? console.log('Loaded') : console.log('Loading failed');
           }
         );
 

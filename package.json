@@ -41,7 +41,7 @@
   "scripts": {
     "dev": "webpack --watch --config webpack.dev.js",
     "start": "webpack-dev-server --watch --config webpack.dev.js --content-base ./ --host 0.0.0.0 --port 8080",
-    "prod": "webpack -p --config webpack.prod.js",
+    "build": "webpack -p --config webpack.prod.js",
     "lint": "node_modules/.bin/eslint --fix \"src/**/*.js\""
   },
   "author": "",
