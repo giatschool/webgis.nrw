@@ -59,3 +59,9 @@ input[type=color] {
 .dropdown-toggle::after {
   display: none !important;
 }
+
+@media (max-device-width: 400px) {
+  #custom_csv_input {
+    max-width: 270px;
+  }
+}
