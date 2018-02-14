@@ -3,111 +3,138 @@
 * (info box and legend) will be displayed
 * on the page. */
 
+.legend-wrapper {
+    background: rgba(255, 255, 255, 0.8);
+
+    // margin-right: 20px;
+    overflow: auto;
+    border: #ababab 1px;
+    border-radius: 3px;
+    z-index: 1;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    padding: $card-padding;
+}
+
 .legend {
-  background: rgba(255, 255, 255, 0.8);
-  // margin-right: 20px;
-  overflow: auto;
-  border: #ababab 1px;
-  border-radius: 3px;
-  z-index: 1;
-  position: absolute;
-  right: 20px;
-  top: 20px;
-  width: 350px;
-  height: 300px;
-  padding: $card-padding;
+    height: 300px;
+    width: 350px;
 }
 
 #timeslider {
-  position: relative;
+    position: relative;
 }
 
 .labels {
-  padding-bottom: 20px;
-  font-size: 80%;
+    padding-bottom: 20px;
+    font-size: 80%;
 }
 
 #slider {
-  width: 100%;
+    width: 100%;
 }
 
 #timeslide-min {
-  position: absolute;
-  left: 0;
-  margin-left: 10px;
+    position: absolute;
+    left: 0;
+    margin-left: 10px;
 }
 
 #timeslide-max {
-  position: absolute;
-  right: 0;
-  margin-right: 10px;
+    position: absolute;
+    right: 0;
+    margin-right: 10px;
 }
 
 #year {
-  position: absolute;
-  margin-left: auto;
-  margin-right: auto;
-  left: 0;
-  right: 0;
-  text-align: center;
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    text-align: center;
 }
 
 // legend
 #legend-bar {
-  height: 15px;
-  width: 100%;
-  background: linear-gradient(to right, #80BCFF, #1A5FAC);
-  margin-bottom: 5px;
+    height: 15px;
+    width: 100%;
+    background: linear-gradient(to right, #80BCFF, #1A5FAC);
+    margin-bottom: 5px;
 }
 
 #legend-min {
-  float: left;
+    float: left;
 }
 
 #legend-max {
-  float: right;
+    float: right;
 }
-
-
-
-
 
 // https://tilemill-project.github.io/tilemill/docs/guides/advanced-legends/
 
 .my-legend .legend-title {
-  text-align: left;
-  margin-bottom: 8px;
-  font-weight: bold;
-  }
+    text-align: left;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
 .my-legend .discrete-legend ul {
-  margin: 0;
-  padding: 0;
-  float: left;
-  list-style: none;
-  width: 100%;
-  display: flex;
-  }
+    margin: 0;
+    padding: 0;
+    float: left;
+    list-style: none;
+    width: 100%;
+    display: flex;
+}
+
 .my-legend .discrete-legend ul li {
-  display: block;
-  float: left;
-  width: auto;
-  margin-bottom: 6px;
-  text-align: center;
-  font-size: 80%;
-  list-style: none;
-  flex: 1;
-  }
+    display: block;
+    float: left;
+    width: auto;
+    margin-bottom: 6px;
+    text-align: center;
+    font-size: 80%;
+    list-style: none;
+    flex: 1;
+}
+
 .my-legend ul.legend-labels li span {
-  display: block;
-  float: left;
-  height: 15px;
-  width: 100%;
-  }
+    display: block;
+    float: left;
+    height: 15px;
+    width: 100%;
+}
+
 .my-legend .legend-source {
-  font-size: 70%;
-  color: #999;
-  clear: both;
-  }
+    font-size: 70%;
+    color: #999;
+    clear: both;
+}
+
 .my-legend a {
-  color: #777;
-  }
+    color: #777;
+}
+
+.rotate-down {
+    transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+
+.rotate {
+    transform: rotate(-180deg);
+    -webkit-transform: rotate(-180deg);
+    -moz-transform: rotate(-180deg);
+    -o-transform: rotate(-180deg);
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}

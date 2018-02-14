@@ -34,15 +34,7 @@
 
   <nav class="navbar fixed-bottom navbar-expand-sm navbar-dark bg-dark">
     <div class="navbar-brand">
-      <!-- <h1 class="hero-webgisnrw">webgis.
-              <span class="n">n</span>
-              <span class="r">r</span>
-              <span class="w">w</span>
-            </h1> -->
-      webgis.
-      <span class="n">n</span>
-      <span class="r">r</span>
-      <span class="w">w</span>
+      webgis.<span class="n">n</span><span class="r">r</span><span class="w">w</span>
 
     </div>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse"
@@ -174,66 +166,69 @@
       </ul>
 
 
-      <button class="btn btn-light" type="button" data-toggle="collapse" data-target=".legend" aria-expanded="false" aria-controls="multiCollapseExample2">Legende</button>
+      <!-- <button class="btn btn-light" >Legende</button> -->
   </nav>
 
   <div class="webgis-view" style="float:left; width: 100vw;">
     <div id='map' class='map'></div>
   </div>
 
-  <div class='legend collapse multi-collapse'>
-
-    <div class='my-legend'>
-      <div id='legend-heading' class='legend-title'>The Title or Explanation of your Map</div>
-      <div class="scale-legend">
-          <div id='legend-bar'>
-            </div>
-            <div class='labels'>
-              <div class='label' id="legend-min">0</div>
-              <div class='label' id="legend-max">100</div>
-            </div>
-      </div>
-      <div class='discrete-legend' style="display: none;">
-        <ul class='legend-labels'>
-          <li>
-            <span style='background:#F1EEF6;'></span>
-            <br/>0 - 20%</li>
-          <li>
-            <span style='background:#BDC9E1;'></span>
-            <br/>40%</li>
-          <li>
-            <span style='background:#74A9CF;'></span>
-            <br/>60%</li>
-          <li>
-            <span style='background:#2B8CBE;'></span>
-            <br/>80%</li>
-          <li>
-            <span style='background:#045A8D;'></span>
-            <br/>100%</li>
-        </ul>
-      </div>
-      <br/>
-      <div class='info'>
-        <div id='pd'>
-          <p>Bewege die Maus über die Kreise</p>
+  <div class="legend-wrapper">
+    <i id='legend_collapse' class="material-icons right-middle rotate-down" data-toggle="collapse" data-target=".legend" aria-expanded="false">keyboard_arrow_down</i>
+    <div class='legend collapse multi-collapse'>
+      <div class='my-legend'>
+        <div id='legend-heading' class='legend-title'>The Title or Explanation of your Map</div>
+        <div class="scale-legend">
+            <div id='legend-bar'>
+              </div>
+              <div class='labels'>
+                <div class='label' id="legend-min">0</div>
+                <div class='label' id="legend-max">100</div>
+              </div>
+        </div>
+        <div class='discrete-legend' style="display: none;">
+          <ul class='legend-labels'>
+            <li>
+              <span style='background:#F1EEF6;'></span>
+              <br/>0 - 20%</li>
+            <li>
+              <span style='background:#BDC9E1;'></span>
+              <br/>40%</li>
+            <li>
+              <span style='background:#74A9CF;'></span>
+              <br/>60%</li>
+            <li>
+              <span style='background:#2B8CBE;'></span>
+              <br/>80%</li>
+            <li>
+              <span style='background:#045A8D;'></span>
+              <br/>100%</li>
+          </ul>
+        </div>
+        <br/>
+        <div class='info'>
+          <div id='pd'>
+            <p>Bewege die Maus über die Kreise</p>
+          </div>
         </div>
       </div>
-    </div>
-
-    <div class="flex-timeslider">
-      <div class='timeslider-wrapper'>
-        <div id='timeslider' hidden>
-          Timeslider
-          <div class='labels'>
-            <label id='timeslide-min'>1962</label>
-            <label id='year'>1962</label>
-            <label id='timeslide-max'>2010</label>
+  
+      <div class="flex-timeslider">
+        <div class='timeslider-wrapper'>
+          <div id='timeslider' hidden>
+            Timeslider
+            <div class='labels'>
+              <label id='timeslide-min'>1962</label>
+              <label id='year'>1962</label>
+              <label id='timeslide-max'>2010</label>
+            </div>
+            <input id='slider' type='range' min='0' max='100' step='1' value='0' />
           </div>
-          <input id='slider' type='range' min='0' max='100' step='1' value='0' />
         </div>
       </div>
     </div>
   </div>
+  
 
 
 

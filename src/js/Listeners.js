@@ -149,6 +149,15 @@ export default class Listeners {
       e.stopPropagation();
     });
 
+    // rotate the legend collapse button on click
+    $('.legend').on('hide.bs.collapse', () => {
+      $('#legend_collapse').toggleClass('rotate');
+    });
+
+    $('.legend').on('show.bs.collapse', () => {
+      $('#legend_collapse').toggleClass('rotate');
+    });
+
     // document.getElementById('Wahl17_CDU').addEventListener('click', () => {
     //     map.setData('Wahlergebnisse_CDU_1976_bis_2013', 'Wahl17_CDU');
     // });
