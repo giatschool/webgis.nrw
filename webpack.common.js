@@ -1,16 +1,12 @@
 const webpack = require('webpack');
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const CompressionPlugin = require('compression-webpack-plugin');
-const BrotliPlugin = require('brotli-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 // hide deprication warnings
 process.noDeprecation = true;
 
 module.exports = {
   context: path.join(__dirname, 'src'),
-  devtool: 'hidden-source-map',
   entry: ['whatwg-fetch', './index.js', './style/style.scss'],
   module: {
     noParse: /node_modules\/mapbox-gl\/dist\/mapbox-gl.js/,
@@ -25,8 +21,7 @@ module.exports = {
       },
       {
         test: /\.(json|geojson)$/,
-        loader: 'json-loader',
-        exclude: [path.resolve(__dirname, '/data')]
+        loader: 'json-loader'
       },
       {
         test: /\.scss$/,
@@ -57,9 +52,6 @@ module.exports = {
       jQuery: 'jquery/dist/jquery.slim.js',
       'window.jQuery': 'jquery/dist/jquery.slim.js',
       Popper: ['popper.js', 'default']
-    }),
-    new CompressionPlugin(),
-    new BrotliPlugin(),
-    new CopyWebpackPlugin([{ from: 'data', to: `${__dirname}/assets/data` }])
+    })
   ]
 };
