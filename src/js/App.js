@@ -37,10 +37,9 @@ class App {
           splitView = false;
         }
         $('.webgis-view').after(
-          '<div class="webgis-view-split" style="float: right; width:50vw; height: 100vh;"><div id="dual_map" style="height: 100vh"></div></div>'
+          '<div class="webgis-view-split" style="float: right; width:50vw;"><div id="dual_map" class="map"></div></div>'
         );
         $('.webgis-view, #map').css('width', '50vw');
-        $('.webgis-view, #map').css('height', '100vh');
 
         secondary_map = new Map('dual_map', [7.555, 51.478333], 7, success => {
           if (success) {

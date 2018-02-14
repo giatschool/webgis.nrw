@@ -17,7 +17,7 @@ body {
 }
 
 .map {
-    height: 100vh;
+    height: calc(100vh - 56px);
     position: absolute;
     top: 0;
     bottom: 0;
@@ -42,7 +42,6 @@ input[type=color] {
 }
 
 #dual_map {
-    height: 100vh;
     border-left: .15vw solid black;
 }
 
