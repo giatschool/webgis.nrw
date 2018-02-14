@@ -1,6 +1,8 @@
 import Map from './Map.js';
 import Listeners from './Listeners.js';
 import syncMove from '@mapbox/mapbox-gl-sync-move';
+import MapboxCompare from 'mapbox-gl-compare';
+import 'mapbox-gl-compare/dist/mapbox-gl-compare.css';
 
 class App {
   static run() {
@@ -20,28 +22,27 @@ class App {
 
     let secondary_map;
 
-    let listeners = new Listeners(
-      document,
-      primary_map,
-      secondary_map,
-      loadDone => {
-        loadDone ? console.log('Loaded') : console.log('Loading failed');
-      }
-    );
+    const listeners = new Listeners(document, primary_map);
 
-    // Function for splitView
+    let dualView = false;
     let splitView = false;
 
+    // dual mode triggered
     $('#mode-dual').on('change', () => {
-      console.log('splitView triggered', $('#mode-dual').is(':checked'));
-      if (!splitView && $('#mode-dual').is(':checked')) {
+      console.log('dualView triggered', $('#mode-dual').is(':checked'));
+      if (!dualView && $('#mode-dual').is(':checked')) {
+        if (splitView) {
+          $('#split_map').remove();
+          $('.mapboxgl-compare').remove();
+          splitView = false;
+        }
         $('.webgis-view').after(
-          '<div class="webgis-view-split" style="float: right; width:50vw; height: 100vh;"><div id="split_map" style="height: 100vh"></div></div>'
+          '<div class="webgis-view-split" style="float: right; width:50vw; height: 100vh;"><div id="dual_map" style="height: 100vh"></div></div>'
         );
         $('.webgis-view, #map').css('width', '50vw');
         $('.webgis-view, #map').css('height', '100vh');
 
-        secondary_map = new Map('split_map', [7.555, 51.478333], 7, success => {
+        secondary_map = new Map('dual_map', [7.555, 51.478333], 7, success => {
           if (success) {
             secondary_map.center();
             primary_map.center();
@@ -50,14 +51,32 @@ class App {
 
         syncMove(primary_map.getMap(), secondary_map.getMap());
 
-        listeners = new Listeners(
-          document,
-          primary_map,
-          secondary_map,
-          loadDone => {
-            loadDone ? console.log('Loaded') : console.log('Loading failed');
+        listeners.setActiveMap(primary_map);
+
+        dualView = true;
+      }
+    });
+
+    // split mode triggered
+    $('#mode-split').on('change', () => {
+      console.log('splitView triggered', $('#mode-split').is(':checked'));
+      if (!splitView && $('#mode-split').is(':checked')) {
+        if (dualView) {
+          $('.webgis-view-split').remove();
+          $('.webgis-view, #map').css('width', '100vw');
+          dualView = false;
+        }
+        $('#map').after('<div id="split_map" class="map"></div>');
+
+        secondary_map = new Map('split_map', [7.555, 51.478333], 7, success => {
+          if (success) {
+            secondary_map.center();
+            primary_map.center();
           }
-        );
+        });
+
+        /*eslint-disable no-new*/
+        new MapboxCompare(primary_map.getMap(), secondary_map.getMap());
 
         listeners.setActiveMap(primary_map);
 
@@ -65,26 +84,25 @@ class App {
       }
     });
 
+    // standard mode triggered
     $('#mode-standard').on('change', () => {
-      if (splitView && $('#mode-standard').is(':checked')) {
-        $('.webgis-view-split').remove();
-        $('.webgis-view, #map').css('width', '100vw');
+      if ($('#mode-standard').is(':checked')) {
+        if (dualView) {
+          $('.webgis-view-split').remove();
+          $('.webgis-view, #map').css('width', '100vw');
+          dualView = false;
+        }
+        if (splitView) {
+          $('#split_map').remove();
+          $('.mapboxgl-compare').remove();
+          splitView = false;
+        }
+
         primary_map.resize();
 
         secondary_map = undefined;
 
-        listeners = new Listeners(
-          document,
-          primary_map,
-          secondary_map,
-          loadDone => {
-            loadDone ? console.log('Loaded') : console.log('Loading failed');
-          }
-        );
-
         listeners.setActiveMap(primary_map);
-
-        splitView = false;
       }
     });
 

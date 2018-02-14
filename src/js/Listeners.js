@@ -1,7 +1,7 @@
 let activeMap = undefined;
 
 export default class Listeners {
-  constructor(document, map, secondary_map, loadDone) {
+  constructor(document, map) {
     this.setActiveMap(map);
 
     document.getElementById('basicMap').addEventListener('click', () => {
@@ -183,8 +183,6 @@ export default class Listeners {
     //     .addEventListener('click', () => {
     //         map.removeFeinstaubLayer();
     //     });
-
-    loadDone();
   }
 
   setActiveMap(map) {
