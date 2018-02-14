@@ -17,6 +17,12 @@ let current_feature;
 let lowColor = '#80BCFF';
 let highColor = '#1A5FAC';
 
+const statistics_state = {
+  enabled: false,
+  type: '',
+  colorStops: []
+};
+
 const map = undefined;
 
 export default class Map {
@@ -296,14 +302,24 @@ export default class Map {
       });
     });
 
-    this.map.getSource('KreiseNRW').setData(KreiseNRW);
-    this.map.setPaintProperty('kreisgrenzen', 'fill-color', {
-      property: current_feature,
-      stops: [
-        [this._getMinFeature(KreiseNRW, current_feature), lowColor],
-        [this._getMaxFeature(KreiseNRW, current_feature), highColor]
-      ]
-    });
+    if (statistics_state.enabled) {
+      this.changeStatistics(statistics_state.type);
+      this.map.setPaintProperty(
+        'kreisgrenzen',
+        'fill-color',
+        statistics_state.colorStops
+      );
+    } else {
+      this.map.getSource('KreiseNRW').setData(KreiseNRW);
+      this.map.setPaintProperty('kreisgrenzen', 'fill-color', {
+        property: current_feature,
+        stops: [
+          [this._getMinFeature(KreiseNRW, current_feature), lowColor],
+          [this._getMaxFeature(KreiseNRW, current_feature), highColor]
+        ]
+      });
+    }
+
     document.getElementById('year').textContent = year;
     document.getElementById('legend-min').innerHTML = this._getMinFeature(
       KreiseNRW,
@@ -374,6 +390,8 @@ export default class Map {
   }
 
   changeStatistics(type) {
+    statistics_state.type = type;
+
     switch (type) {
       case 'STANDARD':
         this._applyStandard();
@@ -437,6 +455,11 @@ export default class Map {
         [this._getMaxFeature(KreiseNRW, current_feature), highColor]
       ]
     });
+    this._hideLegend();
+    statistics_state.enabled = false;
+  }
+
+  _hideLegend() {
     $('.discrete-legend').hide();
     $('.scale-legend').show();
   }
@@ -467,6 +490,9 @@ export default class Map {
     });
 
     this.map.setPaintProperty('kreisgrenzen', 'fill-color', stops);
+
+    statistics_state.enabled = true;
+    statistics_state.colorStops = stops;
 
     $('.discrete-legend').show();
     $('.scale-legend').hide();
@@ -532,6 +558,11 @@ export default class Map {
     document
       .getElementById('slider')
       .setAttribute('max', this._getLastYearOfDataset());
+
+    if (statistics_state.enabled) {
+      statistics_state.enabled = false;
+      this._hideLegend();
+    }
     this.updateData();
   }
 
