@@ -6,7 +6,7 @@ import colorLerp from 'color-lerp';
 import Statistics from './Statistics.js';
 
 // const KreiseNRW_source = require('./../data/landkreise_simplify0.json');
-import { mapboxToken, wmsLayerUrls, kreiseNRWUrl } from './../config.js';
+import { mapboxToken, wmsLayerUrls } from './../config.js';
 import CSVParser from './CSVParser.js';
 
 let KreiseNRW;
@@ -193,6 +193,8 @@ export default class Map {
         this.map.setLayoutProperty(style, 'visibility', 'visible');
       }
       layers.splice(layers.findIndex(l => l === style), 1);
+    } else if (style === 'empty') {
+      this.map.setStyle('mapbox://styles/felixaetem/cjdncto7a081u2qsbfwe2750v');
     } else {
       this.map.setStyle(`mapbox://styles/mapbox/${style}-v9`);
     }

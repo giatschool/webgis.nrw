@@ -17,7 +17,11 @@ body {
 }
 
 .map {
-    height: 100vh;
+    height: calc(100vh - 56px);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
 }
 
 .n {
@@ -37,9 +41,14 @@ input[type=color] {
     width: 100%;
 }
 
-#split_map {
-    height: 100vh;
+#dual_map {
     border-left: .15vw solid black;
+}
+
+#split_map {
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 .no-margin-bottom {

@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 // hide deprication warnings
 process.noDeprecation = true;
@@ -42,7 +43,7 @@ module.exports = {
     ]
   },
   output: {
-    path: `${__dirname}/assets/`,
+    path: `${__dirname}/dist/assets/`,
     filename: 'js/[name].min.js'
   },
   plugins: [
@@ -52,6 +53,16 @@ module.exports = {
       jQuery: 'jquery/dist/jquery.slim.js',
       'window.jQuery': 'jquery/dist/jquery.slim.js',
       Popper: ['popper.js', 'default']
-    })
+    }),
+    new CopyWebpackPlugin([
+      {
+        from: `${__dirname}/src/index.html`,
+        to: `${__dirname}/dist/`
+      },
+      {
+        from: `${__dirname}/src/favicons`,
+        to: `${__dirname}/dist/favicons`
+      }
+    ])
   ]
 };
