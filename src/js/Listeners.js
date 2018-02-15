@@ -158,9 +158,44 @@ export default class Listeners {
       $('#legend_collapse').toggleClass('rotate');
     });
 
-    // document.getElementById('Wahl17_CDU').addEventListener('click', () => {
-    //     map.setData('Wahlergebnisse_CDU_1976_bis_2013', 'Wahl17_CDU');
-    // });
+    document
+      .getElementById('Bundestagswahl_2017_SPD')
+      .addEventListener('click', () => {
+        map.setData('Bundestagswahl_2017_SPD', 'Bundestagswahl_2017_SPD');
+      });
+
+    document
+      .getElementById('Bundestagswahl_2017_CDU')
+      .addEventListener('click', () => {
+        map.setData('Bundestagswahl_2017_CDU', 'Bundestagswahl_2017_CDU');
+      });
+
+    document
+      .getElementById('Bundestagswahl_2017_GRUENE')
+      .addEventListener('click', () => {
+        map.setData('Bundestagswahl_2017_GRUENE', 'Bundestagswahl_2017_GRUENE');
+      });
+
+    document
+      .getElementById('Bundestagswahl_2017_DIELINKE')
+      .addEventListener('click', () => {
+        map.setData(
+          'Bundestagswahl_2017_DIELINKE',
+          'Bundestagswahl_2017_DIELINKE'
+        );
+      });
+
+    document
+      .getElementById('Bundestagswahl_2017_FDP')
+      .addEventListener('click', () => {
+        map.setData('Bundestagswahl_2017_FDP', 'Bundestagswahl_2017_FDP');
+      });
+
+    document
+      .getElementById('Bundestagswahl_2017_AFD')
+      .addEventListener('click', () => {
+        map.setData('Bundestagswahl_2017_AFD', 'Bundestagswahl_2017_AFD');
+      });
 
     // document.getElementById('Wahl17_SPD').addEventListener('click', () => {
     //     map.setData('Wahlergebnisse_CDU_1976_bis_2013', 'Wahl17_SPD');

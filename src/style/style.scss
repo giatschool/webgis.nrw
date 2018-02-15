@@ -77,3 +77,9 @@ input[type=color] {
         max-width: 270px;
     }
 }
+
+.btn-outline-primary {
+    white-space: unset !important;
+}
+
+.navbar-collapse.collapse.show { max-height: 100vh !important; overflow-y: scroll !important; overflow-x: hidden !important; }
