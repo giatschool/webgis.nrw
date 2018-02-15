@@ -48,13 +48,13 @@
 }
 
 #year {
-    position: absolute;
-    margin-left: auto;
-    margin-right: auto;
-    left: 0;
-    right: 0;
-    text-align: center;
-    font-weight: bold;
+    // position: absolute;
+    // margin-left: auto;
+    // margin-right: auto;
+    // left: 0;
+    // right: 0;
+    // text-align: center;
+    // font-weight: bold;
 }
 
 // legend
@@ -74,12 +74,6 @@
 }
 
 // https://tilemill-project.github.io/tilemill/docs/guides/advanced-legends/
-
-.my-legend .legend-title {
-    text-align: left;
-    margin-bottom: 8px;
-    font-weight: bold;
-}
 
 .my-legend .discrete-legend ul {
     margin: 0;
@@ -138,4 +132,8 @@
     -moz-transition: all 0.3s ease-in-out;
     -o-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
+}
+
+#pd {
+    height: 60px;
 }
