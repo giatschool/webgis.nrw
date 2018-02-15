@@ -83,3 +83,13 @@ input[type=color] {
 }
 
 .navbar-collapse.collapse.show { max-height: 100vh !important; overflow-y: scroll !important; overflow-x: hidden !important; }
+
+.button-info-container {
+    display: inline-flex !important;
+}
+
+.classification-info {
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 10px;
+}

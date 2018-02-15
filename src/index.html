@@ -154,21 +154,54 @@
         <li class="nav-item dropup">
           <a class="nav-link dropdown-toggle" id="dropdown_stats" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Klassen</a>
           <div class="dropdown-menu" aria-labelledby="dropdown_stats">
+              <div class="btn-block button-info-container">
             <button type="button" class="btn btn-outline-primary btn-block" id="stats_standard">
               Standard</button>
+              <i class="material-icons classification-info" data-toggle="tooltip" data-placement="top" data-html="true"
+                  title="Die Einfärbung ist linear vom Minimal- bzw. Maximalwert abhängig">info</i>
+            </div>
             <hr/>
-            <button type="button" class="col btn btn-outline-primary btn-block" id="stats_equal_interval">
-              Gleiche Intervalle</button>
+            <div class="btn-block button-info-container">
+                <button type="button" class="col btn btn-outline-primary" id="stats_equal_interval">
+                    Gleiche Intervalle</button>
+                  <i class="material-icons classification-info" data-toggle="tooltip" data-placement="top" data-html="true"
+                  title="Unterteilt die Klassen in gleich große Bereiche.">info</i>
+            </div>
+            <div class="btn-block button-info-container">
             <button type="button" class="col btn btn-outline-primary btn-block" id="stats_std_deviation">
               Standardabweichung</button>
+              <i class="material-icons classification-info" data-toggle="tooltip" data-placement="top" data-html="true"
+                  title="Die Standardabweichung zeigt die Abweichung vom Mittelwert an">info</i>
+            </div>
+
+              <div class="btn-block button-info-container">
             <button type="button" class="col btn btn-outline-primary btn-block" id="stats_arithmetic_progression">
               Arithmetische Folge</button>
+              <i class="material-icons classification-info" data-toggle="tooltip" data-placement="top" data-html="true"
+                  title="In einer Arithmetischen Folge haben aufeinanderfolgende Glieder stets den gleichen Abstand. Jedes Folgeglied (außer dem ersten) ist das arithmetische Mittel seiner benachbarten Glieder.">info</i>
+            </div>
+
+              <div class="btn-block button-info-container">
             <button type="button" class="col btn btn-outline-primary btn-block" id="stats_geometric_progression">
               Geometrische Folge</button>
+              <i class="material-icons classification-info" data-toggle="tooltip" data-placement="top" data-html="true"
+                  title="Es wird sichergestellt, dass in jedem Klassenbereich ungefähr dieselbe Anzahl von Werten in jede Klasse fällt und dass die Änderungen zwischen den einzelnen Intervallen relativ einheitlich sind">info</i>
+            </div>
+
+              <div class="btn-block button-info-container">
             <button type="button" class="col btn btn-outline-primary btn-block" id="stats_quantile">
               Quantile</button>
+              <i class="material-icons classification-info" data-toggle="tooltip" data-placement="top" data-html="true"
+                  title="Weist allen Klassen eine möglichst gleiche Anzahl von Objekten zu">info</i>
+            </div>
+
+              <div class="btn-block button-info-container">
             <button type="button" class="col btn btn-outline-primary btn-block" id="stats_jenks">
-              Jenks</button>
+              Natürliche Unterbrechungen</button>
+              <i class="material-icons classification-info" data-toggle="tooltip" data-placement="top" data-html="true"
+                  title="Bildet Klassen, deren Objekte nah beieinanderliegende Werte aufweisen">info</i>
+            </div>
+            <br />
             <br />
             <div class="form-group row">
               <label for="stats_classes" class="col-4 col-form-label">Klassen</label>
