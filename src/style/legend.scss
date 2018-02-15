@@ -74,6 +74,9 @@
 }
 
 // https://tilemill-project.github.io/tilemill/docs/guides/advanced-legends/
+.discrete-legend {
+    overflow: auto;
+}
 
 .my-legend .discrete-legend ul {
     margin: 0;
