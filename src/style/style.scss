@@ -1,63 +1,95 @@
-@import "map-overlays";
-@import url('https://fonts.googleapis.com/css?family=Nunito|Material+Icons');
+$card-padding: 20px;
 
+@import "legend";
+
+@import url("https://fonts.googleapis.com/css?family=Nunito:400,700|Material+Icons");
+
+
+* {
+    box-sizing: border-box;
+}
 
 body {
-  position: relative;
-  margin: 0px;
-  height: 100%;
-  font-family: 'Nunito', sans-serif !important;
+    position: relative;
+    margin: 0px;
+    height: 100%;
+    font-family: 'Nunito', sans-serif !important;
 }
 
 .map {
-  height: 100vh;
-}
-
-h2, h3 {
-  margin: 10px;
-  font-size: 1.2em;
-}
-
-h3 {
-  font-size: 1em;
-}
-
-p {
-  font-size: 0.85em;
-  margin: 10px;
-  text-align: left;
-}
-
-.hero-webgisnrw {
-  font-weight: bold;
-  text-align: center;
+    height: calc(100vh - 56px);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
 }
 
 .n {
-  color: #FF4136
+    color: #FF4136;
 }
 
 .r {
-  color: #2ECC40
+    color: #2ECC40;
 }
 
 .w {
-  color: #B8B8B8
-}
-
-button i {
-  vertical-align: middle;
-}
-
-.btn-group {
-  display: flex;
-  flex-direction: row;
-}
-
-.btn-group > button {
-  width: 100%;
+    color: #ffffff;
 }
 
 input[type=color] {
-  height: 20px;
+    height: 20px;
+    width: 100%;
+}
+
+#dual_map {
+    border-left: .15vw solid black;
+}
+
+#split_map {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.no-margin-bottom {
+    margin-bottom: 0px;
+}
+
+.dropdown-menu {
+    padding: $card-padding !important;
+}
+
+#transparency-slider {
+    width: 100%;
+}
+
+.right-middle {
+    vertical-align: middle;
+    float: right;
+}
+
+.dropdown-toggle::after {
+    display: none !important;
+}
+
+@media (max-device-width: 400px) {
+    #custom_csv_input {
+        max-width: 270px;
+    }
+}
+
+.btn-outline-primary {
+    white-space: unset !important;
+}
+
+.navbar-collapse.collapse.show { max-height: 100vh !important; overflow-y: scroll !important; overflow-x: hidden !important; }
+
+.button-info-container {
+    display: inline-flex !important;
+}
+
+.classification-info {
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 10px;
 }

@@ -1,8 +1,12 @@
 import Map from './Map.js';
+import Listeners from './Listeners.js';
+import syncMove from '@mapbox/mapbox-gl-sync-move';
+import MapboxCompare from 'mapbox-gl-compare';
+import 'mapbox-gl-compare/dist/mapbox-gl-compare.css';
 
 class App {
   static run() {
-    const map = new Map('map', [7.555, 51.478333], 7, success => {
+    const primary_map = new Map('map', [7.555, 51.478333], 7, success => {
       if (success) {
         // finished loading
         document.getElementById('start').removeAttribute('disabled');
@@ -16,129 +20,110 @@ class App {
       }
     });
 
-    document.getElementById('basicMap').addEventListener('click', () => {
-      map.changeStyle('basic');
-    });
+    let secondary_map;
 
-    document.getElementById('darkMap').addEventListener('click', () => {
-      map.changeStyle('dark');
-    });
+    const listeners = new Listeners(document, primary_map);
 
-    document.getElementById('lightMap').addEventListener('click', () => {
-      map.changeStyle('light');
-    });
+    let dualView = false;
+    let splitView = false;
 
-    document.getElementById('satelliteMap').addEventListener('click', () => {
-      map.changeStyle('satellite');
-    });
-
-    document.getElementById('topMap').addEventListener('click', () => {
-      map.changeStyle('top');
-    });
-
-    document.getElementById('dtkMap').addEventListener('click', () => {
-      map.changeStyle('dtk');
-    });
-
-    document.getElementById('dopMap').addEventListener('click', () => {
-      map.changeStyle('dop');
-    });
-
-    document
-      .getElementById('custom_csv_input')
-      .addEventListener('change', () => {
-        map.importCSV();
-      });
-
-    document.getElementById('slider').addEventListener('input', function(e) {
-      const year = parseInt(e.target.value, 10);
-      map.updateData(year);
-    });
-
-    document
-      .getElementById('transparency-slider')
-      .addEventListener('input', function(e) {
-        const transparency = e.target.value;
-        map.changeTransparency(transparency);
-      });
-
-    document
-      .getElementsByName('population_data')[0]
-      .addEventListener('click', () => {
-        map.setData('population_data', 'population');
-      });
-
-    document
-      .getElementById('Anteil_Arbeitslose_UTF8')
-      .addEventListener('click', () => {
-        map.setData('Anteil_Arbeitslose_UTF8', 'arbeitslose');
-      });
-
-    document
-      .getElementById('Erwerbstaetige_Dienstleistung')
-      .addEventListener('click', () => {
-        map.setData(
-          'Anteil_Erwerbstaetige_Dienstleistung_UTF8',
-          'Erwerbstaetige_Dienstleistung'
+    // dual mode triggered
+    $('#mode-dual').on('change', () => {
+      console.log('dualView triggered', $('#mode-dual').is(':checked'));
+      if (!dualView && $('#mode-dual').is(':checked')) {
+        if (splitView) {
+          $('#split_map').remove();
+          $('.mapboxgl-compare').remove();
+          splitView = false;
+        }
+        $('.webgis-view').after(
+          '<div class="webgis-view-split" style="float: right; width:50vw;"><div id="dual_map" class="map"></div></div>'
         );
-      });
+        $('.webgis-view, #map').css('width', '50vw');
 
-    document
-      .getElementById('Erwerbstaetige_Forst')
-      .addEventListener('click', () => {
-        map.setData('Anteil_Erwerbstaetige_Forst_UTF8', 'Erwerbstaetige_Forst');
-      });
+        secondary_map = new Map('dual_map', [7.555, 51.478333], 7, success => {
+          if (success) {
+            secondary_map.center();
+            primary_map.center();
+          }
+        });
 
-    document
-      .getElementById('Erwerbstaetige_Gewerbe')
-      .addEventListener('click', () => {
-        map.setData(
-          'Anteil_Erwerbstaetige_ProduzierendesGewerbe_UTF8',
-          'Erwerbstaetige_Gewerbe'
-        );
-      });
+        syncMove(primary_map.getMap(), secondary_map.getMap());
 
-    document.getElementById('Wahl17_CDU').addEventListener('click', () => {
-      map.setData('Wahlergebnisse_CDU_1976_bis_2013', 'Wahl17_CDU');
+        listeners.setActiveMap(primary_map);
+
+        dualView = true;
+      }
     });
 
-    document.getElementById('Wahl17_SPD').addEventListener('click', () => {
-      map.setData('Wahlergebnisse_CDU_1976_bis_2013', 'Wahl17_SPD');
+    // split mode triggered
+    $('#mode-split').on('change', () => {
+      console.log('splitView triggered', $('#mode-split').is(':checked'));
+      if (!splitView && $('#mode-split').is(':checked')) {
+        if (dualView) {
+          $('.webgis-view-split').remove();
+          $('.webgis-view, #map').css('width', '100vw');
+          dualView = false;
+        }
+        $('#map').after('<div id="split_map" class="map"></div>');
+
+        secondary_map = new Map('split_map', [7.555, 51.478333], 7, success => {
+          if (success) {
+            secondary_map.center();
+            primary_map.center();
+          }
+        });
+
+        /*eslint-disable no-new*/
+        new MapboxCompare(primary_map.getMap(), secondary_map.getMap());
+
+        listeners.setActiveMap(primary_map);
+
+        splitView = true;
+      }
     });
 
-    document.getElementById('feinstaub01').addEventListener('click', () => {
-      map.addFeinstaubLayer('band01_02112017');
+    // standard mode triggered
+    $('#mode-standard').on('change', () => {
+      if ($('#mode-standard').is(':checked')) {
+        if (dualView) {
+          $('.webgis-view-split').remove();
+          $('.webgis-view, #map').css('width', '100vw');
+          dualView = false;
+        }
+        if (splitView) {
+          $('#split_map').remove();
+          $('.mapboxgl-compare').remove();
+          splitView = false;
+        }
+
+        primary_map.resize();
+
+        secondary_map = undefined;
+
+        listeners.setActiveMap(primary_map);
+      }
     });
 
-    document.getElementById('feinstaub12').addEventListener('click', () => {
-      map.addFeinstaubLayer('band12_02112017');
+    $('.legend').collapse('show');
+
+    $('#mode-dual, #mode-split').on('change', () => {
+      $('#map-select').collapse('show');
     });
 
-    document.getElementById('feinstaub24').addEventListener('click', () => {
-      map.addFeinstaubLayer('band24_02112017');
+    $('#mode-standard').on('change', () => {
+      $('#map-select').collapse('hide');
     });
 
-    document
-      .getElementById('feinstaub-remove')
-      .addEventListener('click', () => {
-        map.removeFeinstaubLayer();
-      });
-
-    document.getElementById('lowColor').addEventListener(
-      'change',
-      e => {
-        map.changeColor('low', e.target.value);
-      },
-      true
-    );
-
-    document.getElementById('highColor').addEventListener(
-      'change',
-      e => {
-        map.changeColor('high', e.target.value);
-      },
-      true
-    );
+    $('#edit-map-one, #edit-map-two').on('change', () => {
+      if ($('#edit-map-one').is(':checked')) {
+        listeners.setActiveMap(primary_map);
+        console.log('checked map 1');
+      } else {
+        listeners.setActiveMap(secondary_map);
+        console.log('checked map 2');
+      }
+    });
   }
 }
 

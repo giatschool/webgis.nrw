@@ -1,12 +1,12 @@
 import mapboxgl from 'mapbox-gl';
 import 'whatwg-fetch';
 
+import colorLerp from 'color-lerp';
+
+import Statistics from './Statistics.js';
+
 // const KreiseNRW_source = require('./../data/landkreise_simplify0.json');
-import {
-  mapboxToken,
-  wmsLayerUrls,
-  kreiseNRWUrl
-} from './../config.js';
+import { mapboxToken, wmsLayerUrls } from './../config.js';
 import CSVParser from './CSVParser.js';
 
 let KreiseNRW;
@@ -17,7 +17,13 @@ let current_feature;
 let lowColor = '#80BCFF';
 let highColor = '#1A5FAC';
 
-let map = undefined;
+const statistics_state = {
+  enabled: false,
+  type: '',
+  colorStops: []
+};
+
+const map = undefined;
 
 export default class Map {
   /**
@@ -29,41 +35,56 @@ export default class Map {
    */
   constructor(container, center, zoom, loadDone) {
     mapboxgl.accessToken = mapboxToken;
-    map = new mapboxgl.Map({
+    this.map = new mapboxgl.Map({
       container: container,
       center: center,
       zoom: zoom,
       style: 'mapbox://styles/mapbox/light-v9'
     });
 
-    map.on('load', () => {
+    this.map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+
+    // map.on('load', () => {
+    //   this.map.fitBounds(
+    //     // Boundary of NRW
+    //     new mapboxgl.LngLatBounds([5.8664, 50.3276], [9.4623, 52.5325]),
+    //     {
+    //       padding: 20
+    //     }
+    //   );
+
+    this.map.on('load', () => {
       // When a click event occurs on a feature in the places layer, open a popup at the
       // location of the feature, with description HTML from its properties.
-      // map.on('click', 'kreisgrenzen', function (e) {
-      //   if (e.features.length > 0) {
-      //     new mapboxgl.Popup().setLngLat(e.lngLat).setHTML(e.features[0].properties.Gemeindename).addTo(map);
-      //   }
-      // });
+      this.map.on('click', 'kreisgrenzen', e => {
+        if (e.features.length > 0) {
+          console.log(e.features[0].properties);
+          new mapboxgl.Popup()
+            .setLngLat(e.lngLat)
+            .setHTML(e.features[0].properties.Gemeindename)
+            .addTo(this.map);
+        }
+      });
 
       // Change the cursor to a pointer when the mouse is over the places layer.
-      map.on('mouseenter', function () {
+      this.map.on('mouseenter', function() {
         map.getCanvas().style.cursor = 'pointer';
       });
 
       // Change it back to a pointer when it leaves.
-      map.on('mouseleave', function () {
+      this.map.on('mouseleave', function() {
         map.getCanvas().style.cursor = '';
       });
     });
 
-    map.on('style.load', () => {
+    this.map.on('style.load', () => {
       // load initial NRW data and callback when load is done
       this.loadData(loadDone);
 
       // show current Kreis on legend overlay
-      map.on('mousemove', function (e) {
-        if (map.getLayer('kreisgrenzen')) {
-          const states = map.queryRenderedFeatures(e.point, {
+      this.map.on('mousemove', e => {
+        if (this.map.getLayer('kreisgrenzen')) {
+          const states = this.map.queryRenderedFeatures(e.point, {
             layers: ['kreisgrenzen']
           });
 
@@ -71,9 +92,9 @@ export default class Map {
             let myString = '';
             if (states[0].properties[current_feature]) {
               myString =
-                `<h3><strong>${
+                `<h4><strong>${
                   states[0].properties.Gemeindename
-                }</strong></h3>` +
+                }</strong></h4>` +
                 `<p><strong><em>${
                   states[0].properties[current_feature]
                 }</strong> ${current_feature}</em></p>`;
@@ -90,6 +111,13 @@ export default class Map {
         }
       });
     });
+    // map.on('mouseleave', 'kreisgrenzen', function() {
+    //   map.setFilter('kreis-border-hover', ['==', 'Gemeindename', '']);
+    // });
+  }
+
+  getMap() {
+    return this.map;
   }
 
   /**
@@ -97,13 +125,24 @@ export default class Map {
    * @param {function} loadDone called when data was fetched successful
    */
   loadData(loadDone) {
-    KreiseNRW = require('./../data/nw_dvg2_krs.json')
+    // fetch('/assets/data/nw_dvg2_krs.json')
+    //   .then(function(response) {
+    //     response.json().then(function(data) {
+    //       KreiseNRW = data;
+    //     });
+    //   })
+    //   .catch(function(ex) {
+    //     console.log('parsing failed', ex);
+    //   });
 
-    map.addSource('KreiseNRW', {
+    /* eslint-disable global-require */
+    KreiseNRW = require('./../data/nw_dvg2_krs.json');
+
+    this.map.addSource('KreiseNRW', {
       type: 'geojson',
       data: KreiseNRW
     });
-    map.addLayer({
+    this.map.addLayer({
       id: 'kreisgrenzen',
       type: 'fill',
       source: 'KreiseNRW',
@@ -116,6 +155,19 @@ export default class Map {
   }
 
   /**
+   * @description centers the the map around NRW to fit the viewport
+   */
+  center() {
+    this.map.resize();
+    this.map.fitBounds(
+      // Fit around the center of Northrhine-Westphalia
+      new mapboxgl.LngLatBounds([5.8664, 50.3276], [9.4623, 52.5325], {
+        padding: 20
+      })
+    );
+  }
+
+  /**
    * @description changes the map style
    * TODO: choosen feature gets lost on style change
    * @param {String} style style to be applied to the map
@@ -123,8 +175,9 @@ export default class Map {
   changeStyle(style) {
     const layers = Object.keys(wmsLayerUrls);
     if (layers.includes(style)) {
-      if (!map.getLayer(style)) {
-        map.addLayer({
+      if (!this.map.getLayer(style)) {
+        this.map.addLayer(
+          {
             id: style,
             paint: {},
             type: 'raster',
@@ -137,16 +190,18 @@ export default class Map {
           'kreisgrenzen'
         );
       } else {
-        map.setLayoutProperty(style, 'visibility', 'visible');
+        this.map.setLayoutProperty(style, 'visibility', 'visible');
       }
       layers.splice(layers.findIndex(l => l === style), 1);
+    } else if (style === 'empty') {
+      this.map.setStyle('mapbox://styles/felixaetem/cjdncto7a081u2qsbfwe2750v');
     } else {
-      map.setStyle(`mapbox://styles/mapbox/${style}-v9`);
+      this.map.setStyle(`mapbox://styles/mapbox/${style}-v9`);
     }
 
     for (const l of layers) {
-      if (map.getLayer(l)) {
-        map.setLayoutProperty(l, 'visibility', 'none');
+      if (this.map.getLayer(l)) {
+        this.map.setLayoutProperty(l, 'visibility', 'none');
       }
     }
   }
@@ -156,7 +211,11 @@ export default class Map {
    * @param {Number} transparency transparency value between 0 and 100
    */
   changeTransparency(transparency) {
-    map.setPaintProperty('kreisgrenzen', 'fill-opacity', transparency / 100);
+    this.map.setPaintProperty(
+      'kreisgrenzen',
+      'fill-opacity',
+      transparency / 100
+    );
   }
 
   /**
@@ -172,8 +231,8 @@ export default class Map {
     }
 
     if (current_feature) {
-      if (map.getLayer('kreisgrenzen')) {
-        map.setPaintProperty('kreisgrenzen', 'fill-color', {
+      if (this.map.getLayer('kreisgrenzen')) {
+        this.map.setPaintProperty('kreisgrenzen', 'fill-color', {
           property: current_feature,
           stops: [
             [this._getMinFeature(KreiseNRW, current_feature), lowColor],
@@ -182,13 +241,10 @@ export default class Map {
         });
       }
     }
-    if (map.getLayer('feinstaub_band_layer')) {
-      map.setPaintProperty('feinstaub_band_layer', 'fill-color', {
+    if (this.map.getLayer('feinstaub_band_layer')) {
+      this.map.setPaintProperty('feinstaub_band_layer', 'fill-color', {
         property: 'DN',
-        stops: [
-          [0, lowColor],
-          [45, highColor]
-        ]
+        stops: [[0, lowColor], [45, highColor]]
       });
     }
 
@@ -211,10 +267,23 @@ export default class Map {
    * @param {string} feature name of the feature e.g. arbeitslose
    */
   setData(data_source, feature) {
+    // const url = `./../data/${data_source}.json`;
+
     /* eslint-disable global-require */
-    const data = require(`./../data/${data_source}.json`);
-    /* eslint-enable global-require */
-    this._setDataFromJSON(data, feature);
+    const _data = require(`./../data/${data_source}.json`);
+
+    this._setDataFromJSON(_data, feature);
+
+    // fetch(url)
+    //   .then(response => {
+    //     response.json().then(_data => {
+    //       /* eslint-enable global-require */
+    //       return this._setDataFromJSON(_data, feature);
+    //     });
+    //   })
+    //   .catch(ex => {
+    //     console.log('parsing failed', ex);
+    //   });
   }
 
   /**
@@ -234,16 +303,25 @@ export default class Map {
         }
       });
     });
-    console.log(current_feature);
 
-    map.getSource('KreiseNRW').setData(KreiseNRW);
-    map.setPaintProperty('kreisgrenzen', 'fill-color', {
-      property: current_feature,
-      stops: [
-        [this._getMinFeature(KreiseNRW, current_feature), lowColor],
-        [this._getMaxFeature(KreiseNRW, current_feature), highColor]
-      ]
-    });
+    if (statistics_state.enabled) {
+      this.changeStatistics(statistics_state.type);
+      this.map.setPaintProperty(
+        'kreisgrenzen',
+        'fill-color',
+        statistics_state.colorStops
+      );
+    } else {
+      this.map.getSource('KreiseNRW').setData(KreiseNRW);
+      this.map.setPaintProperty('kreisgrenzen', 'fill-color', {
+        property: current_feature,
+        stops: [
+          [this._getMinFeature(KreiseNRW, current_feature), lowColor],
+          [this._getMaxFeature(KreiseNRW, current_feature), highColor]
+        ]
+      });
+    }
+
     document.getElementById('year').textContent = year;
     document.getElementById('legend-min').innerHTML = this._getMinFeature(
       KreiseNRW,
@@ -262,9 +340,7 @@ export default class Map {
     const file = document.getElementById('custom_csv_input').files[0];
     if (file.type === 'text/csv') {
       const parser = new CSVParser();
-
       parser.getAsText(file, data => {
-        console.log(data);
         this._setDataFromJSON(data, file.name);
       });
     } else {
@@ -281,28 +357,25 @@ export default class Map {
     const band = require(`./../data/${name}.json`);
     /* eslint-enable global-require */
 
-    if (!map.getLayer('feinstaub_band_layer')) {
-      map.addSource('feinstaub_band', {
+    if (!this.map.getLayer('feinstaub_band_layer')) {
+      this.map.addSource('feinstaub_band', {
         type: 'geojson',
         data: band
       });
-      map.addLayer({
+      this.map.addLayer({
         id: 'feinstaub_band_layer',
         type: 'fill',
         source: 'feinstaub_band',
         paint: {
           'fill-color': {
             property: 'DN',
-            stops: [
-              [0, lowColor],
-              [45, highColor]
-            ]
+            stops: [[0, lowColor], [45, highColor]]
           },
           'fill-opacity': 0.8
         }
       });
     } else {
-      map.getSource('feinstaub_band').setData(band);
+      this.map.getSource('feinstaub_band').setData(band);
     }
   }
 
@@ -310,8 +383,121 @@ export default class Map {
    * @description removes fine dust layer
    */
   removeFeinstaubLayer() {
-    map.removeSource('feinstaub_band');
-    map.removeLayer('feinstaub_band_layer');
+    this.map.removeSource('feinstaub_band');
+    this.map.removeLayer('feinstaub_band_layer');
+  }
+
+  resize() {
+    this.map.resize();
+  }
+
+  changeStatistics(type) {
+    statistics_state.type = type;
+
+    switch (type) {
+      case 'STANDARD':
+        this._applyStandard();
+        break;
+      case 'EQUAL_INTERVAL':
+        this._applyStatistic(
+          Statistics.getEqualInterval(
+            this._getData(),
+            document.getElementById('stats_classes').value
+          )
+        );
+        break;
+      case 'STD_DEVIATION':
+        this._applyStatistic(
+          Statistics.getClassStdDeviation(
+            this._getData(),
+            document.getElementById('stats_classes').value
+          )
+        );
+        break;
+      case 'ARITHMETIC_PROGRESSION':
+        this._applyStatistic(
+          Statistics.getClassArithmeticProgression(
+            this._getData(),
+            document.getElementById('stats_classes').value
+          )
+        );
+        break;
+      case 'GEOMETRIC_PROGRESSION':
+        this._applyStatistic(
+          Statistics.getClassGeometricProgression(
+            this._getData(),
+            document.getElementById('stats_classes').value
+          )
+        );
+        break;
+      case 'QUANTILE':
+        this._applyStatistic(
+          Statistics.getClassQuantile(
+            this._getData(),
+            document.getElementById('stats_classes').value
+          )
+        );
+        break;
+      case 'JENKS':
+        this._applyStatistic(
+          Statistics.getClassJenks(
+            this._getData(),
+            document.getElementById('stats_classes').value
+          )
+        );
+        break;
+    }
+  }
+
+  _applyStandard() {
+    this.map.setPaintProperty('kreisgrenzen', 'fill-color', {
+      property: current_feature,
+      stops: [
+        [this._getMinFeature(KreiseNRW, current_feature), lowColor],
+        [this._getMaxFeature(KreiseNRW, current_feature), highColor]
+      ]
+    });
+    this._hideLegend();
+    statistics_state.enabled = false;
+  }
+
+  _hideLegend() {
+    $('.discrete-legend').hide();
+    $('.scale-legend').show();
+  }
+
+  _applyStatistic(classes) {
+    const colors = colorLerp(
+      lowColor,
+      highColor,
+      Number(document.getElementById('stats_classes').value),
+      'hex'
+    );
+
+    const stops = ['step', ['get', current_feature]];
+
+    $('.legend-labels').empty();
+
+    colors.forEach((e, i) => {
+      if (i !== 0) {
+        stops.push(classes[i]);
+      }
+      stops.push(e);
+
+      $('.legend-labels').append(
+        `<li><span style="background:${e};"></span><br/>${Math.round(
+          classes[i] * 10
+        ) / 10} - ${Math.round(classes[i + 1] * 10) / 10}</li>`
+      );
+    });
+
+    this.map.setPaintProperty('kreisgrenzen', 'fill-color', stops);
+
+    statistics_state.enabled = true;
+    statistics_state.colorStops = stops;
+
+    $('.discrete-legend').show();
+    $('.scale-legend').hide();
   }
 
   /**
@@ -342,11 +528,9 @@ export default class Map {
       });
     });
 
-    console.log(KreiseNRW);
-
     // apply styling
-    map.getSource('KreiseNRW').setData(KreiseNRW);
-    map.setPaintProperty('kreisgrenzen', 'fill-color', {
+    this.map.getSource('KreiseNRW').setData(KreiseNRW);
+    this.map.setPaintProperty('kreisgrenzen', 'fill-color', {
       property: feature,
       stops: [
         [this._getMaxFeature(KreiseNRW, feature), lowColor],
@@ -376,6 +560,11 @@ export default class Map {
     document
       .getElementById('slider')
       .setAttribute('max', this._getLastYearOfDataset());
+
+    if (statistics_state.enabled) {
+      statistics_state.enabled = false;
+      this._hideLegend();
+    }
     this.updateData();
   }
 
@@ -429,5 +618,17 @@ export default class Map {
     const dataset_data = Object.keys(feature_dataset[0].data);
 
     return dataset_data[dataset_data.length - 1];
+  }
+
+  _getData() {
+    const temp = [];
+    KreiseNRW.features.forEach(e => {
+      const val = e.properties[current_feature];
+      if (val) {
+        temp.push(e.properties[current_feature]);
+      }
+    });
+
+    return temp;
   }
 }
