@@ -1,5 +1,5 @@
 import FileSaver from 'file-saver';
-import jsPDF from 'jsPDF/dist/jspdf.min.js';
+import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 
 export default class Printer {
