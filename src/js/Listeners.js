@@ -1,3 +1,5 @@
+import Printer from './Printer';
+
 let activeMap = undefined;
 
 export default class Listeners {
@@ -173,7 +175,10 @@ export default class Listeners {
     document
       .getElementById('Bundestagswahl_2017_GRUENE')
       .addEventListener('click', () => {
-        this.getActiveMap().setData('Bundestagswahl_2017_GRUENE', 'BTW17 B90/Die Grünen');
+        this.getActiveMap().setData(
+          'Bundestagswahl_2017_GRUENE',
+          'BTW17 B90/Die Grünen'
+        );
       });
 
     document
@@ -196,6 +201,15 @@ export default class Listeners {
       .addEventListener('click', () => {
         this.getActiveMap().setData('Bundestagswahl_2017_AFD', 'BTW17 AfD');
       });
+
+    document.getElementById('print').addEventListener('click', () => {
+      const mapPrinter = new Printer(activeMap);
+      if ($('#export_pdf').is(':checked')) {
+        mapPrinter.generatePDF();
+      } else if ($('#export_png').is(':checked')) {
+        mapPrinter.generatePNG();
+      }
+    });
 
     // document.getElementById('Wahl17_SPD').addEventListener('click', () => {
     //     map.setData('Wahlergebnisse_CDU_1976_bis_2013', 'Wahl17_SPD');
