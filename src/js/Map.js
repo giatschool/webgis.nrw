@@ -39,7 +39,8 @@ export default class Map {
       container: container,
       center: center,
       zoom: zoom,
-      style: 'mapbox://styles/mapbox/light-v9'
+      style: 'mapbox://styles/mapbox/light-v9',
+      preserveDrawingBuffer: true // to print map
     });
 
     this.map.addControl(new mapboxgl.NavigationControl(), 'top-left');
