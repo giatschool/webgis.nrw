@@ -12,6 +12,8 @@ import CSVParser from './CSVParser.js';
 let KreiseNRW;
 let feature_dataset;
 let current_feature;
+let current_year;
+let current_legend = $('.scale-legend')[0];
 
 // min and max colors
 let lowColor = '#80BCFF';
@@ -119,6 +121,14 @@ export default class Map {
 
   getMap() {
     return this.map;
+  }
+
+  getTitle() {
+    return current_feature;
+  }
+
+  getYear() {
+    return current_year;
   }
 
   /**
@@ -292,6 +302,7 @@ export default class Map {
    * @param {String} year
    */
   updateData(year = this._getFirstYearOfDataset()) {
+    current_year = year;
     KreiseNRW.features.map(kreis => {
       feature_dataset.forEach(kreisPop => {
         if (
@@ -465,6 +476,12 @@ export default class Map {
   _hideLegend() {
     $('.discrete-legend').hide();
     $('.scale-legend').show();
+
+    current_legend = $('.scale-legend')[0];
+  }
+
+  getLegend() {
+    return current_legend;
   }
 
   _applyStatistic(classes) {
@@ -499,6 +516,8 @@ export default class Map {
 
     $('.discrete-legend').show();
     $('.scale-legend').hide();
+
+    current_legend = $('.discrete-legend')[0];
   }
 
   /**
