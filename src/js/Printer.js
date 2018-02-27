@@ -12,12 +12,18 @@ export default class Printer {
       .getMap()
       .getCanvas()
       .toBlob(blob => {
-        FileSaver.saveAs(blob, `${this.map.getTitle()}.png`);
+        FileSaver.saveAs(
+          blob,
+          `${this.map.getTitle()}_${this.map.getYear()}.png`
+        );
       });
 
     html2canvas(this.map.getLegend()).then(canvas => {
       canvas.toBlob(blob => {
-        FileSaver.saveAs(blob, `${this.map.getTitle()}_legend.png`);
+        FileSaver.saveAs(
+          blob,
+          `${this.map.getTitle()}_${this.map.getYear()}_legend.png`
+        );
       });
     });
   }
@@ -74,7 +80,7 @@ export default class Printer {
           4 * legendScale
         );
 
-        doc.save(`${this.map.getTitle()}.pdf`);
+        doc.save(`${this.map.getTitle()}_${this.map.getYear()}.pdf`);
       });
     } else {
       doc.save(`untitled_map.pdf`); // if no data chosen
