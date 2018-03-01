@@ -77,7 +77,7 @@ export default class Printer {
           pageWidth - 35 * legendScale - offset,
           23,
           35 * legendScale,
-          4 * legendScale
+          8.2 * legendScale
         );
 
         doc.save(`${this.map.getTitle()}_${this.map.getYear()}.pdf`);
