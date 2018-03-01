@@ -502,12 +502,27 @@ export default class Map {
       }
       stops.push(e);
 
+      const liFlex =
+        (classes[i + 1] - classes[i]) /
+        (classes[classes.length - 1] - classes[0]);
+
+      /**
+       * TODO: show amount of elements in class
+       * add the following snippet to the li tag and uncomment the const count line:
+       * data-toggle="tooltip" data-placement="top" data-html="true" title="${count}"
+       */
+      // const count = this._getCountInRange(classes[i], classes[i + 1]);
+      const lowerBound = Math.round(classes[i] * 10) / 10;
+      const upperBound = Math.round(classes[i + 1] * 10) / 10;
+
       $('.legend-labels').append(
-        `<li><span style="background:${e};"></span><br/>${Math.round(
-          classes[i] * 10
-        ) / 10} - ${Math.round(classes[i + 1] * 10) / 10}</li>`
+        `<li style="flex: ${liFlex}">
+          <span style="background:${e};">
+          </span><br/>${lowerBound}<br />-<br />${upperBound}</li>`
       );
     });
+
+    $('[data-toggle="tooltip"]').tooltip(); // initialize new poppers
 
     this.map.setPaintProperty('kreisgrenzen', 'fill-color', stops);
 
@@ -650,5 +665,17 @@ export default class Map {
     });
 
     return temp;
+  }
+
+  // TODO consider number that are exactly on min / max
+  _getCountInRange(min, max) {
+    let counter = 0;
+    this._getData().forEach(e => {
+      if (e >= min && e <= max) {
+        counter++;
+      }
+    });
+
+    return counter;
   }
 }
