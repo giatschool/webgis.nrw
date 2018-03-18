@@ -211,6 +211,12 @@ export default class Listeners {
       }
     });
 
+    document
+      .getElementById('toggleLegalAdvice')
+      .addEventListener('click', () => {
+      $('#legalAdviceModal').modal('toggle');
+    });
+
     // document.getElementById('Wahl17_SPD').addEventListener('click', () => {
     //     map.setData('Wahlergebnisse_CDU_1976_bis_2013', 'Wahl17_SPD');
     // });
