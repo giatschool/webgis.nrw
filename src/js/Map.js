@@ -637,6 +637,14 @@ export default class Map {
     return minVal;
   }
 
+/**
+   * @description years of  current dataset
+   * @returns years of current dataset
+   */
+  _getYearsOfDataset() {
+    return Object.keys(feature_dataset[0].data);
+  }
+
   /**
    * @description first year of current dataset
    * @returns first year of current dataset

@@ -46,7 +46,45 @@ export default class Listeners {
 
     document.getElementById('slider').addEventListener('input', e => {
       const year = parseInt(e.target.value, 10);
+      this.slider_currentValue = `${year}`;
       this.getActiveMap().updateData(year);
+    });
+
+    document.getElementById('timeslide-play').addEventListener('click', e => {
+      $('#timeslide-play').hide();
+      $('#timeslide-pause').show();
+
+      const indices = this.getActiveMap()._getYearsOfDataset();
+
+      let i = 0;
+      this.sliderLoop = setInterval(() => {
+        // If the autoPlay was paused..
+        if (this.slider_currentValue !== indices[i] && this.slider_isPaused) {
+          i = indices.indexOf(this.slider_currentValue);
+          this.slider_isPaused = false;
+        }
+
+        $('#slider').val(`${indices[i]}`);
+        this.slider_currentValue = $('#slider').val();
+        this.getActiveMap().updateData(indices[i]);
+
+        // Reset when iterating finished
+        if (i === indices.length - 1) {
+          clearInterval(this.sliderLoop);
+          $('#timeslide-pause').hide();
+          $('#timeslide-play').show();
+          $('#slider').val(`${indices[0]}`);
+          this.getActiveMap().updateData(indices[0]);
+        }
+        i++;
+      }, 500);
+    });
+
+    document.getElementById('timeslide-pause').addEventListener('click', e => {
+      $('#timeslide-pause').hide();
+      $('#timeslide-play').show();
+      this.slider_isPaused = true;
+      clearInterval(this.sliderLoop);
     });
 
     document
@@ -214,8 +252,8 @@ export default class Listeners {
     document
       .getElementById('toggleLegalAdvice')
       .addEventListener('click', () => {
-      $('#legalAdviceModal').modal('toggle');
-    });
+        $('#legalAdviceModal').modal('toggle');
+      });
 
     // document.getElementById('Wahl17_SPD').addEventListener('click', () => {
     //     map.setData('Wahlergebnisse_CDU_1976_bis_2013', 'Wahl17_SPD');
