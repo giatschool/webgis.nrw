@@ -8,6 +8,7 @@ class App {
   static run() {
     const primary_map = new Map('map', [7.555, 51.478333], 7, success => {
       if (success) {
+        document.body.style.visibility = 'visible';
         // finished loading
         document.getElementById('start').removeAttribute('disabled');
         document.getElementById('start').innerHTML = 'Los geht&#39;s!';

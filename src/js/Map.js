@@ -47,6 +47,18 @@ export default class Map {
 
     this.map.addControl(new mapboxgl.NavigationControl(), 'top-left');
 
+
+    // Add home button (Small hack since Mapbox is not supporting this..)
+    const zoomOutBtn = $('.mapboxgl-ctrl-zoom-out');
+    const homeButton = $('.mapboxgl-ctrl-zoom-out').clone();
+    homeButton.on('click', () => {
+      this.map.flyTo({ center: center, zoom: zoom });
+    });
+    homeButton.removeClass('mapboxgl-ctrl-zoom-out');
+    homeButton.append('<span class="material-icons">home</span>');
+    homeButton.removeAttr('aria-label');
+    zoomOutBtn.after(homeButton);
+
     // map.on('load', () => {
     //   this.map.fitBounds(
     //     // Boundary of NRW
@@ -686,4 +698,5 @@ export default class Map {
 
     return counter;
   }
+
 }
