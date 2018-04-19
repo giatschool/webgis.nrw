@@ -47,7 +47,6 @@ export default class Map {
 
     this.map.addControl(new mapboxgl.NavigationControl(), 'top-left');
 
-
     // Add home button (Small hack since Mapbox is not supporting this..)
     const zoomOutBtn = $('.mapboxgl-ctrl-zoom-out');
     const homeButton = $('.mapboxgl-ctrl-zoom-out').clone();
@@ -649,7 +648,7 @@ export default class Map {
     return minVal;
   }
 
-/**
+  /**
    * @description years of  current dataset
    * @returns years of current dataset
    */
@@ -698,5 +697,4 @@ export default class Map {
 
     return counter;
   }
-
 }

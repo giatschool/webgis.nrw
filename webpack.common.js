@@ -62,6 +62,10 @@ module.exports = {
       {
         from: `${__dirname}/src/favicons`,
         to: `${__dirname}/dist/favicons`
+      },
+      {
+        from: `${__dirname}/node_modules/gif.js/dist/gif.worker.js`,
+        to: `${__dirname}/dist/`
       }
     ])
   ]

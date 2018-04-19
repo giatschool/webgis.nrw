@@ -1,6 +1,11 @@
 import Printer from './Printer';
+import GIF from 'gif.js';
+import FileSaver from 'file-saver';
+import ProgressBar from 'progressbar.js';
+import html2canvas from 'html2canvas';
 
 let activeMap = undefined;
+let gif = undefined;
 
 export default class Listeners {
   constructor(document, map) {
@@ -56,6 +61,11 @@ export default class Listeners {
 
       const indices = this.getActiveMap()._getYearsOfDataset();
 
+      gif = new GIF({
+        workers: 2,
+        quality: 10
+      });
+
       let i = 0;
       this.sliderLoop = setInterval(() => {
         // If the autoPlay was paused..
@@ -68,13 +78,32 @@ export default class Listeners {
         this.slider_currentValue = $('#slider').val();
         this.getActiveMap().updateData(indices[i]);
 
+        const mapCanvas = this.getActiveMap()
+          .getMap()
+          .getCanvas();
+
+        const ctx = mapCanvas.getContext('webgl');
+
+        console.log(mapCanvas);
+        console.log(ctx);
+
+        // adding legend
+        html2canvas(this.getActiveMap().getLegend()).then(canvas => {
+          ctx.drawImage(canvas);
+          gif.addFrame(ctx, {
+            copy: true
+          });
+        });
+
+        $('#download_gif').show();
+
         // Reset when iterating finished
         if (i === indices.length - 1) {
           clearInterval(this.sliderLoop);
           $('#timeslide-pause').hide();
           $('#timeslide-play').show();
           $('#slider').val(`${indices[0]}`);
-          this.getActiveMap().updateData(indices[0]);
+          activeMap.updateData(indices[0]);
         }
         i++;
       }, 500);
@@ -85,6 +114,28 @@ export default class Listeners {
       $('#timeslide-play').show();
       this.slider_isPaused = true;
       clearInterval(this.sliderLoop);
+    });
+
+    document.getElementById('download_gif').addEventListener('click', () => {
+      $('#download_gif').hide();
+      $('#download_gif_spinner').show();
+      const bar = new ProgressBar.Circle('#download_gif_spinner', {
+        strokeWidth: 10,
+        easing: 'easeInOut',
+        duration: 500,
+        color: '#1A5FAC',
+        trailColor: '#ababab',
+        trailWidth: 4,
+        svgStyle: null
+      });
+      gif.on('finished', blob => {
+        FileSaver.saveAs(blob, `${this.getActiveMap().getTitle()}.gif`);
+        $('#download_gif_spinner').hide();
+      });
+      gif.on('progress', pst => {
+        bar.animate(pst);
+      });
+      gif.render();
     });
 
     document

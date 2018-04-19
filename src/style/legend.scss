@@ -23,7 +23,7 @@
 }
 
 #timeslider {
-    position: relative;
+    display: flex
 }
 
 .labels {
@@ -31,20 +31,34 @@
     font-size: 80%;
 }
 
+.grow {
+    flex-grow: 1;
+}
+
 #slider {
-    width: 90%;
+    width: 100%
 }
 
 #timeslide-min {
-    position: absolute;
-    left: 0;
-    margin-left: 25px;
+    float: left;
 }
 
 #timeslide-max {
-    position: absolute;
-    right: 0;
-    margin-right: 10px;
+    float: right;
+}
+
+#download_gif_spinner, .timeslide-control {
+    width: 24px;
+    height: 24px;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.timeslide-control:hover {
+    transform: scale(1.1);
+    transition: all .2s ease-in-out;
 }
 
 #year {
