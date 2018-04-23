@@ -6,7 +6,10 @@ import colorLerp from 'color-lerp';
 import Statistics from './Statistics.js';
 
 // const KreiseNRW_source = require('./../data/landkreise_simplify0.json');
-import { mapboxToken, wmsLayerUrls } from './../config.js';
+import {
+  mapboxToken,
+  wmsLayerUrls
+} from './../config.js';
 import CSVParser from './CSVParser.js';
 
 let KreiseNRW;
@@ -45,18 +48,22 @@ export default class Map {
       preserveDrawingBuffer: true // to print map
     });
 
-    this.map.addControl(new mapboxgl.NavigationControl(), 'top-left');
 
+    this.map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+    
     // Add home button (Small hack since Mapbox is not supporting this..)
-    const zoomOutBtn = $('.mapboxgl-ctrl-zoom-out');
-    const homeButton = $('.mapboxgl-ctrl-zoom-out').clone();
-    homeButton.on('click', () => {
-      this.map.flyTo({ center: center, zoom: zoom });
-    });
-    homeButton.removeClass('mapboxgl-ctrl-zoom-out');
-    homeButton.append('<span class="material-icons">home</span>');
-    homeButton.removeAttr('aria-label');
-    zoomOutBtn.after(homeButton);
+    // const zoomOutBtn = $('.mapboxgl-ctrl-zoom-out');
+    // const homeButton = $('.mapboxgl-ctrl-zoom-out').clone();
+    // homeButton.on('click', () => {
+    //   this.map.flyTo({
+    //     center: center,
+    //     zoom: zoom
+    //   });
+    // });
+    // homeButton.removeClass('mapboxgl-ctrl-zoom-out');
+    // homeButton.append('<span class="material-icons">home</span>');
+    // homeButton.removeAttr('aria-label');
+    // zoomOutBtn.after(homeButton);
 
     // map.on('load', () => {
     //   this.map.fitBounds(
@@ -72,7 +79,6 @@ export default class Map {
       // location of the feature, with description HTML from its properties.
       this.map.on('click', 'kreisgrenzen', e => {
         if (e.features.length > 0) {
-          console.log(e.features[0].properties);
           new mapboxgl.Popup()
             .setLngLat(e.lngLat)
             .setHTML(e.features[0].properties.Gemeindename)
@@ -81,12 +87,12 @@ export default class Map {
       });
 
       // Change the cursor to a pointer when the mouse is over the places layer.
-      this.map.on('mouseenter', function() {
+      this.map.on('mouseenter', function () {
         map.getCanvas().style.cursor = 'pointer';
       });
 
       // Change it back to a pointer when it leaves.
-      this.map.on('mouseleave', function() {
+      this.map.on('mouseleave', function () {
         map.getCanvas().style.cursor = '';
       });
     });
@@ -198,8 +204,7 @@ export default class Map {
     const layers = Object.keys(wmsLayerUrls);
     if (layers.includes(style)) {
       if (!this.map.getLayer(style)) {
-        this.map.addLayer(
-          {
+        this.map.addLayer({
             id: style,
             paint: {},
             type: 'raster',
@@ -266,7 +271,10 @@ export default class Map {
     if (this.map.getLayer('feinstaub_band_layer')) {
       this.map.setPaintProperty('feinstaub_band_layer', 'fill-color', {
         property: 'DN',
-        stops: [[0, lowColor], [45, highColor]]
+        stops: [
+          [0, lowColor],
+          [45, highColor]
+        ]
       });
     }
 
@@ -392,7 +400,10 @@ export default class Map {
         paint: {
           'fill-color': {
             property: 'DN',
-            stops: [[0, lowColor], [45, highColor]]
+            stops: [
+              [0, lowColor],
+              [45, highColor]
+            ]
           },
           'fill-opacity': 0.8
         }
@@ -696,5 +707,40 @@ export default class Map {
     });
 
     return counter;
+  }
+
+
+  _addHomeButton() {
+    const currentMaps = $('.mapboxgl-ctrl-zoom-out').parents('.map').length;
+    // save the zoomOutBtn and create a homeButton
+    let zoomOutBtn;
+    let homeButton;
+
+    switch (currentMaps) {
+      case 1:
+        zoomOutBtn = $('#map .mapboxgl-ctrl-zoom-out');
+        homeButton = $('#map .mapboxgl-ctrl-zoom-out').clone();
+        break;
+      case 2:
+        zoomOutBtn = $('#dual_map .mapboxgl-ctrl-zoom-out');
+        homeButton = $('#dual_map .mapboxgl-ctrl-zoom-out').clone();
+        break;
+      default:
+        console.log(
+          'You are trying to add a button to a map that is not planned to exist!'
+        );
+        break;
+    }
+
+    homeButton.on('click', () => {
+      this.getMap().flyTo({
+        center: [7.555, 51.478333],
+        zoom: 7
+      });
+    });
+    homeButton.removeClass('mapboxgl-ctrl-zoom-out');
+    homeButton.append('<span class="material-icons">home</span>');
+    homeButton.removeAttr('aria-label');
+    zoomOutBtn.after(homeButton);
   }
 }
