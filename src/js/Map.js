@@ -50,7 +50,7 @@ export default class Map {
 
 
     this.map.addControl(new mapboxgl.NavigationControl(), 'top-left');
-
+    
     // Add home button (Small hack since Mapbox is not supporting this..)
     // const zoomOutBtn = $('.mapboxgl-ctrl-zoom-out');
     // const homeButton = $('.mapboxgl-ctrl-zoom-out').clone();
@@ -708,6 +708,7 @@ export default class Map {
 
     return counter;
   }
+
 
   _addHomeButton() {
     const currentMaps = $('.mapboxgl-ctrl-zoom-out').parents('.map').length;

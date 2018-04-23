@@ -1,6 +1,8 @@
 import Printer from './Printer';
+import GIFExporter from './GIFExporter';
 
 let activeMap = undefined;
+let myGIFExporter = undefined;
 
 export default class Listeners {
   constructor(document, map) {
@@ -50,11 +52,13 @@ export default class Listeners {
       this.getActiveMap().updateData(year);
     });
 
-    document.getElementById('timeslide-play').addEventListener('click', e => {
+    document.getElementById('timeslide-play').addEventListener('click', () => {
       $('#timeslide-play').hide();
       $('#timeslide-pause').show();
 
       const indices = this.getActiveMap()._getYearsOfDataset();
+
+      myGIFExporter = new GIFExporter(this.getActiveMap());
 
       let i = 0;
       this.sliderLoop = setInterval(() => {
@@ -68,23 +72,33 @@ export default class Listeners {
         this.slider_currentValue = $('#slider').val();
         this.getActiveMap().updateData(indices[i]);
 
+        myGIFExporter.addFrame();
+
+        $('#download_gif').show();
+
         // Reset when iterating finished
         if (i === indices.length - 1) {
           clearInterval(this.sliderLoop);
           $('#timeslide-pause').hide();
           $('#timeslide-play').show();
           $('#slider').val(`${indices[0]}`);
-          this.getActiveMap().updateData(indices[0]);
+          activeMap.updateData(indices[0]);
         }
         i++;
       }, 500);
     });
 
-    document.getElementById('timeslide-pause').addEventListener('click', e => {
+    document.getElementById('timeslide-pause').addEventListener('click', () => {
       $('#timeslide-pause').hide();
       $('#timeslide-play').show();
       this.slider_isPaused = true;
       clearInterval(this.sliderLoop);
+    });
+
+    document.getElementById('download_gif').addEventListener('click', () => {
+      myGIFExporter.downloadGIF(() => {
+        myGIFExporter = undefined; // "destroy" object
+      });
     });
 
     document
