@@ -252,34 +252,36 @@
     <i id='legend_collapse' class="material-icons right-middle rotate-down" data-toggle="collapse" data-target=".legend" aria-expanded="false">keyboard_arrow_down</i>
     <div class='legend collapse multi-collapse'>
       <div class='my-legend'>
-        <h3 id='legend-heading' class='legend-title'>Titel deiner Karte</h3>
-        <h5 id='year'>Jahr</h5>
-        <div class="scale-legend">
-          <div id='legend-bar'>
+        <div class='legend-info-wrapper'>
+          <h3 id='legend-heading' class='legend-title'>Titel deiner Karte</h3>
+          <h5 id='year'>Jahr</h5>
+          <div class="scale-legend">
+            <div id='legend-bar'>
+            </div>
+            <div class='labels'>
+              <div class='label' id="legend-min">0</div>
+              <div class='label' id="legend-max">100</div>
+            </div>
           </div>
-          <div class='labels'>
-            <div class='label' id="legend-min">0</div>
-            <div class='label' id="legend-max">100</div>
+          <div class='discrete-legend' style="display: none;">
+            <ul class='legend-labels'>
+              <li>
+                <span style='background:#F1EEF6;'></span>
+                <br/>0 - 20%</li>
+              <li>
+                <span style='background:#BDC9E1;'></span>
+                <br/>40%</li>
+              <li>
+                <span style='background:#74A9CF;'></span>
+                <br/>60%</li>
+              <li>
+                <span style='background:#2B8CBE;'></span>
+                <br/>80%</li>
+              <li>
+                <span style='background:#045A8D;'></span>
+                <br/>100%</li>
+            </ul>
           </div>
-        </div>
-        <div class='discrete-legend' style="display: none;">
-          <ul class='legend-labels'>
-            <li>
-              <span style='background:#F1EEF6;'></span>
-              <br/>0 - 20%</li>
-            <li>
-              <span style='background:#BDC9E1;'></span>
-              <br/>40%</li>
-            <li>
-              <span style='background:#74A9CF;'></span>
-              <br/>60%</li>
-            <li>
-              <span style='background:#2B8CBE;'></span>
-              <br/>80%</li>
-            <li>
-              <span style='background:#045A8D;'></span>
-              <br/>100%</li>
-          </ul>
         </div>
         <div class='info'>
           <div id='pd'>

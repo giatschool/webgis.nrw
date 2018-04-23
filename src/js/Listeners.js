@@ -1,11 +1,8 @@
 import Printer from './Printer';
-import GIF from 'gif.js';
-import FileSaver from 'file-saver';
-import ProgressBar from 'progressbar.js';
-import html2canvas from 'html2canvas';
+import GIFExporter from './GIFExporter';
 
 let activeMap = undefined;
-let gif = undefined;
+let myGIFExporter = undefined;
 
 export default class Listeners {
   constructor(document, map) {
@@ -55,16 +52,13 @@ export default class Listeners {
       this.getActiveMap().updateData(year);
     });
 
-    document.getElementById('timeslide-play').addEventListener('click', e => {
+    document.getElementById('timeslide-play').addEventListener('click', () => {
       $('#timeslide-play').hide();
       $('#timeslide-pause').show();
 
       const indices = this.getActiveMap()._getYearsOfDataset();
 
-      gif = new GIF({
-        workers: 2,
-        quality: 10
-      });
+      myGIFExporter = new GIFExporter(this.getActiveMap());
 
       let i = 0;
       this.sliderLoop = setInterval(() => {
@@ -78,22 +72,7 @@ export default class Listeners {
         this.slider_currentValue = $('#slider').val();
         this.getActiveMap().updateData(indices[i]);
 
-        const mapCanvas = this.getActiveMap()
-          .getMap()
-          .getCanvas();
-
-        const ctx = mapCanvas.getContext('webgl');
-
-        console.log(mapCanvas);
-        console.log(ctx);
-
-        // adding legend
-        html2canvas(this.getActiveMap().getLegend()).then(canvas => {
-          ctx.drawImage(canvas);
-          gif.addFrame(ctx, {
-            copy: true
-          });
-        });
+        myGIFExporter.addFrame();
 
         $('#download_gif').show();
 
@@ -109,7 +88,7 @@ export default class Listeners {
       }, 500);
     });
 
-    document.getElementById('timeslide-pause').addEventListener('click', e => {
+    document.getElementById('timeslide-pause').addEventListener('click', () => {
       $('#timeslide-pause').hide();
       $('#timeslide-play').show();
       this.slider_isPaused = true;
@@ -117,25 +96,9 @@ export default class Listeners {
     });
 
     document.getElementById('download_gif').addEventListener('click', () => {
-      $('#download_gif').hide();
-      $('#download_gif_spinner').show();
-      const bar = new ProgressBar.Circle('#download_gif_spinner', {
-        strokeWidth: 10,
-        easing: 'easeInOut',
-        duration: 500,
-        color: '#1A5FAC',
-        trailColor: '#ababab',
-        trailWidth: 4,
-        svgStyle: null
+      myGIFExporter.downloadGIF(() => {
+        myGIFExporter = undefined; // "destroy" object
       });
-      gif.on('finished', blob => {
-        FileSaver.saveAs(blob, `${this.getActiveMap().getTitle()}.gif`);
-        $('#download_gif_spinner').hide();
-      });
-      gif.on('progress', pst => {
-        bar.animate(pst);
-      });
-      gif.render();
     });
 
     document
