@@ -212,48 +212,6 @@ export default class Listeners {
       $('#legend_collapse').toggleClass('rotate');
     });
 
-    document
-      .getElementById('Bundestagswahl_2017_SPD')
-      .addEventListener('click', () => {
-        this.getActiveMap().setData('Bundestagswahl_2017_SPD', 'BTW17 SPD');
-      });
-
-    document
-      .getElementById('Bundestagswahl_2017_CDU')
-      .addEventListener('click', () => {
-        this.getActiveMap().setData('Bundestagswahl_2017_CDU', 'BTW17 CDU');
-      });
-
-    document
-      .getElementById('Bundestagswahl_2017_GRUENE')
-      .addEventListener('click', () => {
-        this.getActiveMap().setData(
-          'Bundestagswahl_2017_GRUENE',
-          'BTW17 B90/Die Grünen'
-        );
-      });
-
-    document
-      .getElementById('Bundestagswahl_2017_DIELINKE')
-      .addEventListener('click', () => {
-        this.getActiveMap().setData(
-          'Bundestagswahl_2017_DIELINKE',
-          'BTW17 DIE LINKE'
-        );
-      });
-
-    document
-      .getElementById('Bundestagswahl_2017_FDP')
-      .addEventListener('click', () => {
-        this.getActiveMap().setData('Bundestagswahl_2017_FDP', 'BTW17 FDP');
-      });
-
-    document
-      .getElementById('Bundestagswahl_2017_AFD')
-      .addEventListener('click', () => {
-        this.getActiveMap().setData('Bundestagswahl_2017_AFD', 'BTW17 AfD');
-      });
-
     document.getElementById('print').addEventListener('click', () => {
       const mapPrinter = new Printer(activeMap);
       if ($('#export_pdf').is(':checked')) {
