@@ -105,7 +105,10 @@ export default class Map {
 
           if (states.length > 0) {
             let myString = '';
-            if (states[0].properties[feature_dataset.title]) {
+            if (
+              feature_dataset &&
+              states[0].properties[feature_dataset.title]
+            ) {
               myString =
                 `<h4><strong>${
                   states[0].properties.Gemeindename
@@ -361,16 +364,15 @@ export default class Map {
    * import CSV file
    */
   importCSV() {
-    // TODO: update to new file structure
-    // const file = document.getElementById('custom_csv_input').files[0];
-    // if (file.type === 'text/csv') {
-    //   const parser = new CSVParser();
-    //   parser.getAsText(file, data => {
-    //     this._setDataFromJSON.dataSON(data, file.name);
-    //   });
-    // } else {
-    //   $('#csv_info').text('Die gewählte Datei ist keine .csv Datei!');
-    // }
+    const file = document.getElementById('custom_csv_input').files[0];
+    if (file.type === 'text/csv') {
+      const parser = new CSVParser();
+      parser.getAsText(file, data => {
+        this._setDataFromJSON(data, file.name);
+      });
+    } else {
+      $('#csv_info').text('Die gewählte Datei ist keine .csv Datei!');
+    }
   }
 
   /**

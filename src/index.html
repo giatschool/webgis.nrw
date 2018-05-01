@@ -123,10 +123,11 @@
 
             <hr/>
             <h6>Eigene Daten</h6>
-            Wähle hier deine Datei aus! (csv)
-            <br/>
-            <input type="file" id="custom_csv_input" accept=".csv">
-            <p id="csv_info"></p>
+            <!-- Wähle hier deine Datei aus! (csv) -->
+            <!-- <br/> -->
+            <button type="button" class="btn btn-primary" id="csv_modal_launch">CSV Datei einfügen</button>
+            <!-- <input type="file" id="custom_csv_input" accept=".csv"> -->
+            <!-- <p id="csv_info"></p> -->
           </div>
         </li>
         <li class="nav-item dropup">
@@ -288,6 +289,46 @@
       </div>
     </div>
   </div>
+  </div>
+
+  <!-- CSV File modal -->
+  <div class="modal fade" id="csvModal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header bg-dark" style="color: white;">
+          <h5 class="modal-title hero-webgisnrw">
+            Eigene Daten
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" style="color: white">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h5>Fügen Sie hier Ihre eigene Daten ein</h5>
+
+          <form>
+            <div class="form-group">
+              <label for="csv_title">Titel</label>
+              <input type="text" class="form-control" id="csv_title" aria-describedby="titleHelp" placeholder="Titel des Datensatzes">
+              <small id="titleHelp" class="form-text text-muted">Der Titel beschreibt den Inhalt und Kontext des Datensatzes</small>
+            </div>
+            <div class="form-group">
+              <label for="csv_unit">Einheit</label>
+              <input type="text" class="form-control" id="csv_unit" aria-describedby="unitHelp" placeholder="Einheit">
+              <small id="unitHelp" class="form-text text-muted">Die Einheit gibt die Einheit des Datensatzes an, z.B. "%"</small>
+            </div>
+            <div class="form-group">
+              <label for="csv_file">CSV Datei</label>
+              <input type="file" class="form-control" id="custom_csv_input">
+            </div>
+          </form>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="csv_start" class="btn btn-primary">Einfügen</button>
+        </div>
+      </div>
+    </div>
   </div>
 
 

@@ -40,11 +40,30 @@ export default class Listeners {
       this.getActiveMap().changeStyle('empty');
     });
 
+    // document
+    //   .getElementById('custom_csv_input')
+    //   .addEventListener('change', () => {
+    //     this.getActiveMap().importCSV();
+    //   });
+
     document
-      .getElementById('custom_csv_input')
-      .addEventListener('change', () => {
-        this.getActiveMap().importCSV();
+      .getElementById('csv_modal_launch')
+      .addEventListener('click', () => {
+        $('#csvModal').modal('toggle');
       });
+
+    document.getElementById('csv_start').addEventListener('click', () => {
+      const title = $('#csv_title').val();
+
+      if (title === null || title === '') {
+        alert('Bitte geben Sie einen Titel an');
+      } else if ($('#custom_csv_input').get(0).files.length === 0) {
+        alert('Bitte laden Sie Ihre CSV Datei hoch');
+      } else {
+        this.getActiveMap().importCSV();
+        $('#csvModal').modal('toggle');
+      }
+    });
 
     document.getElementById('slider').addEventListener('input', e => {
       const year = parseInt(e.target.value, 10);
