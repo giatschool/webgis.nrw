@@ -11,7 +11,6 @@ import CSVParser from './CSVParser.js';
 
 let KreiseNRW;
 let feature_dataset;
-let current_feature;
 let current_year;
 let current_legend = $('.scale-legend')[0];
 
@@ -47,6 +46,20 @@ export default class Map {
 
     this.map.addControl(new mapboxgl.NavigationControl(), 'top-left');
 
+    // Add home button (Small hack since Mapbox is not supporting this..)
+    // const zoomOutBtn = $('.mapboxgl-ctrl-zoom-out');
+    // const homeButton = $('.mapboxgl-ctrl-zoom-out').clone();
+    // homeButton.on('click', () => {
+    //   this.map.flyTo({
+    //     center: center,
+    //     zoom: zoom
+    //   });
+    // });
+    // homeButton.removeClass('mapboxgl-ctrl-zoom-out');
+    // homeButton.append('<span class="material-icons">home</span>');
+    // homeButton.removeAttr('aria-label');
+    // zoomOutBtn.after(homeButton);
+
     // map.on('load', () => {
     //   this.map.fitBounds(
     //     // Boundary of NRW
@@ -61,7 +74,6 @@ export default class Map {
       // location of the feature, with description HTML from its properties.
       this.map.on('click', 'kreisgrenzen', e => {
         if (e.features.length > 0) {
-          console.log(e.features[0].properties);
           new mapboxgl.Popup()
             .setLngLat(e.lngLat)
             .setHTML(e.features[0].properties.Gemeindename)
@@ -93,14 +105,17 @@ export default class Map {
 
           if (states.length > 0) {
             let myString = '';
-            if (states[0].properties[current_feature]) {
+            if (
+              feature_dataset &&
+              states[0].properties[feature_dataset.title]
+            ) {
               myString =
                 `<h4><strong>${
                   states[0].properties.Gemeindename
                 }</strong></h4>` +
                 `<p><strong><em>${
-                  states[0].properties[current_feature]
-                }</strong> ${current_feature}</em></p>`;
+                  states[0].properties[feature_dataset.title]
+                }</strong> ${feature_dataset.unit}</em></p>`;
             } else {
               myString = `<h3><strong>${
                 states[0].properties.Gemeindename
@@ -124,7 +139,7 @@ export default class Map {
   }
 
   getTitle() {
-    return current_feature;
+    return feature_dataset.title;
   }
 
   getYear() {
@@ -241,13 +256,13 @@ export default class Map {
       highColor = value;
     }
 
-    if (current_feature) {
+    if (feature_dataset.title) {
       if (this.map.getLayer('kreisgrenzen')) {
         this.map.setPaintProperty('kreisgrenzen', 'fill-color', {
-          property: current_feature,
+          property: feature_dataset.title,
           stops: [
-            [this._getMinFeature(KreiseNRW, current_feature), lowColor],
-            [this._getMaxFeature(KreiseNRW, current_feature), highColor]
+            [this._getMinFeature(KreiseNRW, feature_dataset.title), lowColor],
+            [this._getMaxFeature(KreiseNRW, feature_dataset.title), highColor]
           ]
         });
       }
@@ -261,11 +276,11 @@ export default class Map {
 
     document.getElementById('legend-min').innerHTML = this._getMinFeature(
       KreiseNRW,
-      current_feature
+      feature_dataset.title
     );
     document.getElementById('legend-max').innerHTML = this._getMaxFeature(
       KreiseNRW,
-      current_feature
+      feature_dataset.title
     );
     document.getElementById(
       'legend-bar'
@@ -277,19 +292,19 @@ export default class Map {
    * @param {string} data_source file name of json data source inside of the data folder
    * @param {string} feature name of the feature e.g. arbeitslose
    */
-  setData(data_source, feature) {
+  setData(data_source) {
     // const url = `./../data/${data_source}.json`;
 
     /* eslint-disable global-require */
     const _data = require(`./../data/${data_source}.json`);
 
-    this._setDataFromJSON(_data, feature);
+    this._setDataFromJSON(_data);
 
     // fetch(url)
     //   .then(response => {
     //     response.json().then(_data => {
     //       /* eslint-enable global-require */
-    //       return this._setDataFromJSON(_data, feature);
+    //       return this.feature_dataset.data(_data, feature);
     //     });
     //   })
     //   .catch(ex => {
@@ -304,14 +319,14 @@ export default class Map {
   updateData(year = this._getFirstYearOfDataset()) {
     current_year = year;
     KreiseNRW.features.map(kreis => {
-      feature_dataset.forEach(kreisPop => {
+      feature_dataset.data.forEach(kreisPop => {
         if (
           kreis.properties.Kreisnummer.slice(
             0,
             kreis.properties.Kreisnummer.length - 3
           ) === kreisPop.AGS
         ) {
-          kreis.properties[current_feature] = Number(kreisPop.data[year]);
+          kreis.properties[feature_dataset.title] = Number(kreisPop.data[year]);
         }
       });
     });
@@ -326,10 +341,10 @@ export default class Map {
     } else {
       this.map.getSource('KreiseNRW').setData(KreiseNRW);
       this.map.setPaintProperty('kreisgrenzen', 'fill-color', {
-        property: current_feature,
+        property: feature_dataset.title,
         stops: [
-          [this._getMinFeature(KreiseNRW, current_feature), lowColor],
-          [this._getMaxFeature(KreiseNRW, current_feature), highColor]
+          [this._getMinFeature(KreiseNRW, feature_dataset.title), lowColor],
+          [this._getMaxFeature(KreiseNRW, feature_dataset.title), highColor]
         ]
       });
     }
@@ -337,11 +352,11 @@ export default class Map {
     document.getElementById('year').textContent = year;
     document.getElementById('legend-min').innerHTML = this._getMinFeature(
       KreiseNRW,
-      current_feature
+      feature_dataset.title
     );
     document.getElementById('legend-max').innerHTML = this._getMaxFeature(
       KreiseNRW,
-      current_feature
+      feature_dataset.title
     );
   }
 
@@ -463,10 +478,10 @@ export default class Map {
 
   _applyStandard() {
     this.map.setPaintProperty('kreisgrenzen', 'fill-color', {
-      property: current_feature,
+      property: feature_dataset.title,
       stops: [
-        [this._getMinFeature(KreiseNRW, current_feature), lowColor],
-        [this._getMaxFeature(KreiseNRW, current_feature), highColor]
+        [this._getMinFeature(KreiseNRW, feature_dataset.title), lowColor],
+        [this._getMaxFeature(KreiseNRW, feature_dataset.title), highColor]
       ]
     });
     this._hideLegend();
@@ -492,7 +507,7 @@ export default class Map {
       'hex'
     );
 
-    const stops = ['step', ['get', current_feature]];
+    const stops = ['step', ['get', feature_dataset.title]];
 
     $('.legend-labels').empty();
 
@@ -540,15 +555,14 @@ export default class Map {
    * @param {json object} data data that should be applied
    * @param {string} feature name of the feature e.g. arbeitslose
    */
-  _setDataFromJSON(data, feature) {
+  _setDataFromJSON(data) {
     feature_dataset = data;
-    current_feature = feature;
 
-    document.getElementById('legend-heading').innerHTML = feature;
+    document.getElementById('legend-heading').innerHTML = data.title;
 
     // map feature to layer
     KreiseNRW.features.map(kreis => {
-      data.forEach(data_feature => {
+      feature_dataset.data.forEach(data_feature => {
         if (!String(data_feature.AGS).startsWith('0')) {
           data_feature.AGS = `0${data_feature.AGS}`;
         }
@@ -558,7 +572,7 @@ export default class Map {
             kreis.properties.Kreisnummer.length - 3
           ) === data_feature.AGS
         ) {
-          kreis.properties[feature] = Number(data_feature.data[0]);
+          kreis.properties[data.title] = Number(data_feature.data[0]);
         }
       });
     });
@@ -566,21 +580,21 @@ export default class Map {
     // apply styling
     this.map.getSource('KreiseNRW').setData(KreiseNRW);
     this.map.setPaintProperty('kreisgrenzen', 'fill-color', {
-      property: feature,
+      property: data.title,
       stops: [
-        [this._getMaxFeature(KreiseNRW, feature), lowColor],
-        [this._getMinFeature(KreiseNRW, feature), highColor]
+        [this._getMaxFeature(KreiseNRW, data.title), lowColor],
+        [this._getMinFeature(KreiseNRW, data.title), highColor]
       ]
     });
 
     // update ui elements
     document.getElementById('legend-min').innerHTML = this._getMinFeature(
       KreiseNRW,
-      current_feature
+      feature_dataset.title
     );
     document.getElementById('legend-max').innerHTML = this._getMaxFeature(
       KreiseNRW,
-      current_feature
+      feature_dataset.title
     );
     document.getElementById('timeslider').removeAttribute('hidden');
     document.getElementById(
@@ -638,11 +652,19 @@ export default class Map {
   }
 
   /**
+   * @description years of  current dataset
+   * @returns years of current dataset
+   */
+  _getYearsOfDataset() {
+    return Object.keys(feature_dataset.data[0].data);
+  }
+
+  /**
    * @description first year of current dataset
    * @returns first year of current dataset
    */
   _getFirstYearOfDataset() {
-    return Object.keys(feature_dataset[0].data)[0];
+    return Object.keys(feature_dataset.data[0].data)[0];
   }
 
   /**
@@ -650,7 +672,7 @@ export default class Map {
    * @returns last year of current dataset
    */
   _getLastYearOfDataset() {
-    const dataset_data = Object.keys(feature_dataset[0].data);
+    const dataset_data = Object.keys(feature_dataset.data[0].data);
 
     return dataset_data[dataset_data.length - 1];
   }
@@ -658,9 +680,9 @@ export default class Map {
   _getData() {
     const temp = [];
     KreiseNRW.features.forEach(e => {
-      const val = e.properties[current_feature];
+      const val = e.properties[feature_dataset.title];
       if (val) {
-        temp.push(e.properties[current_feature]);
+        temp.push(e.properties[feature_dataset.title]);
       }
     });
 
@@ -677,5 +699,39 @@ export default class Map {
     });
 
     return counter;
+  }
+
+  _addHomeButton() {
+    const currentMaps = $('.mapboxgl-ctrl-zoom-out').parents('.map').length;
+    // save the zoomOutBtn and create a homeButton
+    let zoomOutBtn;
+    let homeButton;
+
+    switch (currentMaps) {
+      case 1:
+        zoomOutBtn = $('#map .mapboxgl-ctrl-zoom-out');
+        homeButton = $('#map .mapboxgl-ctrl-zoom-out').clone();
+        break;
+      case 2:
+        zoomOutBtn = $('#dual_map .mapboxgl-ctrl-zoom-out');
+        homeButton = $('#dual_map .mapboxgl-ctrl-zoom-out').clone();
+        break;
+      default:
+        console.log(
+          'You are trying to add a button to a map that is not planned to exist!'
+        );
+        break;
+    }
+
+    homeButton.on('click', () => {
+      this.getMap().flyTo({
+        center: [7.555, 51.478333],
+        zoom: 7
+      });
+    });
+    homeButton.removeClass('mapboxgl-ctrl-zoom-out');
+    homeButton.append('<span class="material-icons">home</span>');
+    homeButton.removeAttr('aria-label');
+    zoomOutBtn.after(homeButton);
   }
 }

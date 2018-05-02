@@ -1,6 +1,8 @@
 import Printer from './Printer';
+import GIFExporter from './GIFExporter';
 
 let activeMap = undefined;
+let myGIFExporter = undefined;
 
 export default class Listeners {
   constructor(document, map) {
@@ -38,15 +40,84 @@ export default class Listeners {
       this.getActiveMap().changeStyle('empty');
     });
 
+    // document
+    //   .getElementById('custom_csv_input')
+    //   .addEventListener('change', () => {
+    //     this.getActiveMap().importCSV();
+    //   });
+
     document
-      .getElementById('custom_csv_input')
-      .addEventListener('change', () => {
-        this.getActiveMap().importCSV();
+      .getElementById('csv_modal_launch')
+      .addEventListener('click', () => {
+        $('#csvModal').modal('toggle');
       });
+
+    document.getElementById('csv_start').addEventListener('click', () => {
+      const title = $('#csv_title').val();
+
+      if (title === null || title === '') {
+        alert('Bitte geben Sie einen Titel an');
+      } else if ($('#custom_csv_input').get(0).files.length === 0) {
+        alert('Bitte laden Sie Ihre CSV Datei hoch');
+      } else {
+        this.getActiveMap().importCSV();
+        $('#csvModal').modal('toggle');
+      }
+    });
 
     document.getElementById('slider').addEventListener('input', e => {
       const year = parseInt(e.target.value, 10);
+      this.slider_currentValue = `${year}`;
       this.getActiveMap().updateData(year);
+    });
+
+    document.getElementById('timeslide-play').addEventListener('click', () => {
+      $('#timeslide-play').hide();
+      $('#timeslide-pause').show();
+
+      const indices = this.getActiveMap()._getYearsOfDataset();
+
+      myGIFExporter = new GIFExporter(this.getActiveMap());
+
+      let i = 0;
+      this.sliderLoop = setInterval(() => {
+        // If the autoPlay was paused..
+        if (this.slider_currentValue !== indices[i] && this.slider_isPaused) {
+          i = indices.indexOf(this.slider_currentValue);
+          this.slider_isPaused = false;
+        }
+
+        $('#slider').val(`${indices[i]}`);
+        this.slider_currentValue = $('#slider').val();
+        this.getActiveMap().updateData(indices[i]);
+
+        myGIFExporter.addFrame();
+
+        $('#download_gif').show();
+
+        // Reset when iterating finished
+        if (i === indices.length - 1) {
+          clearInterval(this.sliderLoop);
+          $('#timeslide-pause').hide();
+          $('#timeslide-play').show();
+          $('#slider').val(`${indices[0]}`);
+          activeMap.updateData(indices[0]);
+        }
+        i++;
+      }, 500);
+    });
+
+    document.getElementById('timeslide-pause').addEventListener('click', () => {
+      $('#timeslide-pause').hide();
+      $('#timeslide-play').show();
+      this.slider_isPaused = true;
+      clearInterval(this.sliderLoop);
+    });
+
+    document.getElementById('download_gif').addEventListener('click', () => {
+      myGIFExporter.downloadGIF(() => {
+        myGIFExporter = undefined; // "destroy" object
+      });
     });
 
     document
@@ -160,48 +231,6 @@ export default class Listeners {
       $('#legend_collapse').toggleClass('rotate');
     });
 
-    document
-      .getElementById('Bundestagswahl_2017_SPD')
-      .addEventListener('click', () => {
-        this.getActiveMap().setData('Bundestagswahl_2017_SPD', 'BTW17 SPD');
-      });
-
-    document
-      .getElementById('Bundestagswahl_2017_CDU')
-      .addEventListener('click', () => {
-        this.getActiveMap().setData('Bundestagswahl_2017_CDU', 'BTW17 CDU');
-      });
-
-    document
-      .getElementById('Bundestagswahl_2017_GRUENE')
-      .addEventListener('click', () => {
-        this.getActiveMap().setData(
-          'Bundestagswahl_2017_GRUENE',
-          'BTW17 B90/Die Grünen'
-        );
-      });
-
-    document
-      .getElementById('Bundestagswahl_2017_DIELINKE')
-      .addEventListener('click', () => {
-        this.getActiveMap().setData(
-          'Bundestagswahl_2017_DIELINKE',
-          'BTW17 DIE LINKE'
-        );
-      });
-
-    document
-      .getElementById('Bundestagswahl_2017_FDP')
-      .addEventListener('click', () => {
-        this.getActiveMap().setData('Bundestagswahl_2017_FDP', 'BTW17 FDP');
-      });
-
-    document
-      .getElementById('Bundestagswahl_2017_AFD')
-      .addEventListener('click', () => {
-        this.getActiveMap().setData('Bundestagswahl_2017_AFD', 'BTW17 AfD');
-      });
-
     document.getElementById('print').addEventListener('click', () => {
       const mapPrinter = new Printer(activeMap);
       if ($('#export_pdf').is(':checked')) {
@@ -214,9 +243,12 @@ export default class Listeners {
     document
       .getElementById('toggleLegalAdvice')
       .addEventListener('click', () => {
-      $('#legalAdviceModal').modal('toggle');
-    });
+        $('#legalAdviceModal').modal('toggle');
+      });
 
+    document.getElementById('logo').addEventListener('click', () => {
+      location.reload();
+    });
     // document.getElementById('Wahl17_SPD').addEventListener('click', () => {
     //     map.setData('Wahlergebnisse_CDU_1976_bis_2013', 'Wahl17_SPD');
     // });

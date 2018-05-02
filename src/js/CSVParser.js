@@ -13,7 +13,9 @@ export default class CSVParser {
     // Handle errors load
     reader.onload = event => {
       const csvString = event.target.result;
-      this.processData(csvString, dataset => {
+      const title = $('#csv_title').val();
+      const unit = $('#csv_unit').val();
+      this.processData(csvString, title, unit, dataset => {
         console.log(dataset);
         callback(dataset);
       });
@@ -21,9 +23,13 @@ export default class CSVParser {
     reader.onerror = this.errorHandler;
   }
 
-  processData(csvString, callback) {
+  processData(csvString, title, unit, callback) {
     let header;
-    const customDataset = [];
+    const customDataset = {
+      title: title,
+      unit: unit,
+      data: []
+    };
 
     csv({
       delimiter: ';'
@@ -51,7 +57,7 @@ export default class CSVParser {
             }
           }, this);
 
-          customDataset.push(cityObject);
+          customDataset.data.push(cityObject);
         }
       })
       .on('done', () => {

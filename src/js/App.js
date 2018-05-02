@@ -8,6 +8,11 @@ class App {
   static run() {
     const primary_map = new Map('map', [7.555, 51.478333], 7, success => {
       if (success) {
+        document.body.style.visibility = 'visible';
+
+        // Add Home Button
+        primary_map._addHomeButton();
+
         // finished loading
         document.getElementById('start').removeAttribute('disabled');
         document.getElementById('start').innerHTML = 'Los geht&#39;s!';
@@ -29,7 +34,6 @@ class App {
 
     // dual mode triggered
     $('#mode-dual').on('change', () => {
-      console.log('dualView triggered', $('#mode-dual').is(':checked'));
       if (!dualView && $('#mode-dual').is(':checked')) {
         if (splitView) {
           $('#split_map').remove();
@@ -45,6 +49,7 @@ class App {
           if (success) {
             secondary_map.center();
             primary_map.center();
+            secondary_map._addHomeButton();
           }
         });
 
@@ -58,7 +63,6 @@ class App {
 
     // split mode triggered
     $('#mode-split').on('change', () => {
-      console.log('splitView triggered', $('#mode-split').is(':checked'));
       if (!splitView && $('#mode-split').is(':checked')) {
         if (dualView) {
           $('.webgis-view-split').remove();

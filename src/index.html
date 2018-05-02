@@ -30,10 +30,10 @@
 
 </head>
 
-<body>
+<body style="visibility: hidden">
 
   <nav class="navbar fixed-bottom navbar-expand-sm navbar-dark bg-dark">
-    <div class="navbar-brand">
+    <div class="navbar-brand" id="logo">
       webgis.<span class="n">n</span><span class="r">r</span><span class="w">w</span>
 
     </div>
@@ -97,7 +97,7 @@
           <a class="nav-link dropdown-toggle" id="dropdown_stat_data" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Themen</a>
           <div class="dropdown-menu" aria-labelledby="dropdown_stat_data">
             <div class="row">
-              <div class="col-md-6">
+              <div class="col-md-12">
                 <button type="button" class="btn btn-outline-primary btn-block" id="population_data">
                   <i class="material-icons">group</i>
                   Einwohnerzahlen</button>
@@ -115,36 +115,16 @@
                   Erwerbstätige Gewerbe</button>
                 <hr>
               </div>
-              <div class="col-md-6">
-                <h6>Bundestagswahl 2017</h6>
-                <button type="button" class="btn btn-outline-primary btn-block" id="Bundestagswahl_2017_SPD">
-                  <i class="material-icons">account_balance</i>
-                  SPD</button>
-                <button type="button" class="btn btn-outline-primary btn-block" id="Bundestagswahl_2017_CDU">
-                  <i class="material-icons">account_balance</i>
-                  CDU</button>
-                <button type="button" class="btn btn-outline-primary btn-block" id="Bundestagswahl_2017_GRUENE">
-                  <i class="material-icons">account_balance</i>
-                  GRUENE</button>
-                <button type="button" class="btn btn-outline-primary btn-block" id="Bundestagswahl_2017_FDP">
-                  <i class="material-icons">account_balance</i>
-                  FDP</button>
-                <button type="button" class="btn btn-outline-primary btn-block" id="Bundestagswahl_2017_DIELINKE">
-                  <i class="material-icons">account_balance</i>
-                  Die Linke</button>
-                <button type="button" class="btn btn-outline-primary btn-block" id="Bundestagswahl_2017_AFD">
-                  <i class="material-icons">account_balance</i>
-                  AfD</button>
-              </div>
             </div>
 
 
             <hr/>
             <h6>Eigene Daten</h6>
-            Wähle hier deine Datei aus! (csv)
-            <br/>
-            <input type="file" id="custom_csv_input" accept=".csv">
-            <p id="csv_info"></p>
+            <!-- Wähle hier deine Datei aus! (csv) -->
+            <!-- <br/> -->
+            <button type="button" class="btn btn-primary" id="csv_modal_launch">CSV Datei einfügen</button>
+            <!-- <input type="file" id="custom_csv_input" accept=".csv"> -->
+            <!-- <p id="csv_info"></p> -->
           </div>
         </li>
         <li class="nav-item dropup">
@@ -249,53 +229,100 @@
     <i id='legend_collapse' class="material-icons right-middle rotate-down" data-toggle="collapse" data-target=".legend" aria-expanded="false">keyboard_arrow_down</i>
     <div class='legend collapse multi-collapse'>
       <div class='my-legend'>
-        <h3 id='legend-heading' class='legend-title'>Titel deiner Karte</h3>
-        <h5 id='year'>Jahr</h5>
-        <div class="scale-legend">
-          <div id='legend-bar'>
+        <div class='legend-info-wrapper'>
+          <h3 id='legend-heading' class='legend-title'>Titel deiner Karte</h3>
+          <h5 id='year'>Jahr</h5>
+          <div class="scale-legend">
+            <div id='legend-bar'>
+            </div>
+            <div class='labels'>
+              <div class='label' id="legend-min">0</div>
+              <div class='label' id="legend-max">100</div>
+            </div>
           </div>
-          <div class='labels'>
-            <div class='label' id="legend-min">0</div>
-            <div class='label' id="legend-max">100</div>
+          <div class='discrete-legend' style="display: none;">
+            <ul class='legend-labels'>
+              <li>
+                <span style='background:#F1EEF6;'></span>
+                <br/>0 - 20%</li>
+              <li>
+                <span style='background:#BDC9E1;'></span>
+                <br/>40%</li>
+              <li>
+                <span style='background:#74A9CF;'></span>
+                <br/>60%</li>
+              <li>
+                <span style='background:#2B8CBE;'></span>
+                <br/>80%</li>
+              <li>
+                <span style='background:#045A8D;'></span>
+                <br/>100%</li>
+            </ul>
           </div>
         </div>
-        <div class='discrete-legend' style="display: none;">
-          <ul class='legend-labels'>
-            <li>
-              <span style='background:#F1EEF6;'></span>
-              <br/>0 - 20%</li>
-            <li>
-              <span style='background:#BDC9E1;'></span>
-              <br/>40%</li>
-            <li>
-              <span style='background:#74A9CF;'></span>
-              <br/>60%</li>
-            <li>
-              <span style='background:#2B8CBE;'></span>
-              <br/>80%</li>
-            <li>
-              <span style='background:#045A8D;'></span>
-              <br/>100%</li>
-          </ul>
-        </div>
-        <br/>
         <div class='info'>
           <div id='pd'>
             <p>Bewege die Maus über die Kreise</p>
           </div>
         </div>
       </div>
-
       <div class="flex-timeslider">
         <div class='timeslider-wrapper'>
           <div id='timeslider' hidden>
-            Timeslider
-            <div class='labels'>
-              <label id='timeslide-min'>1962</label>
-              <label id='timeslide-max'>2010</label>
+            <i id="timeslide-play" class="material-icons timeslide-control">play_arrow</i>
+            <i id="timeslide-pause" class="material-icons timeslide-control" style="display: none">pause</i>
+            <div class="grow">
+              <div class='labels'>
+                <label id='timeslide-min'>1962</label>
+                <label id='timeslide-max'>2010</label>
+              </div>
+              <input id='slider' type='range' min='0' max='100' step='1' value='0' />
             </div>
-            <input id='slider' type='range' min='0' max='100' step='1' value='0' />
+            <i id="download_gif" class="material-icons timeslide-control" style="display: none">gif</i>
+            <div id="download_gif_spinner" style="display: none"></div>
           </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- CSV File modal -->
+  <div class="modal fade" id="csvModal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header bg-dark" style="color: white;">
+          <h5 class="modal-title hero-webgisnrw">
+            Eigene Daten
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" style="color: white">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h5>Fügen Sie hier Ihre eigene Daten ein</h5>
+
+          <form>
+            <div class="form-group">
+              <label for="csv_title">Titel</label>
+              <input type="text" class="form-control" id="csv_title" aria-describedby="titleHelp" placeholder="Titel des Datensatzes">
+              <small id="titleHelp" class="form-text text-muted">Der Titel beschreibt den Inhalt und Kontext des Datensatzes</small>
+            </div>
+            <div class="form-group">
+              <label for="csv_unit">Einheit</label>
+              <input type="text" class="form-control" id="csv_unit" aria-describedby="unitHelp" placeholder="Einheit">
+              <small id="unitHelp" class="form-text text-muted">Die Einheit gibt die Einheit des Datensatzes an, z.B. "%"</small>
+            </div>
+            <div class="form-group">
+              <label for="csv_file">CSV Datei</label>
+              <input type="file" class="form-control" id="custom_csv_input">
+            </div>
+          </form>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="csv_start" class="btn btn-primary">Einfügen</button>
         </div>
       </div>
     </div>
