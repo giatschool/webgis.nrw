@@ -5,7 +5,6 @@ import colorLerp from 'color-lerp';
 
 import Statistics from './Statistics.js';
 
-// const KreiseNRW_source = require('./../data/landkreise_simplify0.json');
 import { mapboxToken, wmsLayerUrls } from './../config.js';
 import CSVParser from './CSVParser.js';
 
@@ -26,6 +25,8 @@ const statistics_state = {
 
 const map = undefined;
 
+let legendWrapper;
+
 export default class Map {
   /**
    *
@@ -45,29 +46,6 @@ export default class Map {
     });
 
     this.map.addControl(new mapboxgl.NavigationControl(), 'top-left');
-
-    // Add home button (Small hack since Mapbox is not supporting this..)
-    // const zoomOutBtn = $('.mapboxgl-ctrl-zoom-out');
-    // const homeButton = $('.mapboxgl-ctrl-zoom-out').clone();
-    // homeButton.on('click', () => {
-    //   this.map.flyTo({
-    //     center: center,
-    //     zoom: zoom
-    //   });
-    // });
-    // homeButton.removeClass('mapboxgl-ctrl-zoom-out');
-    // homeButton.append('<span class="material-icons">home</span>');
-    // homeButton.removeAttr('aria-label');
-    // zoomOutBtn.after(homeButton);
-
-    // map.on('load', () => {
-    //   this.map.fitBounds(
-    //     // Boundary of NRW
-    //     new mapboxgl.LngLatBounds([5.8664, 50.3276], [9.4623, 52.5325]),
-    //     {
-    //       padding: 20
-    //     }
-    //   );
 
     this.map.on('load', () => {
       // When a click event occurs on a feature in the places layer, open a popup at the
@@ -90,6 +68,7 @@ export default class Map {
       this.map.on('mouseleave', function() {
         map.getCanvas().style.cursor = '';
       });
+
     });
 
     this.map.on('style.load', () => {
@@ -117,9 +96,9 @@ export default class Map {
                   states[0].properties[feature_dataset.title]
                 }</strong> ${feature_dataset.unit}</em></p>`;
             } else {
-              myString = `<h3><strong>${
+              myString = `<h4><strong>${
                 states[0].properties.Gemeindename
-              }</strong></h3>`;
+              }</strong></h4>`;
             }
             document.getElementById('pd').innerHTML = myString;
           } else {

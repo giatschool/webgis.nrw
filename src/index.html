@@ -222,66 +222,66 @@
   </nav>
 
   <div class="webgis-view" style="float:left; width: 100vw;">
-    <div id='map' class='map'></div>
-  </div>
-
-  <div class="legend-wrapper">
-    <i id='legend_collapse' class="material-icons right-middle rotate-down" data-toggle="collapse" data-target=".legend" aria-expanded="false">keyboard_arrow_down</i>
-    <div class='legend collapse multi-collapse'>
-      <div class='my-legend'>
-        <div class='legend-info-wrapper'>
-          <h3 id='legend-heading' class='legend-title'>Titel deiner Karte</h3>
-          <h5 id='year'>Jahr</h5>
-          <div class="scale-legend">
-            <div id='legend-bar'>
-            </div>
-            <div class='labels'>
-              <div class='label' id="legend-min">0</div>
-              <div class='label' id="legend-max">100</div>
-            </div>
-          </div>
-          <div class='discrete-legend' style="display: none;">
-            <ul class='legend-labels'>
-              <li>
-                <span style='background:#F1EEF6;'></span>
-                <br/>0 - 20%</li>
-              <li>
-                <span style='background:#BDC9E1;'></span>
-                <br/>40%</li>
-              <li>
-                <span style='background:#74A9CF;'></span>
-                <br/>60%</li>
-              <li>
-                <span style='background:#2B8CBE;'></span>
-                <br/>80%</li>
-              <li>
-                <span style='background:#045A8D;'></span>
-                <br/>100%</li>
-            </ul>
-          </div>
-        </div>
-        <div class='info'>
-          <div id='pd'>
-            <p>Bewege die Maus über die Kreise</p>
-          </div>
-        </div>
-      </div>
-      <div class="flex-timeslider">
-        <div class='timeslider-wrapper'>
-          <div id='timeslider' hidden>
-            <i id="timeslide-play" class="material-icons timeslide-control">play_arrow</i>
-            <i id="timeslide-pause" class="material-icons timeslide-control" style="display: none">pause</i>
-            <div class="grow">
-              <div class='labels'>
-                <label id='timeslide-min'>1962</label>
-                <label id='timeslide-max'>2010</label>
+    <div id='map' class='map'>
+      <div class="legend-wrapper">
+        <h3 id='legend-heading' class='legend-title'>Titel deiner Karte <i id='legend_collapse' class="material-icons right-middle rotate-down" data-toggle="collapse" data-target=".legend" aria-expanded="false">keyboard_arrow_down</i>
+        </h3>
+        <div class='legend collapse multi-collapse'>
+          <div class='my-legend'>
+            <div class='legend-info-wrapper'>
+              <h5 id='year'>Jahr</h5>
+              <div class="scale-legend">
+                <div id='legend-bar'>
+                </div>
+                <div class='labels'>
+                  <div class='label' id="legend-min">0</div>
+                  <div class='label' id="legend-max">100</div>
+                </div>
               </div>
-              <input id='slider' type='range' min='0' max='100' step='1' value='0' />
+              <div class='discrete-legend' style="display: none;">
+                <ul class='legend-labels'>
+                  <li>
+                    <span style='background:#F1EEF6;'></span>
+                    <br/>0 - 20%</li>
+                  <li>
+                    <span style='background:#BDC9E1;'></span>
+                    <br/>40%</li>
+                  <li>
+                    <span style='background:#74A9CF;'></span>
+                    <br/>60%</li>
+                  <li>
+                    <span style='background:#2B8CBE;'></span>
+                    <br/>80%</li>
+                  <li>
+                    <span style='background:#045A8D;'></span>
+                    <br/>100%</li>
+                </ul>
+              </div>
             </div>
-            <i id="download_gif" class="material-icons timeslide-control" style="display: none">gif</i>
-            <div id="download_gif_spinner" style="display: none"></div>
+            <div class='info'>
+              <div id='pd'>
+                <p>Bewege die Maus über die Kreise</p>
+              </div>
+            </div>
           </div>
-
+          <div class="flex-timeslider">
+            <div class='timeslider-wrapper'>
+              <div id='timeslider' hidden>
+                <i id="timeslide-play" class="material-icons timeslide-control">play_arrow</i>
+                <i id="timeslide-pause" class="material-icons timeslide-control" style="display: none">pause</i>
+                <div class="grow">
+                  <div class='labels'>
+                    <label id='timeslide-min'>1962</label>
+                    <label id='timeslide-max'>2010</label>
+                  </div>
+                  <input id='slider' type='range' min='0' max='100' step='1' value='0' />
+                </div>
+                <i id="download_gif" class="material-icons timeslide-control" style="display: none">gif</i>
+                <div id="download_gif_spinner" style="display: none"></div>
+              </div>
+    
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -328,10 +328,7 @@
     </div>
   </div>
 
-
-
-
-  <!-- Large modal -->
+  <!-- Welcome modal -->
   <div class="modal fade" id="launchModal">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -358,6 +355,7 @@
     </div>
   </div>
 
+  <!-- Legal advice modal -->
   <div class="modal fade" id="legalAdviceModal">
     <div class="modal-dialog" role="document">
       <div class="modal-content">

@@ -17,6 +17,10 @@ class App {
         document.getElementById('start').removeAttribute('disabled');
         document.getElementById('start').innerHTML = 'Los geht&#39;s!';
         document.getElementById('start').setAttribute('data-dismiss', 'modal');
+
+        // Debugging Stuff
+
+        console.log(primary_map.getLegend());
       } else {
         document.getElementById('start').innerHTML =
           'Daten konnten nicht geladen werden :(';
@@ -43,6 +47,16 @@ class App {
         $('.webgis-view').after(
           '<div class="webgis-view-split" style="float: right; width:50vw;"><div id="dual_map" class="map"></div></div>'
         );
+
+        // $('legend-wrapper')
+        //   .clone()
+        //   .appendTo($('#dual_map'));
+
+        $('.legend-wrapper')
+          .clone()
+          .addClass('secLegend')
+          .appendTo($('#dual_map'));
+
         $('.webgis-view, #map').css('width', '50vw');
 
         secondary_map = new Map('dual_map', [7.555, 51.478333], 7, success => {
