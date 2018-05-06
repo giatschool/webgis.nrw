@@ -25,8 +25,6 @@ const statistics_state = {
 
 const map = undefined;
 
-let legendWrapper;
-
 export default class Map {
   /**
    *
@@ -44,6 +42,13 @@ export default class Map {
       style: 'mapbox://styles/mapbox/light-v9',
       preserveDrawingBuffer: true // to print map
     });
+
+    // Set legend to the according one when dualMode is activated
+    if ($('.secLegend').length !== 0) {
+      this.state_text = $('.secLegend #pd')[0];
+    } else {
+      this.state_text = $('#pd')[0];
+    }
 
     this.map.addControl(new mapboxgl.NavigationControl(), 'top-left');
 
@@ -68,7 +73,6 @@ export default class Map {
       this.map.on('mouseleave', function() {
         map.getCanvas().style.cursor = '';
       });
-
     });
 
     this.map.on('style.load', () => {
@@ -100,9 +104,9 @@ export default class Map {
                 states[0].properties.Gemeindename
               }</strong></h4>`;
             }
-            document.getElementById('pd').innerHTML = myString;
+            this.state_text.innerHTML = myString;
           } else {
-            document.getElementById('pd').innerHTML =
+            this.state_text.innerHTML =
               '<p>Bewege die Maus über die Kreise</p>';
           }
         }
