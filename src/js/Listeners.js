@@ -123,8 +123,7 @@ export default class Listeners {
     document
       .getElementById('transparency-slider')
       .addEventListener('input', e => {
-        const transparency = e.target.value;
-        this.getActiveMap().changeTransparency(transparency);
+        this.getActiveMap().changeTransparency(e.target.value);
       });
 
     document.getElementById('population_data').addEventListener('click', () => {
@@ -274,6 +273,12 @@ export default class Listeners {
 
   setActiveMap(map) {
     activeMap = map;
+
+    try {
+      // update transparency slider
+      document.getElementById('transparency-slider').value =
+        activeMap.getTransparency() * 100;
+    } catch (e) {}
   }
 
   getActiveMap() {
