@@ -40,6 +40,22 @@ export default class Listeners {
       this.getActiveMap().changeStyle('empty');
     });
 
+    document.getElementById('tranchotMap').addEventListener('click', () => {
+      this.getActiveMap().changeStyle('tranchot');
+    });
+
+    document.getElementById('uraufnahmeMap').addEventListener('click', () => {
+      this.getActiveMap().changeStyle('uraufnahme');
+    });
+
+    document.getElementById('lippeMap').addEventListener('click', () => {
+      this.getActiveMap().changeStyle('lippe');
+    });
+
+    document.getElementById('tk25Map').addEventListener('click', () => {
+      this.getActiveMap().changeStyle('tk25');
+    });
+
     // document
     //   .getElementById('custom_csv_input')
     //   .addEventListener('change', () => {

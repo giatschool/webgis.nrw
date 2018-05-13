@@ -13,6 +13,21 @@ module.exports = {
     ],
     dtk: [
       'https://www.wms.nrw.de/geobasis/wms_nw_dtk?bbox={bbox-epsg-3857}&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&width=256&height=256&layers=nw_dtk_col,nw_dtk_pan&styles=default&format=image/png'
+    ],
+    tranchot: [
+      'https://www.wms.nrw.de/geobasis/wms_nw_tranchot?bbox={bbox-epsg-3857}&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&width=256&height=256&layers=WMS_NW_TRANCHOT&styles=default&format=image/png'
+    ],
+    uraufnahme: [
+      'https://www.wms.nrw.de/geobasis/wms_nw_uraufnahme?bbox={bbox-epsg-3857}&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&width=256&height=256&layers=WMS_NW_URAUFNAHME&styles=default&format=image/png'
+    ],
+    lippe: [
+      'https://www.wms.nrw.de/geobasis/wms_nw_lippe?bbox={bbox-epsg-3857}&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&width=256&height=256&layers=WMS_NW_LIPPE&styles=default&format=image/png'
+    ],
+    neuaufnahme: [
+      'https://www.wms.nrw.de/geobasis/wms_nw_neuaufnahme?bbox={bbox-epsg-3857}&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&width=256&height=256&layers=WMS_NW_NEUAUFNAHME&styles=default&format=image/png'
+    ],
+    tk25: [
+      'https://www.wms.nrw.de/geobasis/wms_nw_tk25_1936-1945?bbox={bbox-epsg-3857}&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&width=256&height=256&layers=WMS_NW_TK25_1936-1945&styles=default&format=image/png'
     ]
   }
 };
