@@ -48,13 +48,13 @@ export default class Listeners {
       this.getActiveMap().changeStyle('uraufnahme');
     });
 
-    document.getElementById('lippeMap').addEventListener('click', () => {
-      this.getActiveMap().changeStyle('lippe');
-    });
+    // document.getElementById('lippeMap').addEventListener('click', () => {
+    //   this.getActiveMap().changeStyle('lippe');
+    // });
 
-    document.getElementById('tk25Map').addEventListener('click', () => {
-      this.getActiveMap().changeStyle('tk25');
-    });
+    // document.getElementById('tk25Map').addEventListener('click', () => {
+    //   this.getActiveMap().changeStyle('tk25');
+    // });
 
     // document
     //   .getElementById('custom_csv_input')
