@@ -32,19 +32,29 @@ export default class Listeners {
       this.getActiveMap().changeStyle('dtk');
     });
 
-    document.getElementById('dopMap').addEventListener('click', () => {
-      this.getActiveMap().changeStyle('dop');
-    });
-
     document.getElementById('blankMap').addEventListener('click', () => {
       this.getActiveMap().changeStyle('empty');
     });
 
-    // document
-    //   .getElementById('custom_csv_input')
-    //   .addEventListener('change', () => {
-    //     this.getActiveMap().importCSV();
-    //   });
+    document.getElementById('tranchotMap').addEventListener('click', () => {
+      this.getActiveMap().changeStyle('tranchot');
+    });
+
+    document.getElementById('uraufnahmeMap').addEventListener('click', () => {
+      this.getActiveMap().changeStyle('uraufnahme');
+    });
+
+    document.getElementById('neuaufnahmeMap').addEventListener('click', () => {
+      this.getActiveMap().changeStyle('neuaufnahme');
+    });
+
+    document.getElementById('tk25Map').addEventListener('click', () => {
+      this.getActiveMap().changeStyle('tk25');
+    });
+
+    document.getElementById('dgk5Map').addEventListener('click', () => {
+      this.getActiveMap().changeStyle('dgk5');
+    });
 
     document
       .getElementById('csv_modal_launch')
