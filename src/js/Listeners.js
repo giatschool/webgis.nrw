@@ -284,6 +284,12 @@ export default class Listeners {
   setActiveMap(map) {
     activeMap = map;
 
+    // Remove active class from old legend
+    $('.activeLegend').removeClass('activeLegend');
+    // Add active class to legends, disable eslint because it bugs here..
+    /* eslint-disable */
+    map.getLegend().className += ' activeLegend';
+
     try {
       // update transparency slider
       document.getElementById('transparency-slider').value =

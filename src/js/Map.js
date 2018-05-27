@@ -10,17 +10,15 @@ import CSVParser from './CSVParser.js';
 
 let KreiseNRW;
 //let feature_dataset;
-let current_year;
-let current_legend = $('.scale-legend')[0];
-
-
-
+//let current_year;
+//let current_legend = $('.scale-legend')[0];
+/*
 const statistics_state = {
   enabled: false,
   type: '',
   colorStops: []
 };
-
+*/
 const map = undefined;
 
 export default class Map {
@@ -45,14 +43,22 @@ export default class Map {
 
     this.feature_dataset = undefined;
 
+    this.statistics_state = {
+      enabled: false,
+      type: '',
+      colorStops: []
+    };
+
     // min and max colors
     this.lowColor = '#80BCFF';
     this.highColor = '#1A5FAC';
 
     // Set legend to the according one when dualMode is activated
     if ($('.secLegend').length !== 0) {
+      this.legend = $('.secLegend')[0];
       this.state_text = $('.secLegend #pd')[0];
     } else {
+      this.legend = $('.legend-wrapper')[0];
       this.state_text = $('#pd')[0];
     }
 
@@ -132,7 +138,7 @@ export default class Map {
   }
 
   getYear() {
-    return current_year;
+    return this.current_year;
   }
 
   /**
@@ -140,16 +146,6 @@ export default class Map {
    * @param {function} loadDone called when data was fetched successful
    */
   loadData(loadDone) {
-    // fetch('/assets/data/nw_dvg2_krs.json')
-    //   .then(function(response) {
-    //     response.json().then(function(data) {
-    //       KreiseNRW = data;
-    //     });
-    //   })
-    //   .catch(function(ex) {
-    //     console.log('parsing failed', ex);
-    //   });
-
     /* eslint-disable global-require */
     KreiseNRW = require('./../data/nw_dvg2_krs.json');
 
@@ -257,8 +253,14 @@ export default class Map {
         this.map.setPaintProperty('kreisgrenzen', 'fill-color', {
           property: this.feature_dataset.title,
           stops: [
-            [this._getMinFeature(KreiseNRW, this.feature_dataset.title), this.lowColor],
-            [this._getMaxFeature(KreiseNRW, this.feature_dataset.title), this.highColor]
+            [
+              this._getMinFeature(KreiseNRW, this.feature_dataset.title),
+              this.lowColor
+            ],
+            [
+              this._getMaxFeature(KreiseNRW, this.feature_dataset.title),
+              this.highColor
+            ]
           ]
         });
       }
@@ -270,17 +272,19 @@ export default class Map {
       });
     }
 
-    document.getElementById('legend-min').innerHTML = this._getMinFeature(
+    $('.activeLegend #legend-min').innerHTML = this._getMinFeature(
       KreiseNRW,
       this.feature_dataset.title
     );
-    document.getElementById('legend-max').innerHTML = this._getMaxFeature(
+    $('.activeLegend #legend-max').innerHTML = this._getMaxFeature(
       KreiseNRW,
       this.feature_dataset.title
     );
-    document.getElementById(
-      'legend-bar'
-    ).style.background = `linear-gradient(to right, ${this.lowColor}, ${this.highColor})`;
+    $(
+      '.activeLegend #legend-bar'
+    ).style.background = `linear-gradient(to right, ${this.lowColor}, ${
+      this.highColor
+    })`;
   }
 
   /**
@@ -295,17 +299,6 @@ export default class Map {
     const _data = require(`./../data/${data_source}.json`);
 
     this._setDataFromJSON(_data);
-
-    // fetch(url)
-    //   .then(response => {
-    //     response.json().then(_data => {
-    //       /* eslint-enable global-require */
-    //       return this.feature_dataset.data(_data, feature);
-    //     });
-    //   })
-    //   .catch(ex => {
-    //     console.log('parsing failed', ex);
-    //   });
   }
 
   /**
@@ -313,7 +306,7 @@ export default class Map {
    * @param {String} year
    */
   updateData(year = this._getFirstYearOfDataset()) {
-    current_year = year;
+    this.current_year = year;
     KreiseNRW.features.map(kreis => {
       this.feature_dataset.data.forEach(kreisPop => {
         if (
@@ -322,35 +315,43 @@ export default class Map {
             kreis.properties.Kreisnummer.length - 3
           ) === kreisPop.AGS
         ) {
-          kreis.properties[this.feature_dataset.title] = Number(kreisPop.data[year]);
+          kreis.properties[this.feature_dataset.title] = Number(
+            kreisPop.data[year]
+          );
         }
       });
     });
 
-    if (statistics_state.enabled) {
-      this.changeStatistics(statistics_state.type);
+    if (this.statistics_state.enabled) {
+      this.changeStatistics(this.statistics_state.type);
       this.map.setPaintProperty(
         'kreisgrenzen',
         'fill-color',
-        statistics_state.colorStops
+        this.statistics_state.colorStops
       );
     } else {
       this.map.getSource('KreiseNRW').setData(KreiseNRW);
       this.map.setPaintProperty('kreisgrenzen', 'fill-color', {
         property: this.feature_dataset.title,
         stops: [
-          [this._getMinFeature(KreiseNRW, this.feature_dataset.title), this.lowColor],
-          [this._getMaxFeature(KreiseNRW, this.feature_dataset.title), this.highColor]
+          [
+            this._getMinFeature(KreiseNRW, this.feature_dataset.title),
+            this.lowColor
+          ],
+          [
+            this._getMaxFeature(KreiseNRW, this.feature_dataset.title),
+            this.highColor
+          ]
         ]
       });
     }
 
-    document.getElementById('year').textContent = year;
-    document.getElementById('legend-min').innerHTML = this._getMinFeature(
+    $('.activeLegend #year')[0].textContent = year;
+    $('.activeLegend #legend-min')[0].innerHTML = this._getMinFeature(
       KreiseNRW,
       this.feature_dataset.title
     );
-    document.getElementById('legend-max').innerHTML = this._getMaxFeature(
+    $('.activeLegend #legend-max')[0].innerHTML = this._getMaxFeature(
       KreiseNRW,
       this.feature_dataset.title
     );
@@ -415,7 +416,7 @@ export default class Map {
   }
 
   changeStatistics(type) {
-    statistics_state.type = type;
+    this.statistics_state.type = type;
 
     switch (type) {
       case 'STANDARD':
@@ -476,23 +477,27 @@ export default class Map {
     this.map.setPaintProperty('kreisgrenzen', 'fill-color', {
       property: this.feature_dataset.title,
       stops: [
-        [this._getMinFeature(KreiseNRW, this.feature_dataset.title), this.lowColor],
-        [this._getMaxFeature(KreiseNRW, this.feature_dataset.title), this.highColor]
+        [
+          this._getMinFeature(KreiseNRW, this.feature_dataset.title),
+          this.lowColor
+        ],
+        [
+          this._getMaxFeature(KreiseNRW, this.feature_dataset.title),
+          this.highColor
+        ]
       ]
     });
     this._hideLegend();
-    statistics_state.enabled = false;
+    this.statistics_state.enabled = false;
   }
 
   _hideLegend() {
     $('.discrete-legend').hide();
     $('.scale-legend').show();
-
-    current_legend = $('.scale-legend')[0];
   }
 
   getLegend() {
-    return current_legend;
+    return this.legend;
   }
 
   _applyStatistic(classes) {
@@ -505,7 +510,7 @@ export default class Map {
 
     const stops = ['step', ['get', this.feature_dataset.title]];
 
-    $('.legend-labels').empty();
+    $('.activeLegend .legend-labels').empty();
 
     colors.forEach((e, i) => {
       if (i !== 0) {
@@ -526,7 +531,7 @@ export default class Map {
       const lowerBound = Math.round(classes[i] * 10) / 10;
       const upperBound = Math.round(classes[i + 1] * 10) / 10;
 
-      $('.legend-labels').append(
+      $('.activeLegend .legend-labels').append(
         `<li style="flex: ${liFlex}">
           <span style="background:${e};">
           </span><br/>${lowerBound}<br />-<br />${upperBound}</li>`
@@ -537,13 +542,13 @@ export default class Map {
 
     this.map.setPaintProperty('kreisgrenzen', 'fill-color', stops);
 
-    statistics_state.enabled = true;
-    statistics_state.colorStops = stops;
+    this.statistics_state.enabled = true;
+    this.statistics_state.colorStops = stops;
 
-    $('.discrete-legend').show();
-    $('.scale-legend').hide();
+    $('.activeLegend .discrete-legend').show();
+    $('.activeLegend .scale-legend').hide();
 
-    current_legend = $('.discrete-legend')[0];
+    //current_legend = $('.discrete-legend')[0];
   }
 
   /**
@@ -554,7 +559,7 @@ export default class Map {
   _setDataFromJSON(data) {
     this.feature_dataset = data;
 
-    document.getElementById('legend-heading').innerHTML = data.title;
+    $('.activeLegend #legend-heading')[0].innerHTML = data.title;
 
     // map feature to layer
     KreiseNRW.features.map(kreis => {
@@ -584,30 +589,35 @@ export default class Map {
     });
 
     // update ui elements
-    document.getElementById('legend-min').innerHTML = this._getMinFeature(
+    $('.activeLegend #legend-min')[0].innerHTML = this._getMinFeature(
       KreiseNRW,
       this.feature_dataset.title
     );
-    document.getElementById('legend-max').innerHTML = this._getMaxFeature(
+    $('.activeLegend #legend-max')[0].innerHTML = this._getMaxFeature(
       KreiseNRW,
       this.feature_dataset.title
     );
-    document.getElementById('timeslider').removeAttribute('hidden');
-    document.getElementById(
-      'timeslide-min'
-    ).innerHTML = this._getFirstYearOfDataset();
-    document.getElementById(
-      'timeslide-max'
-    ).innerHTML = this._getLastYearOfDataset();
-    document
-      .getElementById('slider')
-      .setAttribute('min', this._getFirstYearOfDataset());
-    document
-      .getElementById('slider')
-      .setAttribute('max', this._getLastYearOfDataset());
 
-    if (statistics_state.enabled) {
-      statistics_state.enabled = false;
+    $('.activeLegend #timeslider')[0].removeAttribute('hidden');
+    $(
+      '.activeLegend #timeslide-min'
+    )[0].innerHTML = this._getFirstYearOfDataset();
+    $(
+      '.activeLegend #timeslide-max'
+    )[0].innerHTML = this._getLastYearOfDataset();
+
+    $('.activeLegend #slider')[0].setAttribute(
+      'min',
+      this._getFirstYearOfDataset()
+    );
+
+    $('.activeLegend #slider')[0].setAttribute(
+      'max',
+      this._getLastYearOfDataset()
+    );
+
+    if (this.statistics_state.enabled) {
+      this.statistics_state.enabled = false;
       this._hideLegend();
     }
     this.updateData();

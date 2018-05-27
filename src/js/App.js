@@ -19,9 +19,6 @@ class App {
         document.getElementById('start').innerHTML = 'Los geht&#39;s!';
         document.getElementById('start').setAttribute('data-dismiss', 'modal');
 
-        // Debugging Stuff
-
-        console.log(primary_map.getLegend());
       } else {
         document.getElementById('start').innerHTML =
           'Daten konnten nicht geladen werden :(';
