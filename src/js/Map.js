@@ -9,13 +9,11 @@ import { mapboxToken, wmsLayerUrls } from './../config.js';
 import CSVParser from './CSVParser.js';
 
 let KreiseNRW;
-let feature_dataset;
+//let feature_dataset;
 let current_year;
 let current_legend = $('.scale-legend')[0];
 
-// min and max colors
-let lowColor = '#80BCFF';
-let highColor = '#1A5FAC';
+
 
 const statistics_state = {
   enabled: false,
@@ -42,6 +40,14 @@ export default class Map {
       style: 'mapbox://styles/mapbox/light-v9',
       preserveDrawingBuffer: true // to print map
     });
+
+    // A few class variables
+
+    this.feature_dataset = undefined;
+
+    // min and max colors
+    this.lowColor = '#80BCFF';
+    this.highColor = '#1A5FAC';
 
     // Set legend to the according one when dualMode is activated
     if ($('.secLegend').length !== 0) {
@@ -89,16 +95,16 @@ export default class Map {
           if (states.length > 0) {
             let myString = '';
             if (
-              feature_dataset &&
-              states[0].properties[feature_dataset.title]
+              this.feature_dataset &&
+              states[0].properties[this.feature_dataset.title]
             ) {
               myString =
                 `<h4><strong>${
                   states[0].properties.Gemeindename
                 }</strong></h4>` +
                 `<p><strong><em>${
-                  states[0].properties[feature_dataset.title]
-                }</strong> ${feature_dataset.unit}</em></p>`;
+                  states[0].properties[this.feature_dataset.title]
+                }</strong> ${this.feature_dataset.unit}</em></p>`;
             } else {
               myString = `<h4><strong>${
                 states[0].properties.Gemeindename
@@ -122,7 +128,7 @@ export default class Map {
   }
 
   getTitle() {
-    return feature_dataset.title;
+    return this.feature_dataset.title;
   }
 
   getYear() {
@@ -241,18 +247,18 @@ export default class Map {
    */
   changeColor(type, value) {
     if (type === 'low') {
-      lowColor = value;
+      this.lowColor = value;
     } else if (type === 'high') {
-      highColor = value;
+      this.highColor = value;
     }
 
-    if (feature_dataset.title) {
+    if (this.feature_dataset.title) {
       if (this.map.getLayer('kreisgrenzen')) {
         this.map.setPaintProperty('kreisgrenzen', 'fill-color', {
-          property: feature_dataset.title,
+          property: this.feature_dataset.title,
           stops: [
-            [this._getMinFeature(KreiseNRW, feature_dataset.title), lowColor],
-            [this._getMaxFeature(KreiseNRW, feature_dataset.title), highColor]
+            [this._getMinFeature(KreiseNRW, this.feature_dataset.title), this.lowColor],
+            [this._getMaxFeature(KreiseNRW, this.feature_dataset.title), this.highColor]
           ]
         });
       }
@@ -260,21 +266,21 @@ export default class Map {
     if (this.map.getLayer('feinstaub_band_layer')) {
       this.map.setPaintProperty('feinstaub_band_layer', 'fill-color', {
         property: 'DN',
-        stops: [[0, lowColor], [45, highColor]]
+        stops: [[0, this.lowColor], [45, this.highColor]]
       });
     }
 
     document.getElementById('legend-min').innerHTML = this._getMinFeature(
       KreiseNRW,
-      feature_dataset.title
+      this.feature_dataset.title
     );
     document.getElementById('legend-max').innerHTML = this._getMaxFeature(
       KreiseNRW,
-      feature_dataset.title
+      this.feature_dataset.title
     );
     document.getElementById(
       'legend-bar'
-    ).style.background = `linear-gradient(to right, ${lowColor}, ${highColor})`;
+    ).style.background = `linear-gradient(to right, ${this.lowColor}, ${this.highColor})`;
   }
 
   /**
@@ -309,14 +315,14 @@ export default class Map {
   updateData(year = this._getFirstYearOfDataset()) {
     current_year = year;
     KreiseNRW.features.map(kreis => {
-      feature_dataset.data.forEach(kreisPop => {
+      this.feature_dataset.data.forEach(kreisPop => {
         if (
           kreis.properties.Kreisnummer.slice(
             0,
             kreis.properties.Kreisnummer.length - 3
           ) === kreisPop.AGS
         ) {
-          kreis.properties[feature_dataset.title] = Number(kreisPop.data[year]);
+          kreis.properties[this.feature_dataset.title] = Number(kreisPop.data[year]);
         }
       });
     });
@@ -331,10 +337,10 @@ export default class Map {
     } else {
       this.map.getSource('KreiseNRW').setData(KreiseNRW);
       this.map.setPaintProperty('kreisgrenzen', 'fill-color', {
-        property: feature_dataset.title,
+        property: this.feature_dataset.title,
         stops: [
-          [this._getMinFeature(KreiseNRW, feature_dataset.title), lowColor],
-          [this._getMaxFeature(KreiseNRW, feature_dataset.title), highColor]
+          [this._getMinFeature(KreiseNRW, this.feature_dataset.title), this.lowColor],
+          [this._getMaxFeature(KreiseNRW, this.feature_dataset.title), this.highColor]
         ]
       });
     }
@@ -342,11 +348,11 @@ export default class Map {
     document.getElementById('year').textContent = year;
     document.getElementById('legend-min').innerHTML = this._getMinFeature(
       KreiseNRW,
-      feature_dataset.title
+      this.feature_dataset.title
     );
     document.getElementById('legend-max').innerHTML = this._getMaxFeature(
       KreiseNRW,
-      feature_dataset.title
+      this.feature_dataset.title
     );
   }
 
@@ -386,7 +392,7 @@ export default class Map {
         paint: {
           'fill-color': {
             property: 'DN',
-            stops: [[0, lowColor], [45, highColor]]
+            stops: [[0, this.lowColor], [45, this.highColor]]
           },
           'fill-opacity': 0.8
         }
@@ -468,10 +474,10 @@ export default class Map {
 
   _applyStandard() {
     this.map.setPaintProperty('kreisgrenzen', 'fill-color', {
-      property: feature_dataset.title,
+      property: this.feature_dataset.title,
       stops: [
-        [this._getMinFeature(KreiseNRW, feature_dataset.title), lowColor],
-        [this._getMaxFeature(KreiseNRW, feature_dataset.title), highColor]
+        [this._getMinFeature(KreiseNRW, this.feature_dataset.title), this.lowColor],
+        [this._getMaxFeature(KreiseNRW, this.feature_dataset.title), this.highColor]
       ]
     });
     this._hideLegend();
@@ -491,13 +497,13 @@ export default class Map {
 
   _applyStatistic(classes) {
     const colors = colorLerp(
-      lowColor,
-      highColor,
+      this.lowColor,
+      this.highColor,
       Number(document.getElementById('stats_classes').value),
       'hex'
     );
 
-    const stops = ['step', ['get', feature_dataset.title]];
+    const stops = ['step', ['get', this.feature_dataset.title]];
 
     $('.legend-labels').empty();
 
@@ -546,13 +552,13 @@ export default class Map {
    * @param {string} feature name of the feature e.g. arbeitslose
    */
   _setDataFromJSON(data) {
-    feature_dataset = data;
+    this.feature_dataset = data;
 
     document.getElementById('legend-heading').innerHTML = data.title;
 
     // map feature to layer
     KreiseNRW.features.map(kreis => {
-      feature_dataset.data.forEach(data_feature => {
+      this.feature_dataset.data.forEach(data_feature => {
         if (!String(data_feature.AGS).startsWith('0')) {
           data_feature.AGS = `0${data_feature.AGS}`;
         }
@@ -572,19 +578,19 @@ export default class Map {
     this.map.setPaintProperty('kreisgrenzen', 'fill-color', {
       property: data.title,
       stops: [
-        [this._getMaxFeature(KreiseNRW, data.title), lowColor],
-        [this._getMinFeature(KreiseNRW, data.title), highColor]
+        [this._getMaxFeature(KreiseNRW, data.title), this.lowColor],
+        [this._getMinFeature(KreiseNRW, data.title), this.highColor]
       ]
     });
 
     // update ui elements
     document.getElementById('legend-min').innerHTML = this._getMinFeature(
       KreiseNRW,
-      feature_dataset.title
+      this.feature_dataset.title
     );
     document.getElementById('legend-max').innerHTML = this._getMaxFeature(
       KreiseNRW,
-      feature_dataset.title
+      this.feature_dataset.title
     );
     document.getElementById('timeslider').removeAttribute('hidden');
     document.getElementById(
@@ -646,7 +652,7 @@ export default class Map {
    * @returns years of current dataset
    */
   _getYearsOfDataset() {
-    return Object.keys(feature_dataset.data[0].data);
+    return Object.keys(this.feature_dataset.data[0].data);
   }
 
   /**
@@ -654,7 +660,7 @@ export default class Map {
    * @returns first year of current dataset
    */
   _getFirstYearOfDataset() {
-    return Object.keys(feature_dataset.data[0].data)[0];
+    return Object.keys(this.feature_dataset.data[0].data)[0];
   }
 
   /**
@@ -662,7 +668,7 @@ export default class Map {
    * @returns last year of current dataset
    */
   _getLastYearOfDataset() {
-    const dataset_data = Object.keys(feature_dataset.data[0].data);
+    const dataset_data = Object.keys(this.feature_dataset.data[0].data);
 
     return dataset_data[dataset_data.length - 1];
   }
@@ -670,9 +676,9 @@ export default class Map {
   _getData() {
     const temp = [];
     KreiseNRW.features.forEach(e => {
-      const val = e.properties[feature_dataset.title];
+      const val = e.properties[this.feature_dataset.title];
       if (val) {
-        temp.push(e.properties[feature_dataset.title]);
+        temp.push(e.properties[this.feature_dataset.title]);
       }
     });
 
