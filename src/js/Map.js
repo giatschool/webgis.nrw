@@ -228,6 +228,13 @@ export default class Map {
   }
 
   /**
+   * @description returns the overlay transperency
+   */
+  getTransparency() {
+    return this.map.getPaintProperty('kreisgrenzen', 'fill-opacity');
+  }
+
+  /**
    * @description changes low or high color value
    * @param {string} type "low" or "high"
    * @param {string} value hexadecimal value

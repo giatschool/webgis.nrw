@@ -6,6 +6,7 @@ import 'mapbox-gl-compare/dist/mapbox-gl-compare.css';
 
 class App {
   static run() {
+    let listeners;
     const primary_map = new Map('map', [7.555, 51.478333], 7, success => {
       if (success) {
         document.body.style.visibility = 'visible';
@@ -27,11 +28,10 @@ class App {
         document.getElementById('start').classList.remove('btn-primary');
         document.getElementById('start').classList.add('btn-danger');
       }
+      listeners = new Listeners(document, primary_map);
     });
 
     let secondary_map;
-
-    const listeners = new Listeners(document, primary_map);
 
     let dualView = false;
     let splitView = false;
