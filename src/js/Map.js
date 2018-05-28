@@ -319,6 +319,109 @@ export default class Map {
     //   });
   }
 
+  setPointData(data_source) {
+    /* eslint-disable global-require */
+    const _data = require(`./../data/${data_source}.json`);
+
+    if (this.containsLayer('KiTasNRW')) {
+      this.map.removeLayer('KiTasNRW');
+      this.map.removeSource('KiTasNRW');
+    } else {
+      this.map.addSource('KiTasNRW', {
+        type: 'geojson',
+        data: _data
+      });
+
+      this.map.addLayer({
+        id: 'KiTasNRW',
+        type: 'circle',
+        source: 'KiTasNRW',
+        paint: {
+          // make circles larger as the user zooms from z12 to z22
+          'circle-radius': {
+            base: 3,
+            stops: [[12, 2], [22, 180]]
+          },
+          // color circles by ethnicity, using a match expression
+          // https://www.mapbox.com/mapbox-gl-js/style-spec/#expressions-match
+          'circle-color': this.lowColor || '#ffff00'
+        }
+      });
+    }
+  }
+
+  enableHeatmap() {
+    console.log(
+      this.containsLayer('KiTasNRW'),
+      !this.containsLayer('KiTasNRW_Heat')
+    );
+    if (
+      this.containsLayer('KiTasNRW') &&
+      !this.containsLayer('KiTasNRW_Heat')
+    ) {
+      this.map.addLayer({
+        id: 'KiTasNRW_Heat',
+        type: 'heatmap',
+        source: 'KiTasNRW',
+        maxzoom: 9,
+        paint: {
+          // Increase the heatmap weight based on frequency and property magnitude
+          // 'heatmap-weight': [
+          //   'interpolate',
+          //   ['linear'],
+          //   ['get', 'mag'],
+          //   0,
+          //   0,
+          //   6,
+          //   1
+          // ],
+          // Increase the heatmap color weight weight by zoom level
+          // heatmap-intensity is a multiplier on top of heatmap-weight
+          'heatmap-intensity': [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            0,
+            1,
+            9,
+            3
+          ],
+          // Color ramp for heatmap.  Domain is 0 (low) to 1 (high).
+          // Begin color ramp at 0-stop with a 0-transparancy color
+          // to create a blur-like effect.
+          'heatmap-color': [
+            'interpolate',
+            ['linear'],
+            ['heatmap-density'],
+            0,
+            lowColor,
+            1,
+            highColor
+          ],
+          // Adjust the heatmap radius by zoom level
+          'heatmap-radius': ['interpolate', ['linear'], ['zoom'], 0, 2, 9, 20],
+          // Transition from heatmap to circle layer by zoom level
+          'heatmap-opacity': ['interpolate', ['linear'], ['zoom'], 7, 1, 9, 0]
+        }
+      });
+    }
+  }
+
+  disableHeatmap() {
+    if (this.containsLayer('KiTasNRW_Heat'))
+      this.map.removeLayer('KiTasNRW_Heat');
+  }
+
+  containsLayer(layer) {
+    for (const mapLayer of this.map.getStyle().layers) {
+      if (mapLayer.id === layer) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   /**
    * @description changes the current year and applies changes to layer
    * @param {String} year

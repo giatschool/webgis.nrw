@@ -174,6 +174,18 @@ export default class Listeners {
         );
       });
 
+    document.getElementById('KiTas').addEventListener('click', () => {
+      this.getActiveMap().setPointData('KiTas_NRW', 'KiTas NRW');
+    });
+
+    $('#KiTaHeat').change(() => {
+      if ($('#KiTaHeat')[0].checked) {
+        this.getActiveMap().enableHeatmap();
+      } else {
+        this.getActiveMap().disableHeatmap();
+      }
+    });
+
     document.getElementById('lowColor').addEventListener(
       'change',
       e => {
