@@ -186,6 +186,14 @@ export default class Listeners {
       }
     });
 
+    $('#select_circle_radius').on('change', () => {
+      this.getActiveMap().setPointRadius($('#select_circle_radius').val());
+    });
+
+    $('#select_circle_color').on('change', () => {
+      this.getActiveMap().setPointColor($('#select_circle_color').val());
+    });
+
     document.getElementById('lowColor').addEventListener(
       'change',
       e => {

@@ -339,12 +339,14 @@ export default class Map {
         paint: {
           // make circles larger as the user zooms from z12 to z22
           'circle-radius': {
-            base: 3,
-            stops: [[12, 2], [22, 180]]
+            base: 1.5,
+            stops: [[12, 3], [22, 180]]
           },
           // color circles by ethnicity, using a match expression
           // https://www.mapbox.com/mapbox-gl-js/style-spec/#expressions-match
-          'circle-color': this.lowColor || '#ffff00'
+          'circle-color': '#ffff00',
+          'circle-stroke-width': 1,
+          'circle-stroke-color': '#ababab'
         }
       });
     }
@@ -363,32 +365,8 @@ export default class Map {
         id: 'KiTasNRW_Heat',
         type: 'heatmap',
         source: 'KiTasNRW',
-        maxzoom: 9,
+        maxzoom: 8,
         paint: {
-          // Increase the heatmap weight based on frequency and property magnitude
-          // 'heatmap-weight': [
-          //   'interpolate',
-          //   ['linear'],
-          //   ['get', 'mag'],
-          //   0,
-          //   0,
-          //   6,
-          //   1
-          // ],
-          // Increase the heatmap color weight weight by zoom level
-          // heatmap-intensity is a multiplier on top of heatmap-weight
-          'heatmap-intensity': [
-            'interpolate',
-            ['linear'],
-            ['zoom'],
-            0,
-            1,
-            9,
-            3
-          ],
-          // Color ramp for heatmap.  Domain is 0 (low) to 1 (high).
-          // Begin color ramp at 0-stop with a 0-transparancy color
-          // to create a blur-like effect.
           'heatmap-color': [
             'interpolate',
             ['linear'],
@@ -398,10 +376,8 @@ export default class Map {
             1,
             highColor
           ],
-          // Adjust the heatmap radius by zoom level
-          'heatmap-radius': ['interpolate', ['linear'], ['zoom'], 0, 2, 9, 20],
           // Transition from heatmap to circle layer by zoom level
-          'heatmap-opacity': ['interpolate', ['linear'], ['zoom'], 7, 1, 9, 0]
+          'heatmap-opacity': ['interpolate', ['linear'], ['zoom'], 4, 1, 8, 0]
         }
       });
     }
@@ -410,6 +386,45 @@ export default class Map {
   disableHeatmap() {
     if (this.containsLayer('KiTasNRW_Heat'))
       this.map.removeLayer('KiTasNRW_Heat');
+  }
+
+  setPointColor(parameter) {
+    if (parameter === '') {
+      // default
+      this.map.setPaintProperty('KiTasNRW', 'circle-color', '#ffff00');
+      this.map.setPaintProperty('KiTasNRW', 'circle-stroke-width', 1);
+    } else {
+      const max = {
+        U3Plaetze: 54,
+        UE3Plaetze: 99,
+        PlaetzeSchulkinder: 64
+      };
+      this.map.setPaintProperty('KiTasNRW', 'circle-color', {
+        property: parameter,
+        stops: [[0, lowColor], [max[parameter], highColor]]
+      });
+      this.map.setPaintProperty('KiTasNRW', 'circle-stroke-width', 0);
+    }
+  }
+
+  setPointRadius(parameter) {
+    if (parameter === '') {
+      // default
+      this.map.setPaintProperty('KiTasNRW', 'circle-radius', {
+        base: 1.5,
+        stops: [[12, 3], [22, 180]]
+      });
+    } else {
+      const max = {
+        U3Plaetze: 54,
+        UE3Plaetze: 99,
+        PlaetzeSchulkinder: 64
+      };
+      this.map.setPaintProperty('KiTasNRW', 'circle-radius', {
+        property: parameter,
+        stops: [[0, 1], [max[parameter], 8]]
+      });
+    }
   }
 
   containsLayer(layer) {
