@@ -324,9 +324,11 @@ export default class Map {
     const _data = require(`./../data/${data_source}.json`);
 
     if (this.containsLayer('KiTasNRW')) {
+      $('#kita_circle_editor').hide();
       this.map.removeLayer('KiTasNRW');
       this.map.removeSource('KiTasNRW');
     } else {
+      $('#kita_circle_editor').show();
       this.map.addSource('KiTasNRW', {
         type: 'geojson',
         data: _data
@@ -353,10 +355,6 @@ export default class Map {
   }
 
   enableHeatmap() {
-    console.log(
-      this.containsLayer('KiTasNRW'),
-      !this.containsLayer('KiTasNRW_Heat')
-    );
     if (
       this.containsLayer('KiTasNRW') &&
       !this.containsLayer('KiTasNRW_Heat')
