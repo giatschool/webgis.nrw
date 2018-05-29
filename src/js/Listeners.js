@@ -175,6 +175,11 @@ export default class Listeners {
       });
 
     document.getElementById('KiTas').addEventListener('click', () => {
+      if (this.getActiveMap().containsLayer('KiTasNRW')) {
+        $('#kita_circle_editor').hide();
+      } else {
+        $('#kita_circle_editor').show();
+      }
       this.getActiveMap().setPointData('KiTas_NRW', 'KiTas NRW');
     });
 
