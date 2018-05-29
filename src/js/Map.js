@@ -83,12 +83,12 @@ export default class Map {
 
       // Change the cursor to a pointer when the mouse is over the places layer.
       this.map.on('mouseenter', function() {
-        map.getCanvas().style.cursor = 'pointer';
+        this.map.getCanvas().style.cursor = 'pointer';
       });
 
       // Change it back to a pointer when it leaves.
       this.map.on('mouseleave', function() {
-        map.getCanvas().style.cursor = '';
+        this.map.getCanvas().style.cursor = '';
       });
     });
 
@@ -329,6 +329,7 @@ export default class Map {
       this.map.removeSource('KiTasNRW');
     } else {
       $('#kita_circle_editor').show();
+
       this.map.addSource('KiTasNRW', {
         type: 'geojson',
         data: _data
@@ -350,6 +351,59 @@ export default class Map {
           'circle-stroke-width': 1,
           'circle-stroke-color': '#ababab'
         }
+      });
+
+      // When a click event occurs on a feature in the places layer, open a popup at the
+      // location of the feature, with description HTML from its properties.
+      this.map.on('click', 'KiTasNRW', e => {
+        const coordinates = e.features[0].geometry.coordinates.slice();
+        const description = e.features[0].properties;
+
+        // Ensure that if the map is zoomed out such that multiple
+        // copies of the feature are visible, the popup appears
+        // over the copy being pointed to.
+        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+          coordinates[0] =
+            coordinates[0] + (e.lngLat.lng > coordinates[0] ? 360 : -360);
+        }
+
+        new mapboxgl.Popup()
+          .setLngLat(coordinates)
+          .setHTML(
+            `
+            <strong>${description.Name}</strong>
+            <p>${description.Strasse}, ${description.PLZ} ${description.Ort}</p>
+            <p>Landesgefördert:    ${
+              description.landesgefoerdert ? 'Ja' : 'Nein'
+            }<br>
+            U3 Plätze:          ${
+              description.U3Plaetze === -1
+                ? 'Keine Daten'
+                : description.U3Plaetze
+            }<br>
+            Ü3 Plätze:          ${
+              description.UE3Plaetze === -1
+                ? 'Keine Daten'
+                : description.UE3Plaetze
+            }<br>
+            Plätze Schulkinder: ${
+              description.PlaetzeSchulkinder === -1
+                ? 'Keine Daten'
+                : description.PlaetzeSchulkinder
+            }</p>
+          `
+          )
+          .addTo(this.map);
+      });
+
+      // Change the cursor to a pointer when the mouse is over the places layer.
+      this.map.on('mouseenter', 'KiTasNRW', () => {
+        this.map.getCanvas().style.cursor = 'pointer';
+      });
+
+      // Change it back to a pointer when it leaves.
+      this.map.on('mouseleave', 'KiTasNRW', () => {
+        this.map.getCanvas().style.cursor = '';
       });
     }
   }
