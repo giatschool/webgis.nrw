@@ -83,12 +83,12 @@ export default class Map {
 
       // Change the cursor to a pointer when the mouse is over the places layer.
       this.map.on('mouseenter', function() {
-        map.getCanvas().style.cursor = 'pointer';
+        this.map.getCanvas().style.cursor = 'pointer';
       });
 
       // Change it back to a pointer when it leaves.
       this.map.on('mouseleave', function() {
-        map.getCanvas().style.cursor = '';
+        this.map.getCanvas().style.cursor = '';
       });
     });
 
@@ -317,6 +317,176 @@ export default class Map {
     //   .catch(ex => {
     //     console.log('parsing failed', ex);
     //   });
+  }
+
+  setPointData(data_source) {
+    /* eslint-disable global-require */
+    const _data = require(`./../data/${data_source}.json`);
+
+    if (this.containsLayer('KiTasNRW')) {
+      $('#kita_circle_editor').hide();
+      this.map.removeLayer('KiTasNRW');
+      this.map.removeSource('KiTasNRW');
+    } else {
+      $('#kita_circle_editor').show();
+
+      this.map.addSource('KiTasNRW', {
+        type: 'geojson',
+        data: _data
+      });
+
+      this.map.addLayer({
+        id: 'KiTasNRW',
+        type: 'circle',
+        source: 'KiTasNRW',
+        paint: {
+          // make circles larger as the user zooms from z12 to z22
+          'circle-radius': {
+            base: 1.5,
+            stops: [[12, 3], [22, 180]]
+          },
+          // color circles by ethnicity, using a match expression
+          // https://www.mapbox.com/mapbox-gl-js/style-spec/#expressions-match
+          'circle-color': '#ffff00',
+          'circle-stroke-width': 1,
+          'circle-stroke-color': '#ababab'
+        }
+      });
+
+      // When a click event occurs on a feature in the places layer, open a popup at the
+      // location of the feature, with description HTML from its properties.
+      this.map.on('click', 'KiTasNRW', e => {
+        const coordinates = e.features[0].geometry.coordinates.slice();
+        const description = e.features[0].properties;
+
+        // Ensure that if the map is zoomed out such that multiple
+        // copies of the feature are visible, the popup appears
+        // over the copy being pointed to.
+        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+          coordinates[0] =
+            coordinates[0] + (e.lngLat.lng > coordinates[0] ? 360 : -360);
+        }
+
+        new mapboxgl.Popup()
+          .setLngLat(coordinates)
+          .setHTML(
+            `
+            <strong>${description.Name}</strong>
+            <p>${description.Strasse}, ${description.PLZ} ${description.Ort}</p>
+            <p>Landesgefördert:    ${
+              description.landesgefoerdert ? 'Ja' : 'Nein'
+            }<br>
+            U3 Plätze:          ${
+              description.U3Plaetze === -1
+                ? 'Keine Daten'
+                : description.U3Plaetze
+            }<br>
+            Ü3 Plätze:          ${
+              description.UE3Plaetze === -1
+                ? 'Keine Daten'
+                : description.UE3Plaetze
+            }<br>
+            Plätze Schulkinder: ${
+              description.PlaetzeSchulkinder === -1
+                ? 'Keine Daten'
+                : description.PlaetzeSchulkinder
+            }</p>
+          `
+          )
+          .addTo(this.map);
+      });
+
+      // Change the cursor to a pointer when the mouse is over the places layer.
+      this.map.on('mouseenter', 'KiTasNRW', () => {
+        this.map.getCanvas().style.cursor = 'pointer';
+      });
+
+      // Change it back to a pointer when it leaves.
+      this.map.on('mouseleave', 'KiTasNRW', () => {
+        this.map.getCanvas().style.cursor = '';
+      });
+    }
+  }
+
+  enableHeatmap() {
+    if (
+      this.containsLayer('KiTasNRW') &&
+      !this.containsLayer('KiTasNRW_Heat')
+    ) {
+      this.map.addLayer({
+        id: 'KiTasNRW_Heat',
+        type: 'heatmap',
+        source: 'KiTasNRW',
+        maxzoom: 8,
+        paint: {
+          'heatmap-color': [
+            'interpolate',
+            ['linear'],
+            ['heatmap-density'],
+            0,
+            lowColor,
+            1,
+            highColor
+          ],
+          // Transition from heatmap to circle layer by zoom level
+          'heatmap-opacity': ['interpolate', ['linear'], ['zoom'], 4, 1, 8, 0]
+        }
+      });
+    }
+  }
+
+  disableHeatmap() {
+    if (this.containsLayer('KiTasNRW_Heat'))
+      this.map.removeLayer('KiTasNRW_Heat');
+  }
+
+  setPointColor(parameter) {
+    if (parameter === '') {
+      // default
+      this.map.setPaintProperty('KiTasNRW', 'circle-color', '#ffff00');
+      this.map.setPaintProperty('KiTasNRW', 'circle-stroke-width', 1);
+    } else {
+      const max = {
+        U3Plaetze: 54,
+        UE3Plaetze: 99,
+        PlaetzeSchulkinder: 64
+      };
+      this.map.setPaintProperty('KiTasNRW', 'circle-color', {
+        property: parameter,
+        stops: [[0, lowColor], [max[parameter], highColor]]
+      });
+      this.map.setPaintProperty('KiTasNRW', 'circle-stroke-width', 0);
+    }
+  }
+
+  setPointRadius(parameter) {
+    if (parameter === '') {
+      // default
+      this.map.setPaintProperty('KiTasNRW', 'circle-radius', {
+        base: 1.5,
+        stops: [[12, 3], [22, 180]]
+      });
+    } else {
+      const max = {
+        U3Plaetze: 54,
+        UE3Plaetze: 99,
+        PlaetzeSchulkinder: 64
+      };
+      this.map.setPaintProperty('KiTasNRW', 'circle-radius', {
+        property: parameter,
+        stops: [[0, 1], [max[parameter], 8]]
+      });
+    }
+  }
+
+  containsLayer(layer) {
+    for (const mapLayer of this.map.getStyle().layers) {
+      if (mapLayer.id === layer) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   /**

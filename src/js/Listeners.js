@@ -174,6 +174,26 @@ export default class Listeners {
         );
       });
 
+    document.getElementById('KiTas').addEventListener('click', () => {
+      this.getActiveMap().setPointData('KiTas_NRW', 'KiTas NRW');
+    });
+
+    $('#KiTaHeat').change(() => {
+      if ($('#KiTaHeat')[0].checked) {
+        this.getActiveMap().enableHeatmap();
+      } else {
+        this.getActiveMap().disableHeatmap();
+      }
+    });
+
+    $('#select_circle_radius').on('change', () => {
+      this.getActiveMap().setPointRadius($('#select_circle_radius').val());
+    });
+
+    $('#select_circle_color').on('change', () => {
+      this.getActiveMap().setPointColor($('#select_circle_color').val());
+    });
+
     document.getElementById('lowColor').addEventListener(
       'change',
       e => {
