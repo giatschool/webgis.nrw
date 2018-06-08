@@ -1,5 +1,6 @@
 import Printer from './Printer';
 import GIFExporter from './GIFExporter';
+import Tutorial from './Tutorial';
 
 let activeMap = undefined;
 let myGIFExporter = undefined;
@@ -279,6 +280,10 @@ export default class Listeners {
       .addEventListener('click', () => {
         $('#legalAdviceModal').modal('toggle');
       });
+
+    $('#start_tutorial').on('click', () => {
+      Tutorial.startTutorial();
+    });
 
     document.getElementById('logo').addEventListener('click', () => {
       location.reload();

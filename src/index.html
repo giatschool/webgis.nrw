@@ -232,8 +232,8 @@
           </div>
         </li>
         <li class="nav-item dropup">
-          <a class="nav-link dropdown-toggle" id="dropdown_stats" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Export</a>
-          <div class="dropdown-menu" aria-labelledby="dropdown_stats">
+          <a class="nav-link dropdown-toggle" id="dropdown_export" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Export</a>
+          <div class="dropdown-menu" aria-labelledby="dropdown_export">
             <div class="btn-group btn-group-toggle" data-toggle="buttons">
               <label class="btn btn-info active no-margin-bottom">
                 <input type="radio" name="options" id="export_pdf" autocomplete="off" checked>PDF
@@ -263,7 +263,7 @@
     <div id='map' class='map'></div>
   </div>
 
-  <div class="legend-wrapper">
+  <div class="legend-wrapper" id="legendWrapper">
     <i id='legend_collapse' class="material-icons right-middle rotate-down" data-toggle="collapse" data-target=".legend" aria-expanded="true">keyboard_arrow_down</i>
     <div class='legend collapse multi-collapse'>
       <div class='my-legend'>
@@ -393,6 +393,7 @@
             <span style="color:#e74c3c">&hearts;</span> @ #nrwhack17</p>
         </div>
         <div class="modal-footer">
+          <button type="button" id="start_tutorial" class="btn btn-light mr-auto">Tutorial</button>
           <button type="button" id="start" class="btn btn-primary" disabled>Laden...</button>
         </div>
       </div>
