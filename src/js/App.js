@@ -109,7 +109,7 @@ class App {
       }
     });
 
-    $('.legend').collapse('show');
+    $('.legend').collapse('hide');
 
     $('#mode-dual, #mode-split').on('change', () => {
       $('#map-select').collapse('show');
