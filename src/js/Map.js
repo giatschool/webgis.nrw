@@ -14,6 +14,8 @@ let feature_dataset;
 let current_year;
 let current_legend = $('.scale-legend')[0];
 
+let showLegendOnStart = false;
+
 // min and max colors
 let lowColor = '#80BCFF';
 let highColor = '#1A5FAC';
@@ -300,6 +302,11 @@ export default class Map {
    * @param {string} feature name of the feature e.g. arbeitslose
    */
   setData(data_source) {
+    if (!showLegendOnStart) {
+      $('.legend-info-wrapper').show();
+      $('.legend').collapse('show');
+      showLegendOnStart = true;
+    }
     // const url = `./../data/${data_source}.json`;
 
     /* eslint-disable global-require */
