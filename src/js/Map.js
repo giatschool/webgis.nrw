@@ -176,7 +176,8 @@ export default class Map {
       source: 'KreiseNRW',
       paint: {
         'fill-opacity': 0.8,
-        'fill-color': '#5266B8'
+        'fill-color': '#5266B8',
+        'fill-outline-color': '#5266B8'
       }
     });
     loadDone(true);
