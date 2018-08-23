@@ -176,7 +176,8 @@ export default class Map {
       source: 'KreiseNRW',
       paint: {
         'fill-opacity': 0.8,
-        'fill-color': '#5266B8'
+        'fill-color': '#5266B8',
+        'fill-outline-color': '#5266B8'
       }
     });
     loadDone(true);
@@ -711,11 +712,19 @@ export default class Map {
       const lowerBound = Math.round(classes[i] * 10) / 10;
       const upperBound = Math.round(classes[i + 1] * 10) / 10;
 
-      $('.legend-labels').append(
-        `<li style="flex: ${liFlex}">
-          <span style="background:${e};">
-          </span><br/>${lowerBound}<br />-<br />${upperBound}</li>`
-      );
+      if(i === colors.length - 1) {
+        $('.legend-labels').append(
+          `<li style="flex: ${liFlex}">
+            <span style="background:${e};">
+            </span>${lowerBound}<br /> - <br />${upperBound}</li>`
+        );
+      } else {
+        $('.legend-labels').append(
+          `<li style="flex: ${liFlex}">
+            <span style="background:${e};">
+            </span>${lowerBound}<br /> - <br /><${upperBound}</li>`
+        );
+      }
     });
 
     $('[data-toggle="tooltip"]').tooltip(); // initialize new poppers
