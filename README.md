@@ -1,5 +1,5 @@
 # webgis.nrw
-The webgis.nrw is an open platform for modern teaching in NRW.
+The webgis.nrw is an open source and open data platform for modern teaching in Northrhine-Westphalia. 
 
 ## Getting Started
 To run the webgis.nrw on your local machine, do the following steps:
@@ -44,8 +44,8 @@ WebGIS für Schulen
 * vorkonfigurierte Karten mit aktuellen, offenen Daten
 
 ### Zielgruppe
-* Lehrer
-* (Schüler)
+* LehrerInnnen
+* SchülerInnen
 
 ## Eingesetzte Technologien
 * Mapbox
